@@ -22,8 +22,8 @@ return [
      */
     'route' => [
 
-        'prefix' => 'admin',
-
+        'prefix' => '/',
+        'domain' => env('ADMIN_DOMAIN', 'admin.you-app.com'),
         'namespace' => 'App\\Admin\\Controllers',
 
         'middleware' => ['web', 'admin'],

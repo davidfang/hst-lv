@@ -16,6 +16,12 @@ use Illuminate\Http\Request;
 Route::get('test', function () {
     return 'hello world';
 });
+//Route::resource('banner', 'BannerController', ['only' => [
+////    'index', 'show'
+////]]);
+//Route::resource('/banner','BannerController',['only'=>['index','show']]);
+Route::get('/banner/index','BannerController@index');
+Route::get('/banner/show/{banner}','BannerController@show');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
