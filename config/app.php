@@ -213,6 +213,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-    'api_domain' => env('API_DOMAIN', 'api.hippo-studio.com'),
-    'admin_domain' => env('ADMIN_DOMAIN', 'admin.hippo-studio.com'),
+    'api_domain' => env('API_DOMAIN', 'api.localhost'),
+    'admin_domain' => env('ADMIN_DOMAIN', 'admin.localhost'),
 ];

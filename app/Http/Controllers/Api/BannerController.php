@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Banner;
 use App\Http\Resources\Banner as BannerResource;
@@ -15,10 +15,12 @@ class BannerController extends Controller
      */
     public function index(Request $request)
     {
+        //return $this->message('test');
         $type = $request->input('type','swiper');
-        return new BannerResource(Banner::where('type',$type)->get());
+        return $this->success(new BannerResource(Banner::where('type',$type)->simplePaginate(5)));
         //
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,7 +51,7 @@ class BannerController extends Controller
      */
     public function show(Banner $banner)
     {
-        return new BannerResource($banner);
+        return $this->success(new BannerResource($banner));
         //
     }
 
