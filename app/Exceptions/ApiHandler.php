@@ -6,8 +6,10 @@
 
 namespace App\Exceptions;
 use Exception;
+use App\Http\Controllers\Api\Helpers\ExceptionReport;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
-class ApiHandler extends Handler
+class ApiHandler extends ExceptionHandler
 {
 
     public function handler(Exception $exception)
@@ -27,7 +29,14 @@ class ApiHandler extends Handler
         if (config('app.debug')) {
             return parent::render($request, $exception);
         }
-        return $this->handler($exception);
+        // 将方法拦截到自己的ExceptionReport
+        $reporter = ExceptionReport::make($exception);
+
+        if ($reporter->shouldReturn()){
+            return $reporter->report();
+        }
+        return parent::render($request, $exception);
+        //return $this->handler($exception);
     }
 }
 
