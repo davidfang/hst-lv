@@ -29,6 +29,7 @@ Route::post('login','AuthenticateController@login');
 
 Route::post('passport/login','Api\Auth\LoginController@login');
 Route::post('passport/register','Api\Auth\RegisterController@register');
+Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 
 
 
