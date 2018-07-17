@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Banner;
+use App\Model\Banner;
 use App\Http\Resources\Banner as BannerResource;
 use Illuminate\Http\Request;
 

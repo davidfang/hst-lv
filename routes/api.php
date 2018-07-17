@@ -20,8 +20,9 @@ Route::get('test', function () {
 ////    'index', 'show'
 ////]]);
 //Route::resource('/banner','BannerController',['only'=>['index','show']]);
-Route::get('/banner/index', 'BannerController@index');
-Route::get('/banner/show/{banner}', 'BannerController@show');
+Route::get('/banner/index', 'Api\BannerController@index');
+Route::get('/banner/show/{banner}', 'Api\BannerController@show');
+Route::get('category','Api\GoodsCategoryController@index');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     return [
