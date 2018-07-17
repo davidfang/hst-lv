@@ -1,0 +1,59 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CustomUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string('name',30)->nullable()->comment('名字')->change();
+            $table->string('nickname',30)->default('未取昵称')->comment('用户昵称');
+            $table->string('email',50)->nullable()->comment('邮箱')->change();
+            $table->string('mobile',11)->unique()->comment('手机号');
+            $table->string('password',100)->nullable()->comment('用户的密码')->change();
+            $table->enum('gender',['男','女','未设置'])->default('未设置')->comment('性别');
+            $table->string('avatar', 100)->nullable()->comment('头像');
+            $table->enum('grade',['VIP会员','超级会员','运营商'])->default('VIP会员')->comment('会员等级');
+            $table->enum('status',['正常','禁用','异常'])->default('正常');
+            $table->integer('parent_id')->nullable()->comment('父ID');
+            $table->string('invitation_code',10)->nullable()->comment('邀请码');
+            $table->timestamp('last_login_time')->nullable()->comment('最后一次登录时间');
+
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string('name',30)->nullable()->comment('名字')->change();
+            $table->string('nickname',30)->default('未取昵称')->comment('用户昵称');
+            $table->string('email',50)->nullable()->comment('邮箱')->change();
+            $table->string('mobile',11)->unique()->comment('手机号');
+            $table->string('password',100)->comment('用户的密码')->change();
+            $table->enum('gender',['男','女','未设置'])->default('未设置')->comment('性别');
+            $table->string('avatar', 100)->nullable()->comment('头像');
+            $table->enum('grade',['VIP会员','超级会员','运营商'])->default('VIP会员')->comment('会员等级');
+            $table->enum('status',['正常','禁用','异常'])->default('正常');
+            $table->integer('parent_id')->nullable()->comment('父ID');
+            $table->string('invitation_code',10)->nullable()->comment('邀请码');
+            $table->timestamp('last_login_time')->nullable()->comment('最后一次登录时间');
+
+        });
+    }
+}

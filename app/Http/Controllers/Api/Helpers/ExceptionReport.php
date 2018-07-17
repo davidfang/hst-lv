@@ -49,7 +49,15 @@ class ExceptionReport
      */
     public function shouldReturn(){
 
-        if (! ($this->request->wantsJson() || $this->request->ajax())){
+        $action = $this->request->route()->action;
+//        var_dump($action['middleware']);
+//        var_dump(get_class($this->exception));
+////          var_dump($this->request->wantsJson());
+//          var_dump($this->request->ajax());
+////        die('a');
+//        var_dump(in_array('api',$action['middleware']));
+
+        if ($action['middleware'] != 'api' && !in_array('api',$action['middleware']) ||  $this->request->ajax()){
             return false;
         }
 

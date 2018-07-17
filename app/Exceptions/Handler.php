@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
     {
         // 将方法拦截到自己的ExceptionReport
         $reporter = ExceptionReport::make($exception);
-
+//        var_dump($reporter->shouldReturn());exit;
         if ($reporter->shouldReturn()){
             return $reporter->report();
         }

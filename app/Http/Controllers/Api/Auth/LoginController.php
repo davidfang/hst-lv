@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Laravel\Passport\Client;
 use Validator;
 
 class LoginController extends Controller
@@ -39,13 +39,25 @@ class LoginController extends Controller
     {
         $this->middleware('auth:api')->only('logout');
     }
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'mobile';
+    }
     // 登录
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             //'email'    => 'required|exists:users',
-            'email'    => 'required',
+            'mobile'    => 'required|zh_mobile',
             'password' => 'required|between:5,32',
+        ],[
+            'mobile.required' => '请输入手机号',
+            'mobile.zh_mobile' => '手机号不正确'
         ]);
 
         if ($validator->fails()) {
@@ -58,7 +70,7 @@ class LoginController extends Controller
 
         $credentials = $this->credentials($request);
         if ($this->guard('api')->attempt($credentials, $request->has('remember'))) {
-            return $this->sendLoginResponse($request);
+            return $this->sendLoginResponse($request,$this->guard()->user());
         }
 
 
@@ -85,16 +97,17 @@ class LoginController extends Controller
      * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated(Request $request, $user)
+    protected function sendLoginResponse(Request $request,$user)
     {
-        return $this->authenticateClient($request);
-    }
-    protected function sendLoginResponse(Request $request)
-    {
-        $this->clearLoginAttempts($request);
+//        $this->clearLoginAttempts($request);
+//        //$user = $this->guard()->user();
+//        $user = User::where('mobile',$request['mobile'])->first();
+//        //var_dump($user);exit;
+//        $token = $user->createToken('hst-lv')->accessToken;
+//        return $this->success(['token'=>$token,'password'=>true]);
 
-        $authenticated = $this->authenticated($request,$this->guard()->user());
-        return $this->success(json_decode($authenticated,true));
+        $authenticated = $this->authenticateClient($request,$user);
+        return $this->success($authenticated);
     }
 
     protected function sendFailedLoginResponse(Request $request)
@@ -102,5 +115,17 @@ class LoginController extends Controller
         $msg = $request['errors'];
         $code = $request['code'];
         return $this->setStatusCode($code)->failed($msg);
+    }
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
     }
 }

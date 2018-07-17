@@ -65,9 +65,9 @@ return [
     |
     */
     'code' => [
-        'length'        => 5,
-        'validMinutes'  => 5,
-        'repeatIfValid' => false,
+        'length'        => 6,
+        'validMinutes'  => 15 * 20,
+        'repeatIfValid' => true,
         'maxAttempts'   => 0,
     ],
 

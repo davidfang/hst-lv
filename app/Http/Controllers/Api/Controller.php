@@ -22,9 +22,9 @@ class Controller extends BaseController
      * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticateClient(Request $request)
+    protected function authenticateClient(Request $request,$user)
     {
-        $credentials = $request->only('email', 'password');;
+        $credentials = $request->only('mobile', 'password');;
 
         // 个人感觉通过.env配置太复杂，直接从数据库查更方便
         $password_client = Client::query()->where('password_client',1)->latest()->first();
@@ -33,7 +33,42 @@ class Controller extends BaseController
             'grant_type' => 'password',
             'client_id' => $password_client->id,
             'client_secret' => $password_client->secret,
-            'username' => $credentials['email'],
+            'username' => $credentials['mobile'],
+            'password' => isset($credentials['password'])? $credentials['password'] : $user->password,
+            'scope' => ''
+        ]);
+
+        $proxy = Request::create(
+            'oauth/token',
+            'POST'
+        );
+        $response = \Route::dispatch($proxy);
+        //echo '<pre>';
+        //var_dump($response);
+        $content = $response->content();
+        $content = json_decode($content,true);
+        $content['password'] = $user->password != '1';
+        return $content;
+    }
+    /**
+     * The user has been authenticated.
+     * 调用认证接口获取授权码
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticateClientCredentials(Request $request)
+    {
+        $credentials = $request->only('mobile');;
+
+        // 个人感觉通过.env配置太复杂，直接从数据库查更方便
+        $password_client = Client::query()->where('password_client',1)->latest()->first();
+
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => $password_client->id,
+            'client_secret' => $password_client->secret,
+            'username' => $credentials['mobile'],
             'password' => $credentials['password'],
             'scope' => ''
         ]);
@@ -42,8 +77,9 @@ class Controller extends BaseController
             'oauth/token',
             'POST'
         );
-
         $response = \Route::dispatch($proxy);
+        //echo '<pre>';
+        //var_dump($response);
 
         return $response->content();
     }
