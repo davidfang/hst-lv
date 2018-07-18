@@ -47,4 +47,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token','parent_id','created_at','updated_at'
     ];
+
+    /**
+     * 推荐人
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function parentUser(){
+        return $this->hasOne(User::class,'id','parent_id');
+    }
 }
