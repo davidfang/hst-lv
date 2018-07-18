@@ -23,7 +23,7 @@ Route::get('test', function () {
 Route::get('/banner/index', 'Api\BannerController@index');
 Route::get('/banner/show/{banner}', 'Api\BannerController@show');
 Route::get('category','Api\GoodsCategoryController@index');
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/userInfo', function (Request $request) {
     $user = $request->user();
     return [
         createInvitationCode($user->id),
@@ -39,5 +39,9 @@ Route::post('passport/register','Api\Auth\RegisterController@register');
 Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
 
-
+Route::middleware('auth:api')->group(function (){
+    Route::get('user/info','Api\UserController@info');
+    Route::post('user/update','Api\UserController@update');
+    Route::post('user/avatar','Api\UserController@avatar');
+});
 

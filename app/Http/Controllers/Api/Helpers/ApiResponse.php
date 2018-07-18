@@ -54,7 +54,8 @@ trait ApiResponse
 
         $status = [
             'status' => $status,
-            'code' => $this->statusCode
+            'code' => $this->statusCode,
+            'message' => $status?'操作成功!':'操作失败'
         ];
 
         $data = array_merge($status,$data);
@@ -107,10 +108,10 @@ trait ApiResponse
 
     /**
      * @param $data
-     * @param string $status
+     * @param bool $status
      * @return mixed
      */
-    public function success($data, $status = "success"){
+    public function success($data, $status = true){
 
         return $this->status($status,compact('data'));
     }

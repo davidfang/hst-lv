@@ -119,7 +119,13 @@ class UserController extends Controller
 
             $form->display('id', 'ID');
             $form->text('mobile', '手机');
-            $form->password('password', '密码');
+            $form->password('password', '密码')->rules('required|confirmed');
+            $form->password('password_confirmation', '确认密码')->rules('required')
+                ->default(function ($form) {
+                    return $form->model()->password;
+                });
+            $form->ignore(['password_confirmation']);
+
             $form->text('name', '姓名');
             $form->text('nickname', '昵称');
             $form->text('age', '年龄');
@@ -133,6 +139,13 @@ class UserController extends Controller
             $form->saving(function (Form $form) {
                 if ($form->password && $form->model()->password != $form->password) {
                     $form->password = bcrypt($form->password);
+                }
+            });
+            $form->saved(function (Form $form) {
+                $model = $form->model();
+                if($model->invitation_code == null){
+                    $model->invitation_code = createInvitationCode($model->id);
+                    $model->save();
                 }
             });
         });
