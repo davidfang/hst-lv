@@ -15,6 +15,13 @@ Route::group([
     $router->resource('user','UserController');
     $router->resource('banner','BannerController');
     $router->resource('goods-category','GoodsCategoryController');
+
+    $router->any('/taobao/selection', 'TaobaoController@selection');
+    $router->get('/taobao/executeUpdate/{favorites_id?}/{page_no?}', 'TaobaoController@executeUpdate')->name('taobao.execute_update');
+    $router->post('/taobao/executeOne', 'TaobaoController@executeOne');
+    $router->get('/taobao/coupon', 'TaobaoController@coupon');
+    $router->get('/taobao/item/{id}', 'TaobaoController@item');
+    $router->resource('goods',GoodsController::class);
     $router->group([
         'prefix' => 'api'
     ],function (){

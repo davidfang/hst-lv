@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fa563d6fd9b77614051ff76fc84050a",
+    "content-hash": "4f26654c83a1129836f62f52c2566d5e",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -1804,6 +1804,51 @@
                 "php"
             ],
             "time": "2018-06-03T11:33:10+00:00"
+        },
+        {
+            "name": "overtrue/pinyin",
+            "version": "3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/pinyin.git",
+                "reference": "3b781d267197b74752daa32814d3a2cf5d140779"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/pinyin/zipball/3b781d267197b74752daa32814d3a2cf5d140779",
+                "reference": "3b781d267197b74752daa32814d3a2cf5d140779",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\Pinyin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Carlos",
+                    "homepage": "http://github.com/overtrue"
+                }
+            ],
+            "description": "Chinese to pinyin translator.",
+            "homepage": "https://github.com/overtrue/pinyin",
+            "keywords": [
+                "Chinese",
+                "Pinyin",
+                "cn2pinyin"
+            ],
+            "time": "2017-07-10T07:20:01+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3686,6 +3731,33 @@
                 "environment"
             ],
             "time": "2018-07-01T10:25:50+00:00"
+        },
+        {
+            "name": "zc/taobao-sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/davidfang/taobao-sdk.git",
+                "reference": "d73a1ff8bf63cacb0369cc25af97c3dbb98df0d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/davidfang/taobao-sdk/zipball/d73a1ff8bf63cacb0369cc25af97c3dbb98df0d4",
+                "reference": "d73a1ff8bf63cacb0369cc25af97c3dbb98df0d4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "TopSdk.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "taobao top sdk",
+            "time": "2018-07-19T10:10:48+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -6149,6 +6221,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "zc/taobao-sdk": 20,
         "orangehill/iseed": 20
     },
     "prefer-stable": true,

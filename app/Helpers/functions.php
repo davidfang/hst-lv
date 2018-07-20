@@ -1,4 +1,10 @@
 <?php
+function get_image_url($path){
+    if (URL::isValidUrl($path)) {
+        return $path;
+    }
+    return Storage::disk(config('admin.upload.disk'))->url($path);
+}
 function createInvitationCode($user_id) {
 
     static $source_string = 'Z1AQXSW23CDERFV4T5GBNHJMY6U7IKLO98P';

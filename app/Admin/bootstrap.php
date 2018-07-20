@@ -17,5 +17,13 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
+use App\Admin\Extensions\CategoryIcon;
+use App\Admin\Extensions\WangEditor;
+use Encore\Admin\Form;
 
 Encore\Admin\Form::forget(['map', 'editor']);
+Form::extend('categoryIcon', CategoryIcon::class);
+Form::extend('itemUrl',\App\Admin\Extensions\ItemUrl::class);
+Form::extend('couponUrl',\App\Admin\Extensions\CouponUrl::class);
+Form::extend('aether', \App\Admin\Extensions\AetherUpload::class);
+Form::extend('editor', WangEditor::class);

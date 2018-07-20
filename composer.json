@@ -15,7 +15,9 @@
         "laravel/framework": "5.6.*",
         "laravel/passport": "^6.0",
         "laravel/tinker": "^1.0",
-        "toplan/laravel-sms": "~2.6"
+        "overtrue/pinyin": "~3.0",
+        "toplan/laravel-sms": "~2.6",
+        "zc/taobao-sdk": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
@@ -74,5 +76,11 @@
         "optimize-autoloader": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
+    }
 }
