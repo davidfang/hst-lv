@@ -22,6 +22,7 @@ Route::group([
     $router->get('/taobao/coupon', 'TaobaoController@coupon');
     $router->get('/taobao/item/{id}', 'TaobaoController@item');
     $router->resource('goods',GoodsController::class);
+    $router->resource('goods-taobao','GoodsTaobaoController');
     $router->group([
         'prefix' => 'api'
     ],function (){

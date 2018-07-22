@@ -37,28 +37,18 @@ class TaobaoController extends Controller
 
     }
     public function form(){
-        $data['favorites']                          =   $this->favorites();
-        try {
-            return view('admin.taobao.update', $data)->render();
-        } catch (\Throwable $e) {
-            return $e;
-        }
-    }
-    public function favorites(){
-        $c                                          =   new TopClient( config('taobao.app_key'),config('taobao.app_secret'));
-        $c->format                                  =   'json';
-        $req                                        =   new TbkUatmFavoritesGetRequest();
-        $req->setPageNo("1");
-        $req->setPageSize("100");
-        $req->setFields("favorites_title,favorites_id,type");
-        $resp = $c->execute($req);
-        if($resp){
+        $taobao                         =   new TaoBao();
+        $list                           =   $taobao->favourite();
+        if($list){
             session('fav');
-            foreach ($resp->results->tbk_favorites as $row){
+            foreach ($list as $row){
                 $favourites[$row->favorites_id]     =   $row->favorites_title;
             }
             session(['favorites'=>$favourites]);
-            return $resp->results->tbk_favorites;
+            $data['favorites'] =  $list;
+            return view('admin.taobao.update', $data)->render();
+        }else{
+            return '没有获取淘宝联盟选品库列表';
         }
     }
 
@@ -66,7 +56,7 @@ class TaobaoController extends Controller
     public function executeUpdate($favoritesId,$pageNo=1){
 
         $taobao                         =   new TaoBao();
-        $list                           =   $taobao->favourite($favoritesId,$pageNo);
+        $list                           =   $taobao->favouriteItem($favoritesId,$pageNo);
         if($list){
 
             $total                                      =   $taobao->getTotal();
