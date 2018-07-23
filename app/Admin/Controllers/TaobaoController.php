@@ -52,7 +52,6 @@ class TaobaoController extends Controller
         }
     }
 
-
     public function executeUpdate($favoritesId,$pageNo=1){
 
         $taobao                         =   new TaoBao();

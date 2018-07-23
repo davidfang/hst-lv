@@ -2,9 +2,8 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Goods;
+use App\Model\DgSearch;
 
-use App\Model\GoodsCategory;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -12,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class GoodsTaobaoController extends Controller
+class DgSearchController extends Controller
 {
     use ModelForm;
 
@@ -72,9 +71,10 @@ class GoodsTaobaoController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Goods::class, function (Grid $grid) {
+        return Admin::grid(DgSearch::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
+            $grid->column('keyWord','搜索关键词');
             $grid->column('title','产品');
             $grid->column('coupon_info','优惠券面额');
             $grid->column('reserve_price','商品一口价格');
@@ -85,21 +85,13 @@ class GoodsTaobaoController extends Controller
                 return $this->tk_rate * $this->zk_final_price_wap / 100;
             });
             $grid->column('tk_rate','佣金比例')->display(function (){
-               return $this->tk_rate .'%';
+                return $this->tk_rate .'%';
             });
-
-            $states = [
-                'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
-                'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
-            ];
-            $grid->column('status','宝贝状态')->switch($states);
-            $grid->category_id('分类')->editable('select', GoodsCategory::allSelectOptions());
             $grid->column('pict_url','商品主图')->image('',50,50);
-
             $grid->created_at();
             $grid->updated_at();
-
             $grid->disableCreateButton();
+
         });
     }
 
@@ -110,7 +102,7 @@ class GoodsTaobaoController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Goods::class, function (Form $form) {
+        return Admin::form(DgSearch::class, function (Form $form) {
 
             $form->display('id', 'ID');
 

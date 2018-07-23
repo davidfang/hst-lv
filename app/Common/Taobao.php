@@ -2,6 +2,8 @@
 
 namespace App\Common;
 
+use App\Model\DgSearch;
+use App\Model\Goods;
 use App\Model\GoodsShare;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -126,13 +128,13 @@ class TaoBao
         }
     }
 
-    public function tpwd($text, $url)
+    public function tpwd($text, $url,$logo,$ext='{}')
     {
         $req = new TbkTpwdCreateRequest;
         $req->setText($text);
         $req->setUrl($url);
-        $req->setExt("{}");
-
+        $req->setExt($ext);
+        $req->setLogo($logo);
         $resp = $this->client->execute($req);
         if (isset($resp->code)) {
             return '';
@@ -203,7 +205,7 @@ class TaoBao
         $req->setAdzoneId(config('taobao.ad_zone_id'));
         $req->setFavoritesId($favoriteId);
         $req->setPageNo($pageNo);
-        $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,coupon_click_url,coupon_start_time,item_url,coupon_end_time,coupon_remain_count,coupon_info,click_url,status,volume");
+        $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,click_url,nick,seller_id,volume,tk_rate,zk_final_price_wap,shop_title,event_start_time,event_end_time,type,status,category,coupon_click_url,coupon_end_time,coupon_info,coupon_start_time,coupon_total_count,coupon_remain_count");
         $resp = $this->client->execute($req);
         if ($resp) {
 
@@ -216,7 +218,8 @@ class TaoBao
 
             $list = new Collection();
             foreach ($items as $row) {
-                $goods = $this->itemToModel($row);
+                //$goods = $this->itemToModel($row);
+                $goods = $this->favouriteItemToModel($row);
                 $list->add($goods);
             }
             return $list;
@@ -226,6 +229,81 @@ class TaoBao
             }
             return false;
         }
+    }
+
+    //获取淘宝联盟选品库的宝贝信息  入库
+    protected function favouriteItemToModel($item)
+    {
+//        echo '<pre>';
+//        var_dump(isset($item->coupon_info));
+//        var_dump($item);exit;
+        $goods = new Goods();
+        $goods->id = 0;
+
+
+        // $goods->category_id = $item->title;// 分类ID,
+        $goods->num_iid = $item->num_iid;// 商品ID,
+        $goods->title = $item->title;// 商品标题,
+        $goods->pict_url = $item->pict_url;// 商品主图,
+
+        $goods->small_images = isset($item->small_images->string) ? $item->small_images->string : '';// 商品小图列表,
+
+        $goods->reserve_price = $item->reserve_price;// 商品一口价格,
+        $goods->zk_final_price = $item->zk_final_price;// 商品折扣价格,
+        $goods->user_type = $item->user_type;// 卖家类型，0表示集市，1表示商城,
+        $goods->provcity = $item->provcity;// 宝贝所在地,
+        $goods->item_url = $item->item_url;// 商品地址,
+        if (isset($item->click_url)){
+            $goods->click_url = $item->click_url;// 淘客地址,
+        }
+        $goods->nick = $item->nick;// 卖家昵称,
+        $goods->seller_id = $item->seller_id;// 卖家id,
+        $goods->volume = $item->volume;// 30天销量,
+        $goods->tk_rate = $item->tk_rate;// 收入比例，举例，取值为20.00，表示比例20.00%,
+        $goods->zk_final_price_wap = $item->zk_final_price_wap;// 无线折扣价，即宝贝在无线上的实际售卖价格。,
+        $goods->shop_title = $item->shop_title;// 店铺名称,
+        $goods->event_start_time = $item->event_start_time;// 招商活动开始时间；如果该宝贝取自普通选品组，则取值为1970-01-01 00:00:00；,
+        $goods->event_end_time = $item->event_end_time;// 招行活动的结束时间；如果该宝贝取自普通的选品组，则取值为1970-01-01 00:00:00,
+        $goods->type = $item->type;// 宝贝类型：1 普通商品； 2 鹊桥高佣金商品；3 定向招商商品；4 营销计划商品;,
+        $goods->status = $item->status;// 宝贝状态，0失效，1有效；注：失效可能是宝贝已经下线或者是被处罚不能在进行推广,
+        if(isset($item->category)) {
+            $goods->category = $item->category;// 淘宝 后台一级类目,
+        }
+        if(isset($item->coupon_click_url)){
+            $goods->coupon_click_url = $item->coupon_click_url;// 商品优惠券推广链接,
+        }
+
+        if(isset($item->coupon_end_time)){
+            $goods->coupon_end_time = $item->coupon_end_time;// 优惠券结束时间,
+        }
+
+        if(isset($item->coupon_info)){
+            $goods->coupon_info = $item->coupon_info;// 优惠券面额,
+        }
+
+        if(isset($item->coupon_start_time)){
+            $goods->coupon_start_time = $item->coupon_start_time;// 优惠券开始时间,
+        }
+
+        if(isset($item->coupon_total_count)){
+            $goods->coupon_total_count = $item->coupon_total_count;// 优惠券总量,
+        }
+
+        if(isset($item->coupon_remain_count)){
+            $goods->coupon_remain_count = $item->coupon_remain_count;// 优惠券剩余量,
+        }
+
+
+        //$goods->detail = $item->title;// 产品详情,
+
+        //$goods->from_site_url = $item->title;// 采集第三方网站,
+
+        if ($goods->isCoupon()) {// 优惠券状态
+            $goods->coupon_status = 1;
+        }
+
+        return $goods;
+
     }
 
     protected function itemToModel($item)
@@ -386,8 +464,53 @@ class TaoBao
             //echo '<pre>';var_dump($items);exit;
             $list = new Collection();
             foreach ($items as $row) {
-                $goods = $this->itemToModel($row);
-                $list->add($goods);
+                //$goods = $this->itemToModel($row);
+                $dgSearch = DgSearch::firstOrCreate(['num_iid'=>$row->num_iid]);
+                $dgSearch->keyWord = $keyWord; //关键词
+                if(isset($row->coupon_start_time)) {
+                    $dgSearch->coupon_start_time = $row->coupon_start_time;// 优惠券开始时间
+                }
+                if(isset($row->coupon_end_time)) {
+                    $dgSearch->coupon_end_time = $row->coupon_end_time;// 优惠券结束时间
+                }
+                $dgSearch->info_dxjh = $row->info_dxjh ;// 定向计划信息
+                $dgSearch->tk_total_sales = $row->tk_total_sales ;// 淘客30天月推广量;
+                $dgSearch->tk_total_commi = $row->tk_total_commi ;// 月支出佣金
+                if(isset($row->coupon_id)) {
+                    $dgSearch->coupon_id = $row->coupon_id;// 优惠券id;
+                }
+                $dgSearch->num_iid = $row->num_iid ;// 宝贝id;
+                $dgSearch->title = $row->title ;// 商品标题
+                $dgSearch->pict_url = $row->pict_url ;// 商品主图
+                $dgSearch->small_images = $row->small_images ;// 商品小图列表
+                $dgSearch->reserve_price = $row->reserve_price ;// 商品一口价格
+                $dgSearch->zk_final_price = $row->zk_final_price ;// 商品折扣价格
+                $dgSearch->user_type = $row->user_type ;// 卖家类型，0表示集市，1表示商城->nullable();
+                $dgSearch->provcity = $row->provcity ;// 宝贝所在地
+                $dgSearch->item_url = $row->item_url ;// 商品地址
+                $dgSearch->include_mkt = $row->include_mkt ;// 是否包含营销计划
+                $dgSearch->include_dxjh = $row->include_dxjh ;// 是否包含定向计划
+                $dgSearch->commission_rate = $row->commission_rate ;// 佣金比率
+                $dgSearch->volume = $row->volume ;// 30天销量->nullable();
+                $dgSearch->seller_id = $row->seller_id ;// 卖家id->nullable();
+                if(isset($row->coupon_total_count)) {
+                    $dgSearch->coupon_total_count = $row->coupon_total_count;// 优惠券总量
+                }
+                if(isset($row->coupon_remain_count)) {
+                    $dgSearch->coupon_remain_count = $row->coupon_remain_count;// 优惠券剩余量
+                }
+                if(isset($row->coupon_info)) {
+                    $dgSearch->coupon_info = $row->coupon_info;// 优惠券面额
+                }
+                $dgSearch->commission_type = $row->commission_type ;// 佣金类型  MKT表示营销计划，SP表示定向计划，COMMON表示通用计划->nullable();
+                $dgSearch->shop_title = $row->shop_title ;// 店铺名称
+                $dgSearch->shop_dsr = $row->shop_dsr ;// 店铺dsr评分->nullable();
+                if(isset($row->coupon_share_url)) {
+                    $dgSearch->coupon_share_url = $row->coupon_share_url;// 券二合一页面链接
+                }
+                $dgSearch->url = $row->url ;// 商品淘客链接
+                $dgSearch->save();
+                $list->add($dgSearch);
             }
             return $list;
         } else {

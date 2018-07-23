@@ -23,6 +23,7 @@ Route::group([
     $router->get('/taobao/item/{id}', 'TaobaoController@item');
     $router->resource('goods',GoodsController::class);
     $router->resource('goods-taobao','GoodsTaobaoController');
+    $router->resource('search-log','DgSearchController');
     $router->group([
         'prefix' => 'api'
     ],function (){

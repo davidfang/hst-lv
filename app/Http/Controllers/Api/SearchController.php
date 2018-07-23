@@ -26,7 +26,7 @@ class SearchController extends Controller
         $taobao = new TaoBao();
         $list = $taobao->searchDg($keyWord, $page, $sortId);
         if($list) {
-            foreach ($list as $k => $v) {
+            /*foreach ($list as $k => $v) {
                 $list[$k]->category_id = 21779;//默认是搜索
                 $goods = GoodsShare::getByNumIid($v->original_id);
                 if (!empty($goods)) {
@@ -34,7 +34,7 @@ class SearchController extends Controller
                     $v->exists = true;
                 }
                 $v->save();
-            }
+            }*/
             return $this->success($list);
         }else{
             return $this->failed('没找到商品'.$taobao->getError());

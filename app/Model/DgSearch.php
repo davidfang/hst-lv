@@ -7,25 +7,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Goods extends Model
+class DgSearch extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'dg_search';
     /**
-     * 检查是不是优惠券商品
-     * @return bool
+     * 可以被批量赋值的属性。
+     *
+     * @var array
      */
-    public function isCoupon(){
-        if(!empty($this->coupon_end_time)) {
-            if (Carbon::now()->gt(new Carbon($this->coupon_end_time))) {
-                $this->coupon_status        =   0;
-            }
-        }else{
-            $this->coupon_status = 0;
-        }
-        return $this->coupon_status > 0 ? true : false;
-    }
-
+    protected $fillable = ['num_iid'];
     /**
      * 设置小图
      * @param $small_images
@@ -82,5 +74,19 @@ class Goods extends Model
         }
 
         return $model;
+    }
+    /**
+     * 检查是不是优惠券商品
+     * @return bool
+     */
+    public function isCoupon(){
+        if(!empty($this->coupon_end_time)) {
+            if (Carbon::now()->gt(new Carbon($this->coupon_end_time))) {
+                $this->coupon_status        =   0;
+            }
+        }else{
+            $this->coupon_status = 0;
+        }
+        return $this->coupon_status > 0 ? true : false;
     }
 }

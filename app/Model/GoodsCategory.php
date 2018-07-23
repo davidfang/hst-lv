@@ -153,7 +153,8 @@ class GoodsCategory extends Model
             foreach($categoryChild as $child){
 
                 if(!isset($data[$child->id])){
-                    $data[$child->id]               =   '&nbsp;&nbsp;'.$child->title;
+                    //$data[$child->id]               =   "&nbsp;&nbsp;".$child->title;
+                    $data[$child->id]               =   "&nbsp;&nbsp;".$child->title;
 
                 }
             }

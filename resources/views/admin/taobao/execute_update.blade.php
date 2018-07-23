@@ -16,8 +16,8 @@
                             @foreach($list as  $item)
                                 <tr>
                                     <td class="id-field" >{{$item->id}}</td>
-                                    <td>{{$item->name}}</td>
-                                    <td>{{$item->price}}</td>
+                                    <td>{{$item->title}}</td>
+                                    <td>{{$item->reserve_price}}</td>
                                     <td>
                                         <i class="fa fa-check" style="color: green"></i>
                                     </td>
