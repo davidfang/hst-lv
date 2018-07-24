@@ -20,7 +20,7 @@
                                         <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
                                         <select id="favorites_id" name="favorites_id" class="form-control" >
                                             @foreach($favorites as $favorite)
-                                                <option value="{{$favorite->favorites_id}}">{{$favorite->favorites_title}}</option>
+                                                <option value="{{$favorite['favorites_id']}}">{{$favorite['favorites_title']}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -14,6 +14,12 @@ class GoodsCategory extends Model
     public $timestamps =  true;
     //必须，模型日期列的存储格式（unix时间戳存储）
     protected $dateFormat = 'U';
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $fillable = ['id','title','parent_id','created_by','updated_by'];
     //
     /**
      * The attributes that should be hidden for arrays.

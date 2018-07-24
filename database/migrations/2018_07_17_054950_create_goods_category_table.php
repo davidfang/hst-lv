@@ -19,7 +19,7 @@ class CreateGoodsCategoryTable extends Migration {
 			$table->string('title')->nullable()->comment('分类');
 			$table->string('img_path')->nullable();
 			$table->string('img_base_url')->nullable();
-			$table->smallInteger('status')->nullable();
+			$table->smallInteger('status')->nullable()->default(0);
 			$table->smallInteger('sort')->nullable()->default(0)->comment('排序');
 			$table->integer('created_at')->nullable();
 			$table->integer('updated_at')->nullable();

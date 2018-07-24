@@ -28,6 +28,7 @@ Route::group([
         'prefix' => 'api'
     ],function (){
         Route::get('parent-goods-category','ApiController@parentGoodsCategory');
+        Route::get('refresh-goods-category','ApiController@refreshGoodsCategory');
     });
 
 });

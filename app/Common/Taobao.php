@@ -2,6 +2,7 @@
 
 namespace App\Common;
 
+use App\Helpers\ArrayHelper;
 use App\Model\DgSearch;
 use App\Model\Goods;
 use App\Model\GoodsShare;
@@ -183,11 +184,15 @@ class TaoBao
         $req->setFields("favorites_title,favorites_id,type");
         $resp = $this->client->execute($req);
         if ($resp) {
-            foreach ($resp->results->tbk_favorites as $row) {
-                $favourites[$row->favorites_id] = $row->favorites_title;
-            }
-            return $resp->results->tbk_favorites;
+            $array = ArrayHelper::toArray($resp->results->tbk_favorites);
+//            echo '<pre>';
+//            var_dump($array);
+//            echo '-------------------------------';
+            ArrayHelper::multisort($array,'favorites_title');
+//            var_dump($array);exit;
+            return $array;
         }
+        return null;
     }
 
     /**

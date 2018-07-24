@@ -14,7 +14,7 @@ class GoodsCategoryController extends Controller
         $children = GoodsCategory::where('parent_id','>',0)->get()->toArray();
         $children = ArrayHelper::index($children,null,'parent_id');
         foreach ($parentCategories as $key => $parentCategory){
-            $parentCategories[$key]['data'] = $children[$parentCategory['id']];
+            $parentCategories[$key]['data'] = isset($children[$parentCategory['id']])?$children[$parentCategory['id']]:[];
         }
         return $this->success($parentCategories);
     }

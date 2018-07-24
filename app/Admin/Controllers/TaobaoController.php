@@ -42,7 +42,7 @@ class TaobaoController extends Controller
         if($list){
             session('fav');
             foreach ($list as $row){
-                $favourites[$row->favorites_id]     =   $row->favorites_title;
+                $favourites[$row['favorites_id']]     =   $row['favorites_title'];
             }
             session(['favorites'=>$favourites]);
             $data['favorites'] =  $list;
@@ -62,13 +62,10 @@ class TaobaoController extends Controller
             $pageTotal                                  =   $taobao->getPages();
             $favorites                                  =   session('favorites');
             $category                                   =   null;
-            if($favorites){
+            /*if($favorites){
                 $categoryName                           =   $favorites[$favoritesId];
                 $array                                  =   explode('-',$categoryName);
-                //是否推荐商品
-//                if(strpos($categoryName,'推荐') || strpos($categoryName,'频道')){
-//                    $channel                            =   Channel::getByName($array[0]);
-//                }
+
                 $parent                                 =   GoodsCategory::getByName($array[0]);
                 if($parent){
                     if(!isset($array[2])){
@@ -79,11 +76,12 @@ class TaobaoController extends Controller
 
                 }
 
-            }
+            }*/
             foreach ($list as $k=>$v){
-                if($category){
+                /*if($category){
                     $list[$k]->category_id              =   $category->id;
-                }
+                }*/
+                $list[$k]->category_id              =   $favoritesId;
                 //是否推荐商品
 //                if(isset($channel) && !empty($channel)){
 //                    $list[$k]->channel_id               =   $channel->id;
