@@ -50,7 +50,7 @@ class GoodsController extends Controller
      */
     public function show(Goods $goods)
     {
-        //
+        return $this->success(new GoodsResource($goods));
     }
 
     /**

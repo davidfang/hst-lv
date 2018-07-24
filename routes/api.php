@@ -22,10 +22,11 @@ Route::get('test', function () {
 //Route::resource('/banner','BannerController',['only'=>['index','show']]);
 Route::get('/banner/index', 'Api\BannerController@index');
 Route::get('/banner/show/{banner}', 'Api\BannerController@show');
-Route::get('category','Api\GoodsCategoryController@index');
-Route::get('taobao/recommend','Api\GoodsShareController@index');
+Route::get('category','Api\GoodsCategoryController@index');//获得产品分类
+Route::get('taobao/recommend','Api\GoodsShareController@index');//推荐产品
 Route::get('taobao/{goodsShare}','Api\GoodsShareController@show');
-Route::apiResource('goods','Api\GoodsController');
+Route::get('goods','Api\GoodsController@index');
+Route::get('goods/show/{goods}','Api\GoodsController@show');
 Route::get('search','Api\SearchController@index');
 Route::middleware('auth:api')->get('/userInfo', function (Request $request) {
     $user = $request->user();

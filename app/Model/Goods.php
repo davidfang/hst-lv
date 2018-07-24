@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Goods extends Model
 {
     use SoftDeletes;
-
+    protected $primaryKey = 'num_iid';
+    public $incrementing = false;
+    protected $keyType = 'string';
     /**
      * 检查是不是优惠券商品
      * @return bool
