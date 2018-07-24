@@ -77,10 +77,15 @@ class GoodsCategoryController extends Controller
             $grid->column('parentCategory.title','上级分类');
             $grid->column('title','分类');
             $grid->column('img_path','图片')->image('',30,30);
-            $grid->column('status', '状态')->display(function ($k) {
+            $states = [
+                'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+            ];
+            $grid->column('status','状态')->switch($states);
+            /*$grid->column('status', '状态')->display(function ($k) {
                 $array = ['禁用','启用' ];
                 return $array[$k] ?: null;
-            });
+            });*/
             $grid->column('sort','排序');
             $grid->column('createdBy.username','创建人');
             $grid->column('updatedBy.username','修改人');
@@ -102,7 +107,11 @@ class GoodsCategoryController extends Controller
             $form->text('title','分类');
             $form->select('parent_id','上级')->options('/api/parent-goods-category');
             $form->image('img_path', '图标')->uniqueName();
-            $form->radio('status', '状态')->options(['禁用','启用' ]);
+            $states = [
+                'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+            ];
+            $form->switch('status','状态')->states($states)->default(0);
             $form->number('sort','排序');
             $form->display('created_by','创建人');
             $form->display('updated_by','修改人');
