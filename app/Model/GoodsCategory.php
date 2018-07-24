@@ -160,7 +160,7 @@ class GoodsCategory extends Model
 
                 if(!isset($data[$child->id])){
                     //$data[$child->id]               =   "&nbsp;&nbsp;".$child->title;
-                    $data[$child->id]               =   "&nbsp;&nbsp;".$child->title;
+                    $data[$child->id]               =   $category->title."-".$child->title;
 
                 }
             }
