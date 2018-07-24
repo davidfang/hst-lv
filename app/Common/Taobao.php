@@ -212,7 +212,7 @@ class TaoBao
         $req->setPageNo($pageNo);
         $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,click_url,nick,seller_id,volume,tk_rate,zk_final_price_wap,shop_title,event_start_time,event_end_time,type,status,category,coupon_click_url,coupon_end_time,coupon_info,coupon_start_time,coupon_total_count,coupon_remain_count");
         $resp = $this->client->execute($req);
-        if ($resp) {
+        if (!isset($resp->code)) {
 
             $total = $resp->total_results;
             $pageTotal = $total / 20;
@@ -229,9 +229,7 @@ class TaoBao
             }
             return $list;
         } else {
-            if (isset($resp->code)) {
-                $this->error = $resp->code;
-            }
+            $this->error = $resp->code;
             return false;
         }
     }
