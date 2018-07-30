@@ -55,6 +55,13 @@ class Goods extends Model
         return $small_images ? $small_images : '';
     }
 
+    public function getDetailAttribute($detail){
+        if(!empty($detail)){
+            $detail = json_decode($detail, true);
+        }
+        return $detail ? $detail : null;
+    }
+
     /**
      * 获取淘口令
      * @param $value

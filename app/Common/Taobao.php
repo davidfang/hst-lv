@@ -485,7 +485,9 @@ class TaoBao
                 $dgSearch->num_iid = $row->num_iid ;// 宝贝id;
                 $dgSearch->title = $row->title ;// 商品标题
                 $dgSearch->pict_url = $row->pict_url ;// 商品主图
-                $dgSearch->small_images = $row->small_images ;// 商品小图列表
+                if(isset($row->small_images)) {
+                    $dgSearch->small_images = $row->small_images;// 商品小图列表
+                }
                 $dgSearch->reserve_price = $row->reserve_price ;// 商品一口价格
                 $dgSearch->zk_final_price = $row->zk_final_price ;// 商品折扣价格
                 $dgSearch->user_type = $row->user_type ;// 卖家类型，0表示集市，1表示商城->nullable();

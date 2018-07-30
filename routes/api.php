@@ -26,7 +26,8 @@ Route::get('category','Api\GoodsCategoryController@index');//获得产品分类
 Route::get('taobao/recommend','Api\GoodsShareController@index');//推荐产品
 Route::get('taobao/{goodsShare}','Api\GoodsShareController@show');
 Route::get('goods','Api\GoodsController@index');
-Route::get('goods/show/{goods}','Api\GoodsController@show');
+Route::get('goods/show','Api\GoodsController@show');
+Route::post('goods/set-detail','Api\GoodsController@setDetail');
 Route::get('search','Api\SearchController@index');
 Route::middleware('auth:api')->get('/userInfo', function (Request $request) {
     $user = $request->user();

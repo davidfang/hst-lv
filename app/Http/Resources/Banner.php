@@ -14,6 +14,9 @@ class Banner extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $parent = parent::toArray($request);
+        $parent['img'] = \Storage::url($this->img_path);
+        unset($parent['img_path'],$parent['img_base_url']);
+        return $parent;
     }
 }
