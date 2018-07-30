@@ -44,4 +44,17 @@ class Banner extends Model
     public function updatedBy(){
         return $this->hasOne(Administrator::class,'id','updated_by');
     }
+
+    /**
+     * 修饰一下参数返回的值，返回json数据，而不是原始字符
+     * @param $params
+     * @return mixed
+     */
+    public function getParamsAttribute($params)
+    {
+        if(empty($params)){
+            $params = '{}';
+        }
+        return json_decode($params,true);
+    }
 }
