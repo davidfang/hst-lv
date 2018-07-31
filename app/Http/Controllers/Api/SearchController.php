@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Common\TaoBao;
 use App\Model\GoodsShare;
+use App\Http\Resources\Goods as GoodsResource;
+use App\Http\Resources\DgSearch as DgSearchResource;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Controller;
 
@@ -35,7 +37,7 @@ class SearchController extends Controller
                 }
                 $v->save();
             }*/
-            return $this->success($list);
+            return $this->success(DgSearchResource::collection($list));
         }else{
             return $this->failed('没找到商品'.$taobao->getError());
         }

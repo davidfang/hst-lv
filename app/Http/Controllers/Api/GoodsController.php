@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 class GoodsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 首页推荐
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,6 +20,17 @@ class GoodsController extends Controller
         $goods = Goods::where('status',1)->simplePaginate(20);
         return $this->success(GoodsResource::collection($goods));
         //
+    }
+
+    /**
+     * 分类产品列表
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function category(Request $request){
+        $categoryId = $request->get('categoryId');
+        $goods = Goods::where([['status',1],['category_id',$categoryId]])->simplePaginate(20);
+        return $this->success(GoodsResource::collection($goods));
     }
 
     /**
