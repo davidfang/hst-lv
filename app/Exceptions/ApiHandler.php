@@ -16,7 +16,7 @@ class ApiHandler extends ExceptionHandler
     {
         //可以处理成需要的格式
         $return = [
-            'status' => "fail",
+            'status' => false,
             'message' => $exception->getMessage(),
             'data' => []
         ];

@@ -83,12 +83,13 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->only(['name','email','nickname','age']);
+        $data = $request->only(['name','email','nickname','age','gender']);
         $validator = Validator::make($data, [
             'name'=>'sometimes|required|string|digits_between:2,10',
             'email'=> 'sometimes|required|email',
             'nickname'=> 'sometimes|required|string|between:2,10',
             'age'=> 'sometimes|required|integer|between:16,100',
+            'gender'=> 'sometimes|required|in:1,2',
         ]/*,[
             'name.required'=>'姓名不能为空',
             'name.digits_between'=>'姓名必须2-10位',

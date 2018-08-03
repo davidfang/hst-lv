@@ -439,7 +439,7 @@ class TaoBao
 //        $req->setStartPrice("10");
 //        $req->setIsOverseas("false");
 //        $req->setIsTmall("false");
-        $req->setSort($sortArr[$sortId]);
+        //$req->setSort($sortArr[$sortId]);
 //        $req->setItemloc("杭州");
 //        $req->setCat("16,18");
         $req->setQ($keyWord);

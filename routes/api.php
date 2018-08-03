@@ -30,8 +30,8 @@ Route::get('goods/show','Api\GoodsController@show');//显示产品
 Route::post('goods/set-detail','Api\GoodsController@setDetail');//设置产品详情
 Route::get('goods/category','Api\GoodsController@category');//分类产品列表
 Route::get('search','Api\SearchController@index');
-Route::middleware('auth:api')->get('/userInfo', function (Request $request) {
-    $user = $request->user();
+Route::get('/userInfo', function (Request $request) {
+    $user = \App\User::find($request->get('id'));
     return [
         createInvitationCode($user->id),
         decodeInvitationCode('000000A'),
