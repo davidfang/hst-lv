@@ -14,6 +14,13 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $result = parent::toArray($request);
+        $grade = [
+          '0'=>'VIP会员',
+            '1'=>'超级会员',
+            '2'=>'运营商'
+        ];
+        $result['grade']=$grade[$this->grade];
+        return $result;
     }
 }

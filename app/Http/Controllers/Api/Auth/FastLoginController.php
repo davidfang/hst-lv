@@ -72,6 +72,7 @@ class FastLoginController extends Controller
      */
     protected function create(array $data)
     {
+        $data['invitation_code'] = isset($data['invitation_code'])?$data['invitation_code']:null;
         return User::create([
             'parent_id' => decodeInvitationCode($data['invitation_code']),
             'mobile' => $data['mobile'],

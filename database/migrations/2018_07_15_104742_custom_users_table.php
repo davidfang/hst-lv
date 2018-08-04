@@ -17,7 +17,7 @@ class CustomUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             //
             $table->string('name',30)->nullable()->comment('名字')->change();
-            $table->string('nickname',30)->default('未取昵称')->comment('用户昵称');
+            $table->string('nickname',30)->nullable()->comment('用户昵称');
             $table->string('email',50)->nullable()->comment('邮箱')->change();
             $table->string('mobile',11)->unique()->comment('手机号');
             $table->string('password',100)->nullable()->comment('用户的密码')->change();

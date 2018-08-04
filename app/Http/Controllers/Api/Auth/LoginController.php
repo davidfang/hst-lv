@@ -74,7 +74,7 @@ class LoginController extends Controller
         }
 
 
-        return $this->setStatusCode(401)->failed('登录失败');
+        return $this->setStatusCode(401)->failed('登录失败,请验证密码');
     }
 
     // 退出登录

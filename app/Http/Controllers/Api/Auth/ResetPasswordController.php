@@ -51,12 +51,10 @@ class ResetPasswordController extends Controller
         $data = $this->credentials($request);
         $validator = Validator::make($data, [
             'mobile' => 'required|zh_mobile',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|max:20',
         ], [
             'mobile.required' => '手机号不能为空',
-            'mobile.zh_mobile' => '手机号格式不正确',
-            'password.required' => '密码不能为空',
-            'password.min' => '不能少于6位'
+            'mobile.zh_mobile' => '手机号格式不正确'
         ]);
         if ($validator->fails()) {
             //SmsManager::forgetState();
@@ -67,7 +65,7 @@ class ResetPasswordController extends Controller
             $this->resetPassword($user, $request['password']);
             return $this->message('修改成功');
         } else {
-            return $this->failed('无权操作', 401);
+            return $this->failed('无权操作,请填写注册时手机', 401);
         }
     }
 
