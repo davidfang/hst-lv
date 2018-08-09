@@ -50,11 +50,19 @@ class Banner extends Model
      * @param $params
      * @return mixed
      */
-    public function getParamsAttribute($params)
+    /*public function getParamsAttribute($params)
     {
         if(empty($params)){
             $params = '{}';
         }
         return json_decode($params,true);
-    }
+    }*/
+    /**
+     * 应该被转换成原生类型的属性。
+     *
+     * @var array
+     */
+    /*protected $casts = [
+        'params' => 'json',
+    ];*/
 }
