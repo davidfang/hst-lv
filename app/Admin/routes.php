@@ -14,6 +14,7 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('user','UserController');
     $router->resource('banner','BannerController');
+    $router->resource('swiper','SwiperController');
     $router->resource('goods-category','GoodsCategoryController');
 
     $router->any('/taobao/selection', 'TaobaoController@selection');

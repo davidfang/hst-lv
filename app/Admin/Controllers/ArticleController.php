@@ -90,8 +90,8 @@ class ArticleController extends Controller
             })->image('', 30, 30);*/
             $grid->column('images','图集')->image('', 30, 30);
             $states = [
-                'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
-                'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
             ];
             $grid->column('status','状态')->switch($states);
             $grid->column('click','点击次数');
@@ -117,13 +117,13 @@ class ArticleController extends Controller
             $form->text('slug','slugen');
             $form->text('title','标题');
             $form->textarea('body','介绍');
-            $form->select('category_id','分类')->options('/api/parent-article-category')->default(0);
+            $form->select('category_id','分类')->options('/api/parent-article-category');
             $form->number('sort','排序');
-            $form->image('thumbnail','缩略图');
-            $form->multipleImage('images','图集')->removable();
+            $form->image('thumbnail','缩略图')->uniqueName()->crop(400,600);
+            $form->multipleImage('images','图集')->uniqueName()->removable()->crop(400,600);
             $states = [
-                'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
-                'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
             ];
             $form->switch('status','状态')->states($states)->default(0);
             $form->number('click','点击次数');

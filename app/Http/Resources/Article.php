@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use function PHPSTORM_META\map;
 
 class Article extends JsonResource
 {
@@ -14,6 +15,11 @@ class Article extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $parent = parent::toArray($request);
+        $parent['thumbnail'] = \Storage::url($this->thumbnail);
+        $parent['images'] = array_map(function ($image){
+            return \Storage::url($image);
+        },$this->images);
+        return $parent;
     }
 }

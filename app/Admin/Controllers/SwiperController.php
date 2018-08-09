@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class BannerController extends Controller
+class SwiperController extends Controller
 {
     use ModelForm;
 
@@ -74,7 +74,7 @@ class BannerController extends Controller
     protected function grid()
     {
         return Admin::grid(Banner::class, function (Grid $grid) {
-            $grid->model()->where('type', 'recommend');
+            $grid->model()->where('type', 'swiper');
             $grid->id('ID')->sortable();
             $grid->column('title', '标题');
 //            $grid->column('type', '类别')->display(function ($k) {
@@ -111,9 +111,9 @@ class BannerController extends Controller
 
             $form->display('id', 'ID');
             $form->text('title','标题');
-            $form->hidden('type')->default('recommend');
-            //$form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
-            $form->image('img_path', '图标')->crop(30,30)->uniqueName();
+            $form->hidden('type')->default('swiper');
+//            $form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
+            $form->image('img_path', '图标')->crop(350,100)->uniqueName();
             $form->text('url','链接')->rules('nullable');
             $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen', 'DetailScreen' => 'DetailScreen']);
             $form->textarea('params','参数');
