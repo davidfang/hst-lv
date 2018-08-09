@@ -24,9 +24,12 @@ Route::group([
     $router->resource('goods',GoodsController::class);
     $router->resource('goods-taobao','GoodsTaobaoController');
     $router->resource('search-log','DgSearchController');
+    $router->resource('article','ArticleController');
+    $router->resource('article-category','ArticleCategoryController');
     $router->group([
         'prefix' => 'api'
     ],function (){
+        Route::get('parent-article-category','ApiController@parentArticleCategory');
         Route::get('parent-goods-category','ApiController@parentGoodsCategory');
         Route::get('refresh-goods-category','ApiController@refreshGoodsCategory');
     });

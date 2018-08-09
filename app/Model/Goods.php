@@ -52,7 +52,7 @@ class Goods extends Model
                 $small_images[$k]                   =   get_image_url($v);
             }
         }
-        return $small_images ? $small_images : '';
+        return $small_images ? $small_images : [];
     }
 
     public function getDetailAttribute($detail){
