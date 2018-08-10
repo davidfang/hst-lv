@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Article;
 use App\Http\Resources\Article as ArticleResource;
+use App\Http\Resources\Circle as CircleResource;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Controller;
 
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 列出分类下的文章
      *
      * @return \Illuminate\Http\Response
      */
@@ -19,6 +20,16 @@ class ArticleController extends Controller
         $article = Article::where([['status','1'],['category_id',$category_id]])->paginate();
         return $this->success(ArticleResource::collection($article));
         //
+    }
+
+    /**
+     * 圈子 分类ID为5
+     * @return mixed
+     */
+    public function circle()
+    {
+        $article = Article::where([['status','1'],['category_id',5]])->paginate();
+        return $this->success(CircleResource::collection($article));
     }
 
     /**

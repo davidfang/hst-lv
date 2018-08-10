@@ -128,8 +128,17 @@ class ArticleController extends Controller
             ];
             $form->switch('status','状态')->states($states)->default(0);
             $form->number('click','点击次数');
-            $form->display('created_by','创建者');
-            $form->display('updated_by','修改者');
+
+            $form->hidden('created_by');
+            $form->hidden('updated_by');
+            $form->saving(function (Form $form){
+                if(empty($form->created_by)) {
+                    $form->created_by = Admin::user()->id;
+                }
+               $form->updated_by = Admin::user()->id;
+            });
+//            $form->display('created_by','创建者');
+//            $form->display('updated_by','修改者');
 
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '更新时间');

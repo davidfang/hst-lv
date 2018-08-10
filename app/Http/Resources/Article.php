@@ -17,9 +17,13 @@ class Article extends JsonResource
     {
         $parent = parent::toArray($request);
         $parent['thumbnail'] = \Storage::url($this->thumbnail);
-        $parent['images'] = array_map(function ($image){
-            return \Storage::url($image);
-        },$this->images);
+        if(is_array($this->images)) {
+            $parent['images'] = array_map(function ($image) {
+                return \Storage::url($image);
+            }, $this->images);
+        }else{
+            $parent['images'] = [];
+        }
         return $parent;
     }
 }

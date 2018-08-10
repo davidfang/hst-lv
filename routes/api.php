@@ -24,6 +24,7 @@ Route::get('/banner/index', 'Api\BannerController@index');
 Route::get('/banner/show/{banner}', 'Api\BannerController@show');
 Route::get('/article-category/{category_id}','Api\ArticleController@index');//文章分类
 Route::get('/article/{article}','Api\ArticleController@show');//文章详情
+Route::get('circle','Api\ArticleController@circle');//圈子 文章分类为5
 Route::get('category','Api\GoodsCategoryController@index');//获得产品分类
 //Route::get('taobao/recommend','Api\GoodsShareController@index');//推荐产品
 //Route::get('taobao/{goodsShare}','Api\GoodsShareController@show');
