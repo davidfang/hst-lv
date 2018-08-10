@@ -107,7 +107,7 @@ class ArticleCategoryController extends Controller
             $form->text('slug','slugen');
             $form->text('title','标题');
             $form->textarea('body','介绍');
-            $form->select('parent_id','上级')->options('/api/parent-article-category')->default(0);
+            $form->select('parent_id','上级')->options(ArticleCategory::allSelectOptions())->default(0);
             $form->number('sort','排序');
             $states = [
                 'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],

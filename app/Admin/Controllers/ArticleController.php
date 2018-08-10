@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Model\Article;
 
+use App\Model\ArticleCategory;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -117,10 +118,10 @@ class ArticleController extends Controller
             $form->text('slug','slugen');
             $form->text('title','标题');
             $form->textarea('body','介绍');
-            $form->select('category_id','分类')->options('/api/parent-article-category');
+            $form->select('category_id','分类')->options(ArticleCategory::allSelectOptions());
             $form->number('sort','排序');
-            $form->image('thumbnail','缩略图')->uniqueName()->crop(400,600);
-            $form->multipleImage('images','图集')->uniqueName()->removable()->crop(400,600);
+            $form->image('thumbnail','缩略图')->uniqueName()->resize(400,600);
+            $form->multipleImage('images','图集')->uniqueName()->removable()->resize(400,600);
             $states = [
                 'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
                 'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],

@@ -113,7 +113,7 @@ class SwiperController extends Controller
             $form->text('title','标题');
             $form->hidden('type')->default('swiper');
 //            $form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
-            $form->image('img_path', '图标')->crop(350,100)->uniqueName();
+            $form->image('img_path', '图标')->resize(350,100)->uniqueName();
             $form->text('url','链接')->rules('nullable');
             $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen', 'DetailScreen' => 'DetailScreen']);
             $form->textarea('params','参数');

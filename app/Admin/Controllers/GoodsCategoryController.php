@@ -105,8 +105,8 @@ class GoodsCategoryController extends Controller
 
             $form->display('id', 'ID');
             $form->text('title','分类');
-            $form->select('parent_id','上级')->options('/api/parent-goods-category');
-            $form->image('img_path', '图标')->uniqueName();
+            $form->select('parent_id','上级')->options(GoodsCategory::selectOptions());
+            $form->image('img_path', '图标')->resize(55,55)->uniqueName();
             $states = [
                 'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
                 'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
