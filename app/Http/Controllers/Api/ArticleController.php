@@ -26,9 +26,10 @@ class ArticleController extends Controller
      * 圈子 分类ID为5
      * @return mixed
      */
-    public function circle()
+    public function circle(Request $request)
     {
-        $article = Article::where([['status','1'],['category_id',5]])->paginate();
+        $category_id = $request->get('category_id',5);
+        $article = Article::where([['status','1'],['category_id',$category_id]])->paginate();
         return $this->success(CircleResource::collection($article));
     }
 

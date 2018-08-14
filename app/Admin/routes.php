@@ -27,6 +27,7 @@ Route::group([
     $router->resource('search-log','DgSearchController');
     $router->resource('article','ArticleController');
     $router->resource('article-category','ArticleCategoryController');
+    $router->resource('feed-back','FeedBackController');
     $router->group([
         'prefix' => 'api'
     ],function (){

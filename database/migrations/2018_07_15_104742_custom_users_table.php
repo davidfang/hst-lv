@@ -28,6 +28,8 @@ class CustomUsersTable extends Migration
             $table->enum('status',['0','1','2'])->default('1')->comment("状态('禁用','正常','异常')");
             $table->integer('parent_id')->nullable()->comment('父ID');
             $table->string('invitation_code',10)->nullable()->comment('邀请码');
+            $table->ipAddress('ip');
+            $table->ipAddress('last_login_ip')->comment('最后一次登录ip');
             $table->timestamp('last_login_time')->nullable()->comment('最后一次登录时间');
 
         });

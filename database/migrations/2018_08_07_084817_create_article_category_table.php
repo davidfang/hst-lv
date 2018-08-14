@@ -19,6 +19,7 @@ class CreateArticleCategoryTable extends Migration
             $table->string('title',512)->comment('标题');
             $table->text('body')->comment('介绍')->nullable();
             $table->string('parent_id')->comment('上级分类id')->nullable()->default(0);
+            $table->string('view')->comment('模板名称')->nullable();
             $table->unsignedSmallInteger('sort')->comment('排序')->nullable();
             $table->integer('created_by')->comment('创建者')->nullable();
             $table->integer('updated_by')->comment('修改者')->nullable();

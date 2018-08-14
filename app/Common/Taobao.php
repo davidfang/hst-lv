@@ -496,7 +496,9 @@ class TaoBao
                 $dgSearch->include_mkt = $row->include_mkt ;// 是否包含营销计划
                 $dgSearch->include_dxjh = $row->include_dxjh ;// 是否包含定向计划
                 $dgSearch->commission_rate = $row->commission_rate ;// 佣金比率
-                $dgSearch->volume = $row->volume ;// 30天销量->nullable();
+                if(isset($row->volume)) {
+                    $dgSearch->volume = $row->volume;// 30天销量->nullable();
+                }
                 $dgSearch->seller_id = $row->seller_id ;// 卖家id->nullable();
                 if(isset($row->coupon_total_count)) {
                     $dgSearch->coupon_total_count = $row->coupon_total_count;// 优惠券总量
@@ -508,8 +510,10 @@ class TaoBao
                     $dgSearch->coupon_info = $row->coupon_info;// 优惠券面额
                 }
                 $dgSearch->commission_type = $row->commission_type ;// 佣金类型  MKT表示营销计划，SP表示定向计划，COMMON表示通用计划->nullable();
-                $dgSearch->shop_title = $row->shop_title ;// 店铺名称
-                $dgSearch->shop_dsr = $row->shop_dsr ;// 店铺dsr评分->nullable();
+                $dgSearch->shop_title = $row->shop_title;// 店铺名称
+                if(isset($row->shop_dsr)) {
+                    $dgSearch->shop_dsr = $row->shop_dsr ;// 店铺dsr评分->nullable();
+                }
                 if(isset($row->coupon_share_url)) {
                     $dgSearch->coupon_share_url = $row->coupon_share_url;// 券二合一页面链接
                 }

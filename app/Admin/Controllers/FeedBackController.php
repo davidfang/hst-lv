@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\ArticleCategory;
+use App\Model\Feedback;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class ArticleCategoryController extends Controller
+class FeedBackController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +24,8 @@ class ArticleCategoryController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('文章分类');
-            $content->description('文章分类管理');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->grid());
         });
@@ -41,8 +41,8 @@ class ArticleCategoryController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('修改文章分类');
-            $content->description('修改文章分类');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,8 +57,8 @@ class ArticleCategoryController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('创建文章分类');
-            $content->description('创建文章分类');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->form());
         });
@@ -71,26 +71,21 @@ class ArticleCategoryController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(ArticleCategory::class, function (Grid $grid) {
+        return Admin::grid(Feedback::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
-            $grid->column('slug','slugen');
-            $grid->column('title','标题');
-            $grid->column('body','介绍');
-            $grid->column('parent_id','上级分类id');
-            $grid->column('sort','排序');
+            $grid->column('user.nickname','用户');
+            $grid->column('body');
+            $grid->column('image','图片')->image('',50,50);
             $states = [
                 'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
                 'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
             ];
-            $grid->column('view','模板名称');
             $grid->column('status','状态')->switch($states);
-            $grid->column('createdBy.username', '创建人');
-            $grid->column('updatedBy.username', '修改人');
 
-            $grid->created_at('创建时间');
-            $grid->updated_at('修改时间');
+            $grid->created_at();
+            $grid->updated_at();
         });
     }
 
@@ -101,30 +96,21 @@ class ArticleCategoryController extends Controller
      */
     protected function form()
     {
-        return Admin::form(ArticleCategory::class, function (Form $form) {
+        return Admin::form(Feedback::class, function (Form $form) {
 
             $form->display('id', 'ID');
-
-            $form->text('slug','slugen');
-            $form->text('title','标题');
-            $form->textarea('body','介绍');
-            $form->select('parent_id','上级')->options(ArticleCategory::allSelectOptions())->default(0);
-            $form->number('sort','排序');
+            $form->display('user.nickname','用户');
+            $form->text('body','内容');
+            $form->image('image','图片');
             $states = [
                 'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
                 'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
             ];
-            $form->text('view','模板名称');
             $form->switch('status','状态')->states($states)->default(0);
-
-            $form->display('created_at', '创建时间');
-            $form->display('updated_at', '更新时间');
-            $form->hidden('created_by','创建者');
-            $form->hidden('updated_by','修改者');
+            $form->display('created_at', 'Created At');
+            $form->display('updated_at', 'Updated At');
+            $form->hidden('updated_by');
             $form->saving(function (Form $form){
-                if(empty($form->created_by)) {
-                    $form->created_by = Admin::user()->id;
-                }
                 $form->updated_by = Admin::user()->id;
             });
         });

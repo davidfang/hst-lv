@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\User;
 use App\Http\Controllers\Api\Controller;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,6 +104,7 @@ class FastLoginController extends Controller
         }else{//注册
             $user = $this->create($request->all());
             $user->invitation_code = createInvitationCode($user->id);
+            $user->ip = $request->ip();
             $user->save();
             $this->guard('api')->login($user);
 
@@ -122,6 +124,9 @@ class FastLoginController extends Controller
 //        $token = $user->createToken('ios')->accessToken;
 //        return $this->success(['token'=>$token,'password'=>true]);
         $authenticated = $this->authenticateClient($request,$user);
+        $user->last_login_ip = $request->ip();
+        $user->last_login_time = Carbon::now()->toDateTimeString();
+        $user->save();
         return $this->success($authenticated);
     }
 }

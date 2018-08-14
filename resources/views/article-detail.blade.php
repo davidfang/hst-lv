@@ -7,9 +7,9 @@
                 <div class="card">
                     <div class="card-header">Dashboard</div>
                     <H4>{{$article->title}}</H4>
-                    <p class="card-body">
-                        {{ $article->body }}
-                    </p>
+                    <div class="card-body">
+                        {!! $article->body !!}
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Helpers\ApiResponse;
+use Carbon\Carbon;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -45,6 +46,10 @@ class Controller extends BaseController
         $response = \Route::dispatch($proxy);
         //echo '<pre>';
         //var_dump($response);
+        //修改用户登录时间和ip
+        $user->last_login_time = Carbon::now()->toDateTimeString();
+        $user->last_login_ip = $request->ip();
+        $user->save();
         $content = $response->content();
         $content = json_decode($content,true);
         $content['password'] = $user->password != '1';

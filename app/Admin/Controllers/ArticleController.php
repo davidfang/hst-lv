@@ -79,7 +79,7 @@ class ArticleController extends Controller
 
             $grid->column('slug','slugen');
             $grid->column('title','标题');
-            $grid->column('body','介绍');
+            //$grid->column('body','介绍');
             $grid->column('category.title','分类');
             $grid->column('sort','排序');
             $grid->column('view','模板名称');
@@ -117,11 +117,12 @@ class ArticleController extends Controller
 
             $form->text('slug','slugen');
             $form->text('title','标题');
-            $form->textarea('body','介绍');
+            $form->editor('body','介绍');
             $form->select('category_id','分类')->options(ArticleCategory::allSelectOptions());
             $form->number('sort','排序');
             $form->image('thumbnail','缩略图')->uniqueName()->resize(400,600);
             $form->multipleImage('images','图集')->uniqueName()->removable()->resize(400,600);
+            $form->text('view','模板名称');
             $states = [
                 'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
                 'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
@@ -137,8 +138,6 @@ class ArticleController extends Controller
                 }
                $form->updated_by = Admin::user()->id;
             });
-//            $form->display('created_by','创建者');
-//            $form->display('updated_by','修改者');
 
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '更新时间');

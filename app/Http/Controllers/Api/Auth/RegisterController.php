@@ -139,6 +139,7 @@ class RegisterController extends Controller
         //event(new Registered($user = $this->create($request->all())));
         $user = $this->create($request->all());
         $user->invitation_code = createInvitationCode($user->id);
+        $user->ip = $request->ip();
         $user->save();
         $this->guard('api')->login($user);
 
