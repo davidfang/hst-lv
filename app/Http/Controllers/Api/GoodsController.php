@@ -17,8 +17,9 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        $goods = Goods::where('status',1)->simplePaginate(20);
-        return $this->success(GoodsResource::collection($goods));
+        $goods = Goods::where('status',1)->paginate(20);
+        //return $this->success(GoodsResource::collection($goods));
+        return $this->success(GoodsResource::collection($goods)->resource);
         //
     }
 

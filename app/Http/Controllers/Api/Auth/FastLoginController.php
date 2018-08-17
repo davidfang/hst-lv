@@ -73,9 +73,22 @@ class FastLoginController extends Controller
      */
     protected function create(array $data)
     {
-        $data['invitation_code'] = isset($data['invitation_code'])?$data['invitation_code']:null;
+        if (isset($data['invitation_code'])) {
+            $parent_id = decodeInvitationCode($data['invitation_code']);
+            $parent = User::find($parent_id);
+            if ($parent->grade == '2') {//运营商
+                $data['grandpa_id'] = $data['operator_id'] = $parent->id;
+            } else {
+                $data['grandpa_id'] = $parent->parent_id;
+                $data['operator_id'] = $parent->operator_id;
+            }
+        } else {
+            $parent_id = null;
+        }
         return User::create([
-            'parent_id' => decodeInvitationCode($data['invitation_code']),
+            'parent_id' => $parent_id,
+            'grandpa_id' => $data['grandpa_id'],
+            'operator_id' => $data['operator_id'],
             'mobile' => $data['mobile'],
             'password' => '1'
         ]);

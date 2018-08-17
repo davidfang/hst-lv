@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Helpers;
+use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
 
@@ -112,8 +114,13 @@ trait ApiResponse
      * @return mixed
      */
     public function success($data, $status = true){
-
-        return $this->status($status,compact('data'));
+        //var_dump($data);exit;
+        //return $this->status($status, $data->toArray());
+        if($data instanceof AbstractPaginator) {
+            return $this->status($status, $data->toArray());
+        }else{
+            return $this->status($status,compact('data'));
+        }
     }
 
     /**

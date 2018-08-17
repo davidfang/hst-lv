@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Auth;
 
 use App\User;
@@ -46,18 +47,18 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        $return =  Validator::make($data, [
-            'invitation_code'     => 'exists:users,invitation_code',
-            'mobile'     => 'required|confirm_mobile_not_change|confirm_rule:mobile_required|unique:users',
+        $return = Validator::make($data, [
+            'invitation_code' => 'exists:users,invitation_code',
+            'mobile' => 'required|confirm_mobile_not_change|confirm_rule:mobile_required|unique:users',
             'verifyCode' => 'required|verify_code',
             'password' => 'required|min:6'
-        ],[
-            'invitation_code.exists'     => '邀请码不正确',
+        ], [
+            'invitation_code.exists' => '邀请码不正确',
             'verifyCode.verify_code' => '验证码不正确',
             'mobile.confirm_rule' => '确认手机号输入是否有误',
             'mobile.confirm_mobile_not_change' => '手机号或验证不正确',
@@ -65,8 +66,9 @@ class RegisterController extends Controller
             'password.required' => '密码不能为空',
             'password.min' => '密码不能小于6位',
         ]);
-        return $return ;
+        return $return;
     }
+
     /**
      * @api {post} /sendCode 获取手机验证码
      * @apiDescription 获取手机的验证码，以便用于注册，验证等操作
@@ -96,34 +98,50 @@ class RegisterController extends Controller
 //            'access_token' => $request->mobile
 //        ]);
         $validate = SmsManager::validateFields();
-        if ($validate["success"] == false){
-            return $this->failed("请求错误,请确认手机号是否有误",400);
+        if ($validate["success"] == false) {
+            return $this->failed("请求错误,请确认手机号是否有误", 400);
         }
         $result = SmsManager::requestVerifySms();
-        if ($result["success"] == true){
+        if ($result["success"] == true) {
             return $this->success("验证码发送成功");
         }
         return $this->internalError('验证码发送失败,请重试');
     }
+
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \App\User
      */
     protected function create(array $data)
     {
-        $data['invitation_code'] = isset($data['invitation_code'])?$data['invitation_code']:null;
+        if (isset($data['invitation_code'])) {
+            $parent_id = decodeInvitationCode($data['invitation_code']);
+            $parent = User::find($parent_id);
+            if ($parent->grade == '2') {//运营商
+                $data['grandpa_id'] = $data['operator_id'] = $parent->id;
+            } else {
+                $data['grandpa_id'] = $parent->parent_id;
+                $data['operator_id'] = $parent->operator_id;
+            }
+        } else {
+            $parent_id = null;
+        }
+
         return User::create([
-            'parent_id' => decodeInvitationCode($data['invitation_code']),
+            'parent_id' => $parent_id,
+            'grandpa_id' => $data['grandpa_id'],
+            'operator_id' => $data['operator_id'],
             'mobile' => $data['mobile'],
             'password' => Hash::make($data['password']),
         ]);
     }
+
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -145,11 +163,12 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user);
     }
+
     /**
      * The user has been registered.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param  \Illuminate\Http\Request $request
+     * @param  mixed $user
      * @return mixed
      */
     protected function registered(Request $request, $user)
@@ -157,7 +176,7 @@ class RegisterController extends Controller
 //        $token = $user->createToken('ios')->accessToken;
 //        return $this->success(['token'=>$token,'password'=>true]);
 
-        $authenticated = $this->authenticateClient($request,$user);
+        $authenticated = $this->authenticateClient($request, $user);
         return $this->success($authenticated);
     }
 }

@@ -21,6 +21,9 @@ class User extends JsonResource
             '2'=>'运营商'
         ];
         $result['grade']=$grade[$this->grade];
+//        $avatar = empty($this->avatar)?'/avatar/avatar-logo.png':$this->avatar;
+//        $result['avatar'] = \Storage::url($avatar);
+        $result['avatar'] = empty($this->avatar)?'':\Storage::url($this->avatar);
         return $result;
     }
 }

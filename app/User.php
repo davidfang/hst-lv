@@ -36,7 +36,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'mobile','name', 'nickname', 'password','parent_id','invitation_code','ip','last_login_ip','last_login_time'
+        'mobile','name', 'nickname', 'password','parent_id','invitation_code','ip','last_login_ip','last_login_time','grandpa_id','operator_id'
     ];
 
     /**
@@ -45,7 +45,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','parent_id','created_at','updated_at'
+        'password', 'remember_token','parent_id','updated_at'
     ];
 
     /**
@@ -54,5 +54,31 @@ class User extends Authenticatable
      */
     public function parentUser(){
         return $this->hasOne(User::class,'id','parent_id');
+    }
+
+    /**
+     * 关联的推荐人
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function childrenUser(){
+        return $this->hasMany(User::class,'parent_id','id');
+    }
+
+    /**
+     * 获得粉丝信息
+     * @param $id
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function fans($id){
+        return self::where([['parent_id',$id],['status','1']])->select(['id','mobile','nickname','avatar','created_at']);
+    }
+
+    /**
+     * 获得孙子信息
+     * @param $id
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function grandson($id){
+        return self::where([['grandpa_id',$id],['parent_id','<>',$id],['status','1']])->select(['id','mobile','nickname','avatar','created_at']);
     }
 }

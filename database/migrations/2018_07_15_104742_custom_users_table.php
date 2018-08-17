@@ -26,7 +26,9 @@ class CustomUsersTable extends Migration
             $table->string('avatar', 100)->nullable()->comment('头像');
             $table->enum('grade',['0','1','2'])->default('0')->comment("会员等级('VIP会员','超级会员','运营商')");
             $table->enum('status',['0','1','2'])->default('1')->comment("状态('禁用','正常','异常')");
-            $table->integer('parent_id')->nullable()->comment('父ID');
+            $table->integer('parent_id')->nullable()->comment('父ID')->default(0);
+            $table->integer('grandpa_id')->nullable()->comment('爷ID')->default(0);
+            $table->integer('operator_id')->nullable()->comment('运营商ID')->default(0);
             $table->string('invitation_code',10)->nullable()->comment('邀请码');
             $table->ipAddress('ip');
             $table->ipAddress('last_login_ip')->comment('最后一次登录ip');

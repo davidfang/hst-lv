@@ -52,6 +52,8 @@ Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 
 Route::middleware('auth:api')->group(function (){
     Route::get('user/info','Api\UserController@info');
+    Route::get('user/fans','Api\UserController@fans');
+    Route::get('user/grand-fans','Api\UserController@grandFans');
     Route::post('user/update','Api\UserController@update');
     Route::post('user/avatar','Api\UserController@avatar');
 });
