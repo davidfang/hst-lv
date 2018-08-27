@@ -17,8 +17,8 @@ class ArticleController extends Controller
     {
         //$category_id = $request->get('category_id',1);
         $category = ArticleCategory::find($category_id);
-        $article = Article::where([['status','1'],['category_id',$category_id]])->paginate();
-        return view('article',['articles'=>$article,'category'=>$category]);
+        $article = Article::where([['status', '1'], ['category_id', $category_id]])->paginate();
+        return view('article', ['articles' => $article, 'category' => $category]);
     }
 
     /**
@@ -34,7 +34,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -45,18 +45,22 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Article  $article
+     * @param  \App\Model\Article $article
      * @return \Illuminate\Http\Response
      */
     public function show(Article $article)
     {
-        return view('article-detail',['article'=>$article]);
+        if (empty($article->view)) {
+            return view('article-detail', ['article' => $article]);
+        } else {
+            return view($article->view, ['article' => $article]);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Article  $article
+     * @param  \App\Model\Article $article
      * @return \Illuminate\Http\Response
      */
     public function edit(Article $article)
@@ -67,8 +71,8 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Article  $article
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Model\Article $article
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Article $article)
@@ -79,7 +83,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Article  $article
+     * @param  \App\Model\Article $article
      * @return \Illuminate\Http\Response
      */
     public function destroy(Article $article)

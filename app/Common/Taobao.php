@@ -6,6 +6,7 @@ use App\Helpers\ArrayHelper;
 use App\Model\DgSearch;
 use App\Model\Goods;
 use App\Model\GoodsShare;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use TbkDgItemCouponGetRequest;
@@ -129,11 +130,25 @@ class TaoBao
         }
     }
 
+    /**
+     * 获取淘口令
+     * @param $text
+     * @param $url
+     * @param $logo
+     * @param string $ext
+     * @return \SimpleXMLElement|string
+     */
     public function tpwd($text, $url,$logo,$ext='{}')
-    {
+    {   $newUrl = $url;
+        if(substr($newUrl,0,5) != 'https'){
+            $newUrl = 'https'.$url;
+        }
+        if(substr($newUrl,0,6) != 'https:'){
+            $newUrl = 'https:'.$url;
+        }
         $req = new TbkTpwdCreateRequest;
         $req->setText($text);
-        $req->setUrl($url);
+        $req->setUrl($newUrl);
         $req->setExt($ext);
         $req->setLogo($logo);
         $resp = $this->client->execute($req);
@@ -336,10 +351,10 @@ class TaoBao
         }
         if (isset($item->coupon_price)) {
             $goodsShare->coupon_price = $item->coupon_price;
-        }
+        }/*
         if (isset($item->coupon_status)) {
             $goodsShare->coupon_status = $item->coupon_status;
-        }
+        }*/
         if (isset($item->coupon_click_url)) {
             $goodsShare->coupon_click_url = $item->coupon_click_url;
         }
@@ -387,12 +402,13 @@ class TaoBao
 
                             if ($matches) {
                                 $v->coupon_amount = $matches[0][1];
+                                $v->coupon_status = 1;
                             } else {
                                 $v->coupon_amount = 0;
                             }
                             $v->zk_final_price = floatval($v->zk_final_price);
                             $v->coupon_price = floatval($v->zk_final_price - $v->coupon_amount);
-                            $v->coupon_status = 1;
+
                             $list->add($this->itemToModel($v));
                         }
                         $paginator = new LengthAwarePaginator($list, $resp->total_results, 16, $req->getPageNo());
@@ -475,6 +491,7 @@ class TaoBao
                 }
                 if(isset($row->coupon_end_time)) {
                     $dgSearch->coupon_end_time = $row->coupon_end_time;// 优惠券结束时间
+                    $dgSearch->coupon_status = 1;//是否有优惠券
                 }
                 $dgSearch->info_dxjh = $row->info_dxjh ;// 定向计划信息
                 $dgSearch->tk_total_sales = $row->tk_total_sales ;// 淘客30天月推广量;
@@ -485,8 +502,8 @@ class TaoBao
                 $dgSearch->num_iid = $row->num_iid ;// 宝贝id;
                 $dgSearch->title = $row->title ;// 商品标题
                 $dgSearch->pict_url = $row->pict_url ;// 商品主图
-                if(isset($row->small_images)) {
-                    $dgSearch->small_images = $row->small_images;// 商品小图列表
+                if(isset($row->small_images)) {// 商品小图列表
+                    $dgSearch->small_images = isset($row->small_images->string) ? $row->small_images->string : '';
                 }
                 $dgSearch->reserve_price = $row->reserve_price ;// 商品一口价格
                 $dgSearch->zk_final_price = $row->zk_final_price ;// 商品折扣价格
@@ -518,6 +535,23 @@ class TaoBao
                     $dgSearch->coupon_share_url = $row->coupon_share_url;// 券二合一页面链接
                 }
                 $dgSearch->url = $row->url ;// 商品淘客链接
+
+
+                //$dgSearch->tpwd;
+                //生成淘口令开始
+                $url                                =   $dgSearch->click_url;
+                if($dgSearch->isCoupon()){
+                    $url                            =   $dgSearch->coupon_share_url;
+                }
+                if(empty($url)){
+                    $url                            =   $dgSearch->item_url;
+                }
+                $model = $this->tpwd($dgSearch->title,$url,$dgSearch->pict_url,'{}');
+                $dgSearch->tpwd = $model;
+                $dgSearch->tpwd_created_at = Carbon::now();
+                //生成淘口令结束
+
+
                 $dgSearch->save();
                 $list->add($dgSearch);
             }

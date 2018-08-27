@@ -5,8 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
-                    <H4>{{$article->title}}</H4>
+                    <div class="card-header">{{$article->title}}</div>
                     <div class="card-body">
                         {!! $article->body !!}
                     </div>

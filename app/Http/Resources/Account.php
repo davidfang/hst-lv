@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DgSearch extends JsonResource
+class Account extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,7 @@ class DgSearch extends JsonResource
     public function toArray($request)
     {
         $parent = parent::toArray($request);
-        preg_match_all('/满(\d*.\d*)元减(\d*)元/', $this->coupon_info, $coupon_info);
-        $parent['coupon_info'] = isset($coupon_info[2][0]) ? $coupon_info[2][0] : 0;
-        //$parent['coupon_info'] = $coupon_info;
-        //$parent['coupon_info'] = ['满300元减10元',        300,    10];
+        unset($parent['created_by'],$parent['updated_by'],$parent['created_at'],$parent['updated_at'],$parent['deleted_at']);
         return $parent;
     }
 }

@@ -56,5 +56,9 @@ Route::middleware('auth:api')->group(function (){
     Route::get('user/grand-fans','Api\UserController@grandFans');
     Route::post('user/update','Api\UserController@update');
     Route::post('user/avatar','Api\UserController@avatar');
+    Route::get('bankcard/show','Api\BankcardController@show');
+    Route::post('bankcard/create','Api\BankcardController@create');
+    Route::post('account/withdrawal','Api\AccountController@withdrawal');
+    Route::get('account/index','Api\AccountController@index');
 });
 

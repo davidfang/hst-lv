@@ -6,7 +6,7 @@ use App\Model\GoodsCategory;
 use Illuminate\Console\Command;
 use App\Common\TaoBao as TaoBaoCommon;
 
-class Taobao extends Command
+class TaobaoFavourite extends Command
 {
     /**
      * The name and signature of the console command.

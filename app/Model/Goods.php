@@ -13,19 +13,23 @@ class Goods extends Model
     protected $primaryKey = 'num_iid';
     public $incrementing = false;
     protected $keyType = 'string';
+
     /**
      * 检查是不是优惠券商品
      * @return bool
      */
-    public function isCoupon(){
-        if(!empty($this->coupon_end_time)) {
+    public function isCoupon()
+    {
+        if (!empty($this->coupon_end_time)) {
             if (Carbon::now()->gt(new Carbon($this->coupon_end_time))) {
-                $this->coupon_status        =   0;
+                $this->coupon_status = 0;
+            } else {
+                $this->coupon_status = 1;
             }
-        }else{
+        } else {
             $this->coupon_status = 0;
         }
-        return $this->coupon_status > 0 ? true : false;
+        return $this->coupon_status > 0;
     }
 
     /**
@@ -46,17 +50,18 @@ class Goods extends Model
      */
     public function getSmallImagesAttribute($small_images)
     {
-        if(!empty($small_images)){
-            $small_images                           =   json_decode($small_images, true);
-            foreach ($small_images as $k=>$v){
-                $small_images[$k]                   =   get_image_url($v);
+        if (!empty($small_images)) {
+            $small_images = json_decode($small_images, true);
+            foreach ($small_images as $k => $v) {
+                $small_images[$k] = get_image_url($v);
             }
         }
         return $small_images ? $small_images : [];
     }
 
-    public function getDetailAttribute($detail){
-        if(!empty($detail)){
+    public function getDetailAttribute($detail)
+    {
+        if (!empty($detail)) {
             $detail = json_decode($detail, true);
         }
         return $detail ? $detail : null;
@@ -67,21 +72,22 @@ class Goods extends Model
      * @param $value
      * @return string
      */
-    public function getTpwdAttribute($value){
+    public function getTpwdAttribute($value)
+    {
         if (!empty($value) && Carbon::now()->lt((new Carbon($this->tpwd_created_at))->addDay(30))) {
             return $value;
         }
 
-        $url                                =   $this->click_url;
-        if($this->isCoupon()){
-            $url                            =   $this->coupon_click_url;
+        $url = $this->click_url;
+        if ($this->isCoupon()) {
+            $url = $this->coupon_click_url;
         }
-        if(empty($url)){
-            $url                            =   $this->item_url;
+        if (empty($url)) {
+            $url = $this->item_url;
         }
         $taobao = new TaoBao();
-        $model = $taobao->tpwd($this->title,$url,$this->pict_url,'{}');
-        if($model != '') {
+        $model = $taobao->tpwd($this->title, $url, $this->pict_url, '{}');
+        if ($model != '') {
 
             $this->attributes['tpwd'] = $model;
             $this->attributes['tpwd_created_at'] = Carbon::now();

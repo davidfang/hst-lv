@@ -17,7 +17,7 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        $goods = Goods::where('status',1)->paginate(20);
+        $goods = Goods::where([['status',1],['category_id',env('INDEX_RECOMMENT_CATEGORY_ID',0)]])->paginate(20);
         //return $this->success(GoodsResource::collection($goods));
         return $this->success(GoodsResource::collection($goods)->resource);
         //

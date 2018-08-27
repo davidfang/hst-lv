@@ -57,7 +57,7 @@ class DgSearch extends Model
 
         $url                                =   $this->click_url;
         if($this->isCoupon()){
-            $url                            =   $this->coupon_click_url;
+            $url                            =   $this->coupon_share_url;
         }
         if(empty($url)){
             $url                            =   $this->item_url;

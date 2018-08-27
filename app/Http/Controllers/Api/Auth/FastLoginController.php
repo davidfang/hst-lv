@@ -83,7 +83,7 @@ class FastLoginController extends Controller
                 $data['operator_id'] = $parent->operator_id;
             }
         } else {
-            $parent_id = null;
+            $data['grandpa_id'] = $data['operator_id'] = $parent_id = null;
         }
         return User::create([
             'parent_id' => $parent_id,
