@@ -11,5 +11,15 @@ class Account extends Model
 
     protected $table = 'account';
 
-
+    public static function initAcount($user_id){
+        $account = new self();
+        $account->user_id = $user_id;
+        $account->amount = 0;
+        $account->cash_balance = 0;
+        $account->uncash_balance = 0;
+        $account->freeze_cash_balance = 0;
+        $account->freeze_uncash_balance = 0;
+        $account->save();
+        return $account;
+    }
 }

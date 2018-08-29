@@ -49,6 +49,7 @@ Route::post('passport/password-reset','Api\Auth\ResetPasswordController@reset');
 Route::post('passport/register','Api\Auth\RegisterController@register');
 Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
+Route::post('app-set','Api\AppConfigController@index');
 
 Route::middleware('auth:api')->group(function (){
     Route::get('user/info','Api\UserController@info');

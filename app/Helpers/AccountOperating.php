@@ -266,8 +266,9 @@ class AccountOperating
      */
     public static function withdrawalApplication($user_id, $amount, $remark_submit, $out_trade_no, $bankcard_id)
     {
-//事务开始
-        DB::transaction(function () use ($user_id, $amount, $remark_submit, $out_trade_no, $bankcard_id, &$account) {
+        $result = ['status'=>true,'msg'=>''];
+        //事务开始
+        DB::transaction(function () use ($user_id, $amount, $remark_submit, $out_trade_no, $bankcard_id, &$account,&$result) {
             // 1.账户表查询原始记录，锁定
             $account = Account::where('user_id', $user_id)->lockForUpdate()->first();
             if ($account) {//帐户没被锁定
@@ -290,16 +291,17 @@ class AccountOperating
                     $account->cash_balance = $account->cash_balance - $amount;//操作后可提现余额= 操作前可提现余额 - 发生金额
                     $account->freeze_cash_balance = $account->freeze_cash_balance + $amount;//操作后可提现冻结余额= 操作前可提现冻结余额 + 发生金额
                     $account->save();
+                    $result['msg'] = '提现成功';
+                }else{
+                    $result['status'] = false;
+                    $result['msg'] = '提现金额超过可提现金额';
                 }
             } else {//帐户被锁定
-
+             $result['status'] = false;
+             $result['msg'] = '稍后操作';
             }
         }, 5);
-        if (is_null($account)) {
-            return false;
-        } else {
-            return true;
-        }
+        return $result;
     }
 
     /**

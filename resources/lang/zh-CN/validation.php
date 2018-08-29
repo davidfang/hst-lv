@@ -119,7 +119,8 @@ return [
         'nickname' => '昵称',
         'verifyCode'=> '短信验证码',
         'avatar'    => '头像',
-        'remark_submit'=> '备注'
+        'remark_submit'=> '备注',
+        'amount' => '金额'
 
     ],
 ];

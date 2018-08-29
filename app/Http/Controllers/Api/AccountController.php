@@ -84,7 +84,7 @@ class AccountController extends Controller
         $remark_submit = $request->get('remark_submit');
         $data = ['amount' => $amount, 'remark_submit' => $remark_submit];
         $validator = Validator::make($data, [
-            'amount' => 'required|numeric|min:1|max:100',
+            'amount' => 'required|integer|between:1,500',
             'remark_submit' => 'sometimes|max:25'
         ]);
         if ($validator->fails()) {
@@ -97,10 +97,10 @@ class AccountController extends Controller
             $out_trade_no = '支付宝';
             $bankcard_id = $bankcard->id;
             $application = AccountOperating::withdrawalApplication($user_id, $amount, $remark_submit, $out_trade_no, $bankcard_id);
-            if ($application) {
+            if ($application['status']) {
                 return $this->message('提现申请成功');
             } else {
-                return $this->failed('申请失败，请联系客服');
+                return $this->failed($application['msg']);
             }
         } else {
             return $this->failed('未绑定支付宝');

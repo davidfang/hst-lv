@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Model\Account;
 use App\User;
 use App\Http\Controllers\Api\Controller;
 use Carbon\Carbon;
@@ -119,6 +120,7 @@ class FastLoginController extends Controller
             $user->invitation_code = createInvitationCode($user->id);
             $user->ip = $request->ip();
             $user->save();
+            $account = Account::initAcount($user->id);
             $this->guard('api')->login($user);
 
             return $this->fastLogin($request, $user);

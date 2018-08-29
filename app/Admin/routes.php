@@ -28,6 +28,11 @@ Route::group([
     $router->resource('article','ArticleController');
     $router->resource('article-category','ArticleCategoryController');
     $router->resource('feed-back','FeedBackController');
+    $router->resource('app-set','SystemSettingController');
+    $router->resource('order','OrderController');
+    $router->resource('rebate-order','RebateOrderController');
+    $router->resource('account','AccountController');
+
     $router->group([
         'prefix' => 'api'
     ],function (){
