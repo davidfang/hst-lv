@@ -259,6 +259,138 @@ class AdminMenuTableSeeder extends Seeder
                 'created_at' => '2018-07-23 10:28:20',
                 'updated_at' => '2018-07-23 10:28:20',
             ),
+            22 => 
+            array (
+                'id' => 28,
+                'parent_id' => 17,
+                'order' => 0,
+                'title' => '轮播图管理',
+                'icon' => 'fa-forumbee',
+                'uri' => 'swiper',
+                'created_at' => '2018-08-13 04:06:28',
+                'updated_at' => '2018-08-13 04:13:25',
+            ),
+            23 => 
+            array (
+                'id' => 29,
+                'parent_id' => 0,
+                'order' => 0,
+                'title' => '文章公告管理',
+                'icon' => 'fa-chrome',
+                'uri' => NULL,
+                'created_at' => '2018-08-13 04:08:50',
+                'updated_at' => '2018-08-13 04:08:50',
+            ),
+            24 => 
+            array (
+                'id' => 30,
+                'parent_id' => 29,
+                'order' => 0,
+                'title' => '文章分类',
+                'icon' => 'fa-suitcase',
+                'uri' => 'article-category',
+                'created_at' => '2018-08-13 04:10:50',
+                'updated_at' => '2018-08-13 04:10:50',
+            ),
+            25 => 
+            array (
+                'id' => 31,
+                'parent_id' => 29,
+                'order' => 0,
+                'title' => '文章管理',
+                'icon' => 'fa-file-word-o',
+                'uri' => 'article',
+                'created_at' => '2018-08-13 04:11:23',
+                'updated_at' => '2018-08-13 04:11:23',
+            ),
+            26 => 
+            array (
+                'id' => 32,
+                'parent_id' => 17,
+                'order' => 0,
+                'title' => '用户反馈',
+                'icon' => 'fa-feed',
+                'uri' => 'feed-back',
+                'created_at' => '2018-08-13 04:29:12',
+                'updated_at' => '2018-08-13 04:30:38',
+            ),
+            27 => 
+            array (
+                'id' => 33,
+                'parent_id' => 0,
+                'order' => 0,
+                'title' => '系统管理',
+                'icon' => 'fa-cubes',
+                'uri' => NULL,
+                'created_at' => '2018-08-28 07:03:50',
+                'updated_at' => '2018-08-28 07:03:50',
+            ),
+            28 => 
+            array (
+                'id' => 34,
+                'parent_id' => 33,
+                'order' => 0,
+                'title' => '系统设置',
+                'icon' => 'fa-crosshairs',
+                'uri' => 'app-set',
+                'created_at' => '2018-08-28 07:06:34',
+                'updated_at' => '2018-08-28 07:06:34',
+            ),
+            29 => 
+            array (
+                'id' => 35,
+                'parent_id' => 0,
+                'order' => 0,
+                'title' => '交易管理',
+                'icon' => 'fa-hospital-o',
+                'uri' => NULL,
+                'created_at' => '2018-08-28 07:12:37',
+                'updated_at' => '2018-08-28 07:12:37',
+            ),
+            30 => 
+            array (
+                'id' => 36,
+                'parent_id' => 35,
+                'order' => 0,
+                'title' => '订单管理',
+                'icon' => 'fa-cart-arrow-down',
+                'uri' => 'order',
+                'created_at' => '2018-08-28 07:13:02',
+                'updated_at' => '2018-08-28 07:14:04',
+            ),
+            31 => 
+            array (
+                'id' => 37,
+                'parent_id' => 35,
+                'order' => 0,
+                'title' => '返利订单管理',
+                'icon' => 'fa-beer',
+                'uri' => 'rebate-order',
+                'created_at' => '2018-08-28 07:14:45',
+                'updated_at' => '2018-08-28 07:14:45',
+            ),
+            32 => 
+            array (
+                'id' => 38,
+                'parent_id' => 0,
+                'order' => 0,
+                'title' => '资金管理',
+                'icon' => 'fa-credit-card-alt',
+                'uri' => NULL,
+                'created_at' => '2018-08-28 07:15:51',
+                'updated_at' => '2018-08-28 07:15:51',
+            ),
+            33 => 
+            array (
+                'id' => 39,
+                'parent_id' => 38,
+                'order' => 0,
+                'title' => '帐户管理',
+                'icon' => 'fa-user-secret',
+                'uri' => 'account',
+                'created_at' => '2018-08-28 07:17:26',
+                'updated_at' => '2018-08-28 07:17:26',
+            ),
         ));
         
         
