@@ -40,8 +40,10 @@ class TaobaoFavourite extends Command
     public function handle()
     {
         //
+        $page = $this->ask('请输入页码，一般输入1');
         $taobao = new TaoBaoCommon();
-        $favourite = $taobao->favourite();
+        $favourite = $taobao->favourite($page);
+        $this->info('总共从淘宝获得数据量：'.count($favourite));
         if ($favourite) {
             $return = [];
             foreach ($favourite as $k => $row) {
@@ -66,12 +68,13 @@ class TaobaoFavourite extends Command
                 $goodsCategoryArray = [
                     'id' => $id,
                     'title' => $category,
-                    'parent_id' => $parent_id
+
                 ];
                 $a = $goodsCategoryArray;
+                $a['parent_id'] = $parent_id;
                 $a['parent_category']=$parent_category;
 
-                $goodsCategory = GoodsCategory::updateOrCreate($goodsCategoryArray, ['created_by' => 1, 'updated_by' => 1]);
+                $goodsCategory = GoodsCategory::updateOrCreate($goodsCategoryArray, ['parent_id' => $parent_id,'created_by' => 1, 'updated_by' => 1]);
                 $goodsCategory->save();
                 $return[] = $a;
             }
