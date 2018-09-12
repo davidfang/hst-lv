@@ -39,6 +39,7 @@ Route::group([
         Route::get('parent-article-category','ApiController@parentArticleCategory');
         Route::get('parent-goods-category','ApiController@parentGoodsCategory');
         Route::get('refresh-goods-category','ApiController@refreshGoodsCategory');
+        Route::get('qiniu-token','ApiController@qiniuToken');
     });
 
 });

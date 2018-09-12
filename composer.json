@@ -18,7 +18,8 @@
         "laravel/tinker": "^1.0",
         "overtrue/pinyin": "~3.0",
         "toplan/laravel-sms": "~2.6",
-        "zc/taobao-sdk": "dev-master"
+        "zc/taobao-sdk": "dev-master",
+        "zgldh/qiniu-laravel-storage": "^0.9.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",

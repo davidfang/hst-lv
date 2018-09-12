@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Model\ArticleCategory;
 use App\Model\GoodsCategory;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Http\Request;
+
 
 class ApiController extends Controller
 {
@@ -32,6 +34,18 @@ class ApiController extends Controller
     public function allArticleCategory()
     {
 
+    }
+
+    /**
+     * 获得七牛token
+     * @param Request $request
+     * @return array
+     */
+    public function qiniuToken(Request $request)
+    {
+        $disk = \Storage::disk('qiniu');
+        $token = $disk->uploadToken();
+        return ["uptoken"=>$token];
     }
 
 }

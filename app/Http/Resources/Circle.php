@@ -17,10 +17,10 @@ class Circle extends JsonResource
         $parent = parent::toArray($request);
         $parent['author'] = $this->createdBy->name;
         $parent['avatar'] = $this->createdBy->avatar;
-        $parent['thumbnail'] = \Storage::url($this->thumbnail);
+        $parent['thumbnail'] = \Storage::disk(env('DISK'))->url($this->thumbnail);
         if(is_array($this->images)) {
             $parent['images'] = array_map(function ($image) {
-                return \Storage::url($image);
+                return \Storage::disk(env('DISK'))->url($image);
             }, $this->images);
         }else{
             $parent['images'] = [];

@@ -13,7 +13,7 @@ class GoodsCategoryController extends Controller
         $parentCategories = GoodsCategory::where([['parent_id',0],['status',1]])->get(['id','parent_id','img_path','title'])->toArray();
         $children = GoodsCategory::where([['parent_id','>',0],['status',1]])->get(['id','parent_id','img_path','title'])->toArray();
         foreach ($children as $key => $child){
-            $children[$key]['img_path'] = \Storage::url($child['img_path']);
+            $children[$key]['img_path'] = \Storage::disk(env('DISK'))->url($child['img_path']);
         }
         $children = ArrayHelper::index($children,null,'parent_id');
         foreach ($parentCategories as $key => $parentCategory){

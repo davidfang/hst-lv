@@ -39,7 +39,8 @@ class UserController extends Controller
         }
         $user = $request->user();
         $path = $request->file('avatar')->store('avatars/' . $user->id);
-        $avatar = \Storage::url($path);
+        \Storage::disk('qiniu')->put($path);
+        $avatar = \Storage::disk(env('DISK'))->url($path);
         $user->avatar = $path;
         $user->save();
         $this->message('上传成功');

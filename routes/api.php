@@ -34,6 +34,8 @@ Route::post('goods/set-detail','Api\GoodsController@setDetail');//设置产品�
 Route::get('goods/category','Api\GoodsController@category');//分类产品列表
 Route::get('search','Api\SearchController@index');
 Route::post('feed-back','Api\FeedBackController@create');//用户反馈
+Route::post('qiniu/feedbackToken','Api\Qiniucontroller@getFeedbackToken');//用户反馈获得七牛上传token
+Route::post('qiniu/callBack','Api\Qiniucontroller@callBack');//七牛回调
 Route::get('/userInfo', function (Request $request) {
     $user = \App\User::find($request->get('id'));
     return [
@@ -60,6 +62,7 @@ Route::middleware('auth:api')->group(function (){
     Route::get('bankcard/show','Api\BankcardController@show');
     Route::post('bankcard/create','Api\BankcardController@create');
     Route::post('account/withdrawal','Api\AccountController@withdrawal');
+    Route::get('qiniu/avatarToken','Api\Qiniucontroller@getAvatarToken');//上传头像获取七牛token
     Route::get('account/index','Api\AccountController@index');
 });
 

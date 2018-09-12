@@ -15,7 +15,7 @@ class FeedBackController extends Controller
         $data = $request->only(['body','image','userId']);
         $validator = Validator::make($data, [
             'body' => 'required|min:10,max:300',
-            'image'=>'required|image|dimensions:max_width=1024,max_height=1024'
+            'image'=>'required|string|max:1024,min:15'
         ]);
         if ($validator->fails()) {
             return $this->setStatusCode(401)->failed($validator->errors());
@@ -25,14 +25,14 @@ class FeedBackController extends Controller
 
         //var_dump($request->user(),\Auth::user(),\Auth::id());exit;
         $user_id = $data['userId'];
-        $dir = $user_id ? 'feedback/'.$user_id : 'feedback/other';
-        $path = $request->file('image')->store($dir);
-        $imagePath = asset('storage/'.$path);
+//        $dir = $user_id ? 'feedback/'.$user_id : 'feedback/other';
+//        $path = $request->file('image')->store($dir);
+//        $imagePath = asset('storage/'.$path);
         Feedback::create([
             'user_id'=>$user_id ? $user_id : 0,
             'body'=>$data['body'],
-            'image'=>$imagePath,
-            'ip'=>$request->ip()
+            'image'=>$data['image'],
+            //'ip'=>$request->ip()
         ]);
         return $this->message('提交成功');
     }

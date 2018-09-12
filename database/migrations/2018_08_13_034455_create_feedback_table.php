@@ -20,7 +20,7 @@ class CreateFeedbackTable extends Migration
             $table->string('image');
             $table->enum('status',['0','1'])->default('1')->nullable();
             $table->integer('updated_by')->comment('修改者')->nullable();
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->nullable();
             $table->timestamps();
         });
     }

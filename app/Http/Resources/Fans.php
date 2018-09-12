@@ -16,7 +16,7 @@ class Fans extends JsonResource
     {
         $parent = parent::toArray($request);
         $avatar = empty($this->avatar)?'/gray-logo.png':$this->avatar;
-        $parent['avatar'] = \Storage::url($avatar);
+        $parent['avatar'] = \Storage::disk(env('DISK'))->url($avatar);
 
         return $parent;
     }
