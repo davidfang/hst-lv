@@ -77,12 +77,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | 如需缓存配置，则需使用 `Toplan\Sms\SmsManger::closure($closure)` 方法进行配置
-    | 'content' => function ($code, $minutes, $input) {
+    | 'content' => function ($code, $product, $input) {
     */
-    'content' => function ($code, $product, $input) {
+    'content' => function ($code, $minutes, $input) {
         //验证码${code}，您正在注册成为${product}用户，感谢您的支持！
-        return "验证码${code}，您正在注册成为${product}用户，感谢您的支持！";
-        return '【signature】您的验证码是' . $code . '，有效期为' . $minutes . '分钟，请尽快验证。';
+        //return "验证码${code}，您正在注册成为${product}用户，感谢您的支持！";
+        return '【券真多】您的验证码是' . $code . '，有效期为' . $minutes . '分钟，请尽快验证。';
         return '【signature】您的验证码是' . $code . '，有效期为' . $minutes . '分钟，请尽快验证。';
     },
 
@@ -108,7 +108,8 @@ return [
     |
     */
     'templates' => [
-        'Alidayu' => [env('ALIDAYU_TEMPLATE_ID','ALIDAYU_TEMPLATE_ID'), ],
+        'SubMail' => env('SUBMAIL_TEMPLATE_ID','SUBMAIL_TEMPLATE_ID'),
+        //'Alidayu' => [env('ALIDAYU_TEMPLATE_ID','ALIDAYU_TEMPLATE_ID'), ],
     ],
 
     /*
@@ -140,7 +141,7 @@ return [
             return $product;
         },
         'minutes' => function ($code, $minutes) {
-            //return $minutes;
+            return $minutes;
         },
     ],
 

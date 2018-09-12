@@ -22,7 +22,8 @@ return [
      *
      */
     'scheme' => [
-        'Alidayu',
+        //'Alidayu',
+        'SubMail',
     ],
 
     /*
@@ -79,8 +80,8 @@ return [
          * support template sms.
          */
         'SubMail' => [
-            'appid'     => 'your_app_id',
-            'signature' => 'your app key',
+            'appid'     => '27325',
+            'signature' => '4fff672683be2a443e2dcc561842fa5e',
         ],
 
         /*
