@@ -37,6 +37,12 @@ class TaobaoController extends Controller
 
     }
     public function form(){
+        $parentCategories = GoodsCategory::where([['parent_id',0]])->get(['id','title'])->toArray();
+        $children = GoodsCategory::where([['parent_id','>',0],['status',1]])->get(['id','title'])->toArray();
+        //echo '<pre>';var_dump(array_merge($parentCategories , $children));
+        $data['favorites'] =  array_merge($parentCategories , $children);
+        return view('admin.taobao.update', $data)->render();
+
         $taobao                         =   new TaoBao();
         $list                           =   $taobao->favourite();
         if($list){

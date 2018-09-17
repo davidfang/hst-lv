@@ -17,7 +17,7 @@ class BannerController extends Controller
     {
         //return $this->message('test');
         $type = $request->input('type','swiper');
-        return $this->success(BannerResource::collection(Banner::where('type',$type)->simplePaginate(5)));
+        return $this->success(BannerResource::collection(Banner::where([['type',$type],['status','1']])->simplePaginate(5)));
         //
     }
 
