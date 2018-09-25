@@ -24,6 +24,7 @@ class CreateSystemsSettingTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        DB::statement("ALTER TABLE `systems_setting` comment'系统设置表'"); // 表注
     }
 
     /**

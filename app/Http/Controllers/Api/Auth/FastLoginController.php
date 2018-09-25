@@ -127,21 +127,5 @@ class FastLoginController extends Controller
         }
 
     }
-    /**
-     * The user has been registered.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function fastLogin(Request $request, $user)
-    {
-//        $token = $user->createToken('ios')->accessToken;
-//        return $this->success(['token'=>$token,'password'=>true]);
-        $authenticated = $this->authenticateClient($request,$user);
-        $user->last_login_ip = $request->ip();
-        $user->last_login_time = Carbon::now()->toDateTimeString();
-        $user->save();
-        return $this->success($authenticated);
-    }
+
 }

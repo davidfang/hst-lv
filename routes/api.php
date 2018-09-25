@@ -36,6 +36,7 @@ Route::get('search','Api\SearchController@index');
 Route::post('feed-back','Api\FeedBackController@create');//用户反馈
 Route::post('qiniu/feedbackToken','Api\Qiniucontroller@getFeedbackToken');//用户反馈获得七牛上传token
 Route::post('qiniu/callBack','Api\Qiniucontroller@callBack');//七牛回调
+Route::post('share','Api\ShareController@create');//记录分享结果
 Route::get('/userInfo', function (Request $request) {
     $user = \App\User::find($request->get('id'));
     return [
@@ -52,7 +53,8 @@ Route::post('passport/register','Api\Auth\RegisterController@register');
 Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
 Route::post('app-set','Api\AppConfigController@index');
-
+Route::post('thirdLogin/login','Api\Auth\ThirdLoginController@login');
+Route::post('thirdLogin/bind','Api\Auth\ThirdLoginController@bind');
 Route::middleware('auth:api')->group(function (){
     Route::get('user/info','Api\UserController@info');
     Route::get('user/fans','Api\UserController@fans');

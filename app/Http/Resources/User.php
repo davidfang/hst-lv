@@ -23,7 +23,12 @@ class User extends JsonResource
         $result['grade']=$grade[$this->grade];
 //        $avatar = empty($this->avatar)?'/avatar/avatar-logo.png':$this->avatar;
 //        $result['avatar'] = \Storage::url($avatar);
-        $result['avatar'] = empty($this->avatar)?'':\Storage::disk(env('DISK'))->url($this->avatar);
+        if(substr($this->avatar ,0,4) != 'http') {
+            $avatar = empty($this->avatar) ? '' : \Storage::disk(env('DISK'))->url($this->avatar);
+        }else{
+            $avatar = $this->avatar;
+        }
+        $result['avatar'] = $avatar;
         return $result;
     }
 }

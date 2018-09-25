@@ -34,7 +34,7 @@ class Controller extends BaseController
             'grant_type' => 'password',
             'client_id' => $password_client->id,
             'client_secret' => $password_client->secret,
-            'username' => $credentials['mobile'],
+            'username' => isset($credentials['mobile'])?$credentials['mobile']:$user->mobile,
             'password' => isset($credentials['password'])? $credentials['password'] : $user->password,
             'scope' => ''
         ]);

@@ -1,9 +1,13 @@
 <?php
 namespace App\Http\Controllers\Api\Helpers;
+use App\Http\Resources\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
+use Illuminate\Support\Facades\Hash;
 
 trait ApiResponse
 {
@@ -132,4 +136,49 @@ trait ApiResponse
         return $this->failed($message,Foundationresponse::HTTP_NOT_FOUND);
     }
 
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\User
+     */
+    protected function createUser(array $data)
+    {
+        if (isset($data['invitation_code'])) {
+            $parent_id = decodeInvitationCode($data['invitation_code']);
+            $parent = User::find($parent_id);
+            if ($parent->grade == '2') {//运营商
+                $data['grandpa_id'] = $data['operator_id'] = $parent->id;
+            } else {
+                $data['grandpa_id'] = $parent->parent_id;
+                $data['operator_id'] = $parent->operator_id;
+            }
+        } else {
+            $data['grandpa_id'] = $data['operator_id'] = $parent_id = null;
+        }
+        return User::create([
+            'parent_id' => $parent_id,
+            'grandpa_id' => $data['grandpa_id'],
+            'operator_id' => $data['operator_id'],
+            'mobile' => $data['mobile'],
+            'password' => isset($data['passord'])? Hash::make($data['password']):'1'
+        ]);
+    }
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function fastLogin(Request $request, $user)
+    {
+//        $token = $user->createToken('ios')->accessToken;
+//        return $this->success(['token'=>$token,'password'=>true]);
+        $authenticated = $this->authenticateClient($request,$user);
+        $user->last_login_ip = $request->ip();
+        $user->last_login_time = Carbon::now()->toDateTimeString();
+        $user->save();
+        return $this->success($authenticated);
+    }
 }

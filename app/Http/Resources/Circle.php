@@ -15,6 +15,7 @@ class Circle extends JsonResource
     public function toArray($request)
     {
         $parent = parent::toArray($request);
+        $parent['url'] = 'http://quanzhenduo.zhicaikeji.com';
         $parent['author'] = $this->createdBy->name;
         $parent['avatar'] = $this->createdBy->avatar;
         $parent['thumbnail'] = \Storage::disk(env('DISK'))->url($this->thumbnail);
