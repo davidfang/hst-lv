@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\Article;
 use App\Model\Share;
+use App\Model\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
