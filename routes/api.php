@@ -48,7 +48,6 @@ Route::get('/userInfo', function (Request $request) {
 
 Route::post('passport/login','Api\Auth\LoginController@login');
 Route::post('passport/fast-login','Api\Auth\FastLoginController@login');
-Route::post('passport/password-reset','Api\Auth\ResetPasswordController@reset');
 Route::post('passport/register','Api\Auth\RegisterController@register');
 Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
@@ -56,6 +55,8 @@ Route::post('app-set','Api\AppConfigController@index');
 Route::post('thirdLogin/login','Api\Auth\ThirdLoginController@login');
 Route::post('thirdLogin/bind','Api\Auth\ThirdLoginController@bind');
 Route::middleware('auth:api')->group(function (){
+    Route::post('passport/password-change','Api\Auth\ResetPasswordController@change');
+    Route::post('passport/password-set','Api\Auth\ResetPasswordController@set');
     Route::get('user/info','Api\UserController@info');
     Route::get('user/fans','Api\UserController@fans');
     Route::get('user/grand-fans','Api\UserController@grandFans');
