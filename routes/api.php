@@ -66,5 +66,6 @@ Route::middleware('auth:api')->group(function (){
     Route::post('account/withdrawal','Api\AccountController@withdrawal');
     Route::get('qiniu/avatarToken','Api\Qiniucontroller@getAvatarToken');//上传头像获取七牛token
     Route::get('account/index','Api\AccountController@index');
+    Route::get('invite','Api\InviteController@Index');
 });
 

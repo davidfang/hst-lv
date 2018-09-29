@@ -30,6 +30,7 @@ class CreateArticleTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        DB::statement("ALTER TABLE `article` comment'文章表'"); // 表注
     }
 
     /**

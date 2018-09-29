@@ -32,6 +32,7 @@ Route::group([
     $router->resource('order','OrderController');
     $router->resource('rebate-order','RebateOrderController');
     $router->resource('account','AccountController');
+    $router->resource('invite','InviteController');
 
     $router->group([
         'prefix' => 'api'

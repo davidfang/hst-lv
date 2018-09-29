@@ -27,6 +27,7 @@ class CreateArticleCategoryTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        DB::statement("ALTER TABLE `article_category` comment'文章分类表'"); // 表注
     }
 
     /**

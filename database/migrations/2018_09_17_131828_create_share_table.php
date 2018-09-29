@@ -17,7 +17,7 @@ class CreateShareTable extends Migration
             $table->increments('id');
             $table->integer('uid')->comment('用户ID')->nullable();
             $table->text('content')->comment('为分享内容')->nullable();
-            $table->string('img')->comment('为图片地址')->nullable();
+            $table->text('img')->comment('为图片地址')->nullable();
             $table->string('url')->comment('为分享链接')->nullable();
             $table->string('title')->comment('为分享链接的标题')->nullable();
             $table->string('platform')->comment('为平台id');
