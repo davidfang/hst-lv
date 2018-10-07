@@ -43,7 +43,7 @@ class CreateDgSearchTable extends Migration
             $table->string('shop_title')->comment('店铺名称')->nullable();
             $table->string('shop_dsr')->comment('店铺dsr评分')->nullable();
             $table->string('coupon_share_url',600)->comment('券二合一页面链接')->nullable();
-            $table->string('url',500)->comment('商品淘客链接')->nullable();
+            $table->string('url',1024)->comment('商品淘客链接')->nullable();
             $table->string('tpwd',500)->comment('淘口令')->nullable();
             $table->smallInteger('coupon_status')->nullable()->comment('优惠券状态');
             $table->dateTime('tpwd_created_at')->comment('淘口令生成时间')->nullable();
