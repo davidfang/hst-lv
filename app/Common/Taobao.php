@@ -499,7 +499,7 @@ class TaoBao
                 if(isset($row->coupon_id)) {
                     $dgSearch->coupon_id = $row->coupon_id;// 优惠券id;
                 }
-                $dgSearch->num_iid = $row->num_iid ;// 宝贝id;
+                $dgSearch->num_iid = (string)$row->num_iid ;// 宝贝id;
                 $dgSearch->title = $row->title ;// 商品标题
                 $dgSearch->pict_url = $row->pict_url ;// 商品主图
                 if(isset($row->small_images)) {// 商品小图列表

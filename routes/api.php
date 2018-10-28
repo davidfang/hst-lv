@@ -31,6 +31,7 @@ Route::get('category','Api\GoodsCategoryController@index');//获得产品分类
 Route::get('goods/recommend','Api\GoodsController@index');//首页产品推荐
 Route::get('goods/show','Api\GoodsController@show');//显示产品
 Route::post('goods/set-detail','Api\GoodsController@setDetail');//设置产品详情
+Route::post('goods/set-detail2','Api\GoodsController@setDetail2');//设置产品详情 新淘宝接口地址
 Route::get('goods/category','Api\GoodsController@category');//分类产品列表
 Route::get('search','Api\SearchController@index');
 Route::post('feed-back','Api\FeedBackController@create');//用户反馈

@@ -7,6 +7,7 @@ use App\Http\Resources\Goods as GoodsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 //use App\Http\Controllers\Controller;
+require_once __DIR__."/../../../Helpers/simple_html_dom.php";
 
 class GoodsController extends Controller
 {
@@ -66,6 +67,12 @@ class GoodsController extends Controller
         return $this->success(new GoodsResource($goods));
     }
 
+    /**
+     * 设置产品详情
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function setDetail(Request $request){
         $ip = $request->getClientIp();
         // $ip = $request->get('ip');
@@ -81,6 +88,101 @@ class GoodsController extends Controller
 
         $key = 'detail_'.$num_iid;
         //
+        if(Cache::has($key)){
+
+            $cache = cache($key);
+            if(count($cache)>2) {//3次以上时，判断是否相同
+                //echo '3次以上时';
+                $countValue = array_count_values($cache);
+                if(count($countValue)>1){//有不同的数据出现
+                    //echo '有不同的数据出现';
+                  if(in_array($detail,$cache)){//在里面时，放进去
+                      $cache[$ip] = $detail;
+                      cache([$key => $cache], now()->addHours(4));
+                      //echo '在里面时，放进去';
+                  }else{//不在里面时，不放进去
+                      //echo '不在里面时，不放进去';
+                  }
+                  if(in_array(4,$countValue)){//有第四次出现的，存入数据，删除缓存
+                      foreach ($countValue as $k =>$v){
+                          if($v == 4){
+                              $detail = $k;
+                          }
+                      }
+                      //存入数据 Todo
+                      $goods = Goods::where('num_iid',$num_iid)->first();
+                      $goods->detail = $detail;
+                      $goods->save();
+                      Cache::forget($key);
+                      //echo '有第四次出现的，存入数据，删除缓存';
+                  }
+                }else{//没有不同数据
+                    //echo '没有不同数据';
+                    if(isset($countValue[$detail])){//此次数据和前3次一样 存入数据 删除缓存
+                        //存入数据 Todo
+                        $goods = Goods::where('num_iid',$num_iid)->first();
+                        $goods->detail = $detail;
+                        $goods->save();
+                        Cache::forget($key);
+                        echo '此次数据和前3次一样 存入数据 删除缓存';
+                    }//否则不操作
+                }
+                //var_dump($countValue);
+
+            }else{//3次以下时，继续加
+                //echo '3次以下时，继续加';
+                $cache[$ip] = $detail;
+
+                cache([$key => $cache], now()->addHours(4));
+            }
+
+        }else{
+            //echo '没有数据，第一次来';
+            $cache = [$ip=>$detail];
+            cache([$key=>$cache],now()->addHours(4));
+        }
+        //var_dump($cache);
+        return $this->message('ok');
+    }
+
+    /**
+     * 设置产品详情
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
+    public function setDetail2(Request $request){
+        $ip = $request->getClientIp();
+        // $ip = $request->get('ip');
+        $num_iid = $request->get('num_iid');
+        //$detail = json_encode($request->get('detail'));
+        $detail = $request->get('detail');
+
+        $html = str_get_html($detail['pcDescContent']);
+        $imgs = $html->find('img');
+        $images = [];
+        foreach ($imgs as $image){
+            $images[] = 'https:'.$image->src;
+        }
+        $html->clear();
+        //var_dump($images);exit;
+        //var_dump($request->get('detail'));exit;
+        //var_dump($detail['pcDescContent']);exit;
+        //var_dump($detail->pcDescContent);exit;
+        $goods = Goods::where('num_iid',$num_iid)->first();
+        if($goods) {
+            $goods->detail = json_encode($images);
+            $goods->save();
+        }
+        if(!empty($images)){
+            return $this->success($images);
+        }else{
+            return $this->failed('没有详情');
+        }
+        //return $this->message('ok');
+
+        $key = 'detail_'.$num_iid;
+        //暂时不用，使用需要修改
         if(Cache::has($key)){
 
             $cache = cache($key);

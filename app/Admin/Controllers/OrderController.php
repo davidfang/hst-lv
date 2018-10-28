@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\order;
+use App\Model\Order;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -71,7 +71,7 @@ class OrderController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(order::class, function (Grid $grid) {
+        return Admin::grid(Order::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
@@ -87,7 +87,7 @@ class OrderController extends Controller
      */
     protected function form()
     {
-        return Admin::form(order::class, function (Form $form) {
+        return Admin::form(Order::class, function (Form $form) {
 
             $form->display('id', 'ID');
 
