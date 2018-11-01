@@ -36,7 +36,18 @@ class TaobaoController extends Controller
 
 
     }
+
+    /**
+     * 选品库表单  列出选品库
+     * @return string
+     * @throws \Throwable
+     */
     public function form(){
+        $category = GoodsCategory::allSelectOptions();
+        $data['categories'] =  $category;
+        return view('admin.taobao.update', $data)->render();
+        echo '<pre>';
+        var_dump($category);exit;
         $parentCategories = GoodsCategory::where([['parent_id',0]])->get(['id','title'])->toArray();
         $children = GoodsCategory::where([['parent_id','>',0],['status',1]])->get(['id','title'])->toArray();
         //echo '<pre>';var_dump(array_merge($parentCategories , $children));
@@ -87,7 +98,7 @@ class TaobaoController extends Controller
                 /*if($category){
                     $list[$k]->category_id              =   $category->id;
                 }*/
-                $list[$k]->category_id              =   $favoritesId;
+//                $list[$k]->category_id              =   $favoritesId;
                 //是否推荐商品
 //                if(isset($channel) && !empty($channel)){
 //                    $list[$k]->channel_id               =   $channel->id;

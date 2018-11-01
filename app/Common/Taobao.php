@@ -238,9 +238,12 @@ class TaoBao
 
             $list = new Collection();
             foreach ($items as $row) {
+                $isExit = Goods::find($row->num_iid);
                 //$goods = $this->itemToModel($row);
-                $goods = $this->favouriteItemToModel($row);
-                $list->add($goods);
+                if(!$isExit) {
+                    $goods = $this->favouriteItemToModel($row,$favoriteId);
+                    $list->add($goods);
+                }
             }
             return $list;
         } else {
@@ -250,13 +253,16 @@ class TaoBao
     }
 
     //获取淘宝联盟选品库的宝贝信息  入库
-    protected function favouriteItemToModel($item)
+    protected function favouriteItemToModel($item,$category_id=null)
     {
 //        echo '<pre>';
 //        var_dump(isset($item->coupon_info));
 //        var_dump($item);exit;
         $goods = new Goods();
         $goods->id = 0;
+        if($category_id){
+            $goods->category_id = $category_id;
+        }
 
 
         // $goods->category_id = $item->title;// 分类ID,

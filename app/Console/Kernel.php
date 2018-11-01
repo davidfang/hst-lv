@@ -6,6 +6,7 @@ use App\Console\Commands\TaobaoFavourite;
 use App\Console\Commands\TaobaoOrder;
 use App\Console\Commands\TaobaoOrderRefund;
 use App\Console\Commands\TaobaoRebateOrder;
+use App\Console\Commands\TaobaoUpdateGoods;
 use App\Console\Commands\UserRegister;
 use App\Console\Commands\UserWithdraw;
 use Illuminate\Console\Scheduling\Schedule;
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
         TaobaoFavourite::class,
+        TaobaoUpdateGoods::class,
         TaobaoOrder::class,
         TaobaoOrderRefund::class,
         TaobaoRebateOrder::class,

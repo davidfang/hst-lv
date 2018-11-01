@@ -19,8 +19,8 @@
 
                                         <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
                                         <select id="favorites_id" name="favorites_id" class="form-control" >
-                                            @foreach($favorites as $favorite)
-                                                <option value="{{$favorite['id']}}">{{$favorite['title']}}</option>
+                                            @foreach($categories as $categoryId =>$category)
+                                                <option value="{{$categoryId}}">{{$category}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -21,11 +21,13 @@ class CreateGoodsCategoryTable extends Migration {
 			$table->string('img_base_url')->nullable();
 			$table->smallInteger('status')->nullable()->default(0);
 			$table->smallInteger('sort')->nullable()->default(0)->comment('排序');
+			$table->smallInteger('updated_goods')->default(0)->comment('是否更新产品');
 			$table->integer('created_at')->nullable();
 			$table->integer('updated_at')->nullable();
 			$table->integer('created_by')->unsigned()->index('created_by');
 			$table->integer('updated_by')->unsigned()->index('updated_by');
 		});
+        DB::statement("ALTER TABLE `goods_category` comment'产品分类表'"); // 表注
 	}
 
 

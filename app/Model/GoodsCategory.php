@@ -145,6 +145,32 @@ class GoodsCategory extends Model
     }
 
     /**
+     * 所有分类列表 是否更新产品库
+     * @param int $updatedGoods  更新产品库 1 已更新 0 未更新
+     * @return array
+     *        [
+     *          [1,分类1]
+     *          [2,分类2]
+     *          ]
+     */
+    public static function allUpdatedGoods($updatedGoods = 0){
+        $categories = static::where(['status'=>1,'parent_id'=> 0])->orderBy('sort' ,'asc')->get();
+        $data = [];
+        foreach ($categories as  $category) {
+            if (!isset($data[$category->id]) && $category->updated_goods == 0) {
+                $data[$category->id] = $category->title;
+            }
+            $categoryChild = static::where(['status'=>1,'parent_id'=> $category->id,'updated_goods'=>$updatedGoods])->orderBy('sort' ,'asc')->get();
+            foreach($categoryChild as $child){
+                if(!isset($data[$child->id])){
+                    $data[$child->id] = $category->title."-".$child->title;
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
      * 所有select options
      * @return array
      */
