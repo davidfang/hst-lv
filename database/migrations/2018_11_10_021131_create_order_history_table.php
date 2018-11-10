@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderTable extends Migration
+class CreateOrderHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOrderTable extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('order_history', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('trade_parent_id')->comment('淘宝父订单号')->nullable();
             $table->string('trade_id',20)->comment('淘宝订单号');
@@ -55,7 +55,7 @@ class CreateOrderTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        DB::statement("ALTER TABLE `order` comment'订单表'"); // 表注
+        DB::statement("ALTER TABLE `order_history` comment'订单历史记录表'"); // 表注
     }
 
     /**
@@ -65,6 +65,6 @@ class CreateOrderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('order_hostory');
     }
 }

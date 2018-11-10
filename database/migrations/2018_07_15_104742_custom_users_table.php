@@ -30,11 +30,13 @@ class CustomUsersTable extends Migration
             $table->integer('grandpa_id')->nullable()->comment('爷ID')->default(0);
             $table->integer('operator_id')->nullable()->comment('运营商ID')->default(0);
             $table->string('invitation_code',10)->nullable()->comment('邀请码');
+            $table->string('taobao_pid',50)->nullable()->comment('淘宝PID');
             $table->ipAddress('ip');
             $table->ipAddress('last_login_ip')->comment('最后一次登录ip');
             $table->timestamp('last_login_time')->nullable()->comment('最后一次登录时间');
 
         });
+        DB::statement("ALTER TABLE `users` comment'用户表'"); // 表注
     }
 
     /**

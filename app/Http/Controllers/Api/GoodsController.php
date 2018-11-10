@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Common\TaoBao;
+use App\Model\Article;
 use App\Model\Goods;
 use App\Http\Resources\Goods as GoodsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Auth;
 //use App\Http\Controllers\Controller;
 require_once __DIR__."/../../../Helpers/simple_html_dom.php";
 
@@ -146,7 +149,7 @@ class GoodsController extends Controller
     }
 
     /**
-     * 设置产品详情
+     * 设置产品详情 新
      * @param Request $request
      * @return mixed
      * @throws \Exception
@@ -238,6 +241,45 @@ class GoodsController extends Controller
         }
         //var_dump($cache);
         return $this->message('ok');
+    }
+
+    /**
+     * 获取淘口令
+     * @param $goodsId
+     * @return mixed
+     */
+    public function getTpwd($goodsId){
+        $goods = Goods::find($goodsId);
+        if($goods) {//查到产品
+
+
+            $url = $goods->click_url;
+            if ($goods->isCoupon()) {
+                $url = $goods->coupon_click_url;
+            }
+            if (empty($url)) {
+                $url = $goods->item_url;
+            }
+
+            if (Auth::check()) {
+                $user = Auth::user();
+                //var_dump($user->taobao_pid);
+                $pid = $user->taobao_pid;
+                if(is_null($pid)){//没有PID的用户使用默认的
+                    $taobao = new TaoBao();
+                }else{//有PID的用户使用自己的
+                    $ad_zone_id = (explode('_',$pid))[3];
+                    $taobao = new TaoBao($pid,$ad_zone_id);
+                }
+                $model = $taobao->tpwd($goods->title, $url, $goods->pict_url, '{}');
+            } else {
+                $taobao = new TaoBao();
+                $model = $taobao->tpwd($goods->title, $url, $goods->pict_url, '{}');
+            }
+            return $this->success(['tpwd'=>$model]);
+        }else{//未查到产品
+            return $this->failed('非法请求');
+        }
     }
     /**
      * Show the form for editing the specified resource.

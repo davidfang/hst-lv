@@ -67,34 +67,6 @@ class FastLoginController extends Controller
         return $return ;
     }
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        if (isset($data['invitation_code'])) {
-            $parent_id = decodeInvitationCode($data['invitation_code']);
-            $parent = User::find($parent_id);
-            if ($parent->grade == '2') {//运营商
-                $data['grandpa_id'] = $data['operator_id'] = $parent->id;
-            } else {
-                $data['grandpa_id'] = $parent->parent_id;
-                $data['operator_id'] = $parent->operator_id;
-            }
-        } else {
-            $data['grandpa_id'] = $data['operator_id'] = $parent_id = null;
-        }
-        return User::create([
-            'parent_id' => $parent_id,
-            'grandpa_id' => $data['grandpa_id'],
-            'operator_id' => $data['operator_id'],
-            'mobile' => $data['mobile'],
-            'password' => '1'
-        ]);
-    }
-    /**
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -116,11 +88,7 @@ class FastLoginController extends Controller
 
             return $this->fastLogin($request, $user);
         }else{//注册
-            $user = $this->create($request->all());
-            $user->invitation_code = createInvitationCode($user->id);
-            $user->ip = $request->ip();
-            $user->save();
-            $account = Account::initAcount($user->id);
+            $user = User::createNew($request->ip(),$request->get('mobile'),$request->get('password'),$request->get('invitation_code'));
             $this->guard('api')->login($user);
 
             return $this->fastLogin($request, $user);

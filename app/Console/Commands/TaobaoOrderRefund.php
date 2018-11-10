@@ -39,7 +39,7 @@ class TaobaoOrderRefund extends Command
     public function handle()
     {
         $user_id = 20;
-        AccountOperating::orderRefund($user_id);
+        AccountOperating::orderRefund();
 
     }
 }

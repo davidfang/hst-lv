@@ -3,7 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Helpers\AccountOperating;
+use App\Imports\OrderImport;
 use Illuminate\Console\Command;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
+
 
 class TaobaoOrder extends Command
 {
@@ -38,6 +42,25 @@ class TaobaoOrder extends Command
      */
     public function handle()
     {
+
+        //$path = 'new-TaokeDetail-2018-11-10.xls';
+        $path = 'new-TaokeDetail-'.date('Y-m-d').'.xls';
+        $orderArray = Excel::toArray(new OrderImport, $path);
+        //var_dump($orderArray);
+
+        foreach ($orderArray[0] as $order){
+            $order['unid'] = '29';//用户ID
+            $tkStatus = [
+                '3'=>'订单结算',
+                '12'=>'订单付款',
+                '13'=>'订单失效',
+                '14'=>'订单成功'
+            ];//淘客订单状态集合，
+            $order['tk_status']= array_search($order['tk_status'],$tkStatus);
+            $operatingStatus =  AccountOperating::orderToDb($order);
+            $this->info('| '.$order['trade_id'].' | '.$order['item_title'].' | '.$order['pub_share_pre_fee'].' 状态'.$operatingStatus);
+        }
+        exit();
         $orderInfo[0] = [
             'trade_parent_id'=>123,//淘宝父订单号
             'trade_id'=>123,	//淘宝订单号

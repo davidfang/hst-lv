@@ -110,36 +110,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        if (isset($data['invitation_code'])) {
-            $parent_id = decodeInvitationCode($data['invitation_code']);
-            $parent = User::find($parent_id);
-            if ($parent->grade == '2') {//运营商
-                $data['grandpa_id'] = $data['operator_id'] = $parent->id;
-            } else {
-                $data['grandpa_id'] = $parent->parent_id;
-                $data['operator_id'] = $parent->operator_id;
-            }
-        } else {
-            $data['grandpa_id'] = $data['operator_id'] = $parent_id = null;
-        }
-
-        return User::create([
-            'parent_id' => $parent_id,
-            'grandpa_id' => $data['grandpa_id'],
-            'operator_id' => $data['operator_id'],
-            'mobile' => $data['mobile'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
-
-    /**
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request $request
@@ -155,12 +125,7 @@ class RegisterController extends Controller
             //SmsManager::forgetState();
             return $this->setStatusCode(401)->failed($validator->errors());
         }
-        //event(new Registered($user = $this->create($request->all())));
-        $user = $this->create($request->all());
-        $user->invitation_code = createInvitationCode($user->id);
-        $user->ip = $request->ip();
-        $user->save();
-        $acount = Account::initAcount($user->id);
+        $user = User::createNew($request->ip(),$request->get('mobile'),$request->get('password'),$request->get('invitation_code'));
 
         $this->guard('api')->login($user);
 

@@ -102,11 +102,12 @@ class ThirdLoginController extends Controller
             $user->save();
             return $this->fastLogin($request, $user);
         }else{//无用户注册
-            $user = $this->create($data);
-            $user->invitation_code = createInvitationCode($user->id);
-            $user->ip = $request->ip();
-            $user->save();
-            $account = Account::initAcount($user->id);
+            $user = User::createNew($request->ip(),$request->get('mobile'),$request->get('password'),$request->get('invitation_code'));
+//            $user = $this->create($data);
+//            $user->invitation_code = createInvitationCode($user->id);
+//            $user->ip = $request->ip();
+//            $user->save();
+//            $account = Account::initAcount($user->id);
             $this->guard('api')->login($user);
             return $this->fastLogin($request, $user);
         }

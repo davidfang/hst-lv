@@ -33,6 +33,7 @@ Route::group([
     $router->resource('rebate-order','RebateOrderController');
     $router->resource('account','AccountController');
     $router->resource('invite','InviteController');
+    $router->resource('taobao-pid','TaobaoPidController');
 
     $router->group([
         'prefix' => 'api'
