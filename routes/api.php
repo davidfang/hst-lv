@@ -55,6 +55,7 @@ Route::post('passport/register','Api\Auth\RegisterController@register');
 Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
 Route::post('app-set','Api\AppConfigController@index');
+Route::get('app-upgrade','Api\AppConfigController@upgrade');
 Route::post('thirdLogin/login','Api\Auth\ThirdLoginController@login');
 Route::post('thirdLogin/bind','Api\Auth\ThirdLoginController@bind');
 Route::middleware('auth:api')->group(function (){

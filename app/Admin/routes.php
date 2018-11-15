@@ -34,6 +34,7 @@ Route::group([
     $router->resource('account','AccountController');
     $router->resource('invite','InviteController');
     $router->resource('taobao-pid','TaobaoPidController');
+    $router->resource('app-version','AppVersionController');
 
     $router->group([
         'prefix' => 'api'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Order extends JsonResource
@@ -14,6 +15,10 @@ class Order extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $user = Auth::user();
+        $taobaoPid = explode('_',$user->taobao_pid);
+        $parent = parent::toArray($request);
+        $parent['self_pid'] = $taobaoPid[3];
+        return $parent;
     }
 }

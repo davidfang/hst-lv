@@ -54,7 +54,7 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             //'email'    => 'required|exists:users',
             'mobile'    => 'required|zh_mobile',
-            'password' => 'required|between:5,32',
+            'password' => 'required|between:6,32',
         ],[
             'mobile.required' => '请输入手机号',
             'mobile.zh_mobile' => '手机号不正确'

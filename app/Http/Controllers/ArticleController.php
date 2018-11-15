@@ -48,8 +48,11 @@ class ArticleController extends Controller
      * @param  \App\Model\Article $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Article $article,Request $request)
     {
+        if($request->get('appName')){
+            $article->body = str_replace(config('app.name'),$request->get('appName'),$article->body);
+        }
         if (empty($article->view)) {
             return view('article-detail', ['article' => $article]);
         } else {
