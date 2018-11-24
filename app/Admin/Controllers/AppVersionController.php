@@ -104,7 +104,7 @@ class AppVersionController extends Controller
 
             $form->display('id', 'ID');
             $form->text('name','APP名称');
-            $form->select('platform','APP平台')->options(['ios'=>'ios','andriod'=>'andriod'])->default('andriod');
+            $form->select('platform','APP平台')->options(['ios'=>'ios','android'=>'android'])->default('android');
             $form->text('version','版本号');
             $form->textarea('description','版本说明');
             $form->textarea('appUrl','更新地址');

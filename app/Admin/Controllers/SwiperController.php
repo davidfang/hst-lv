@@ -24,8 +24,8 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('轮播图管理');
+            $content->description('轮播图广告位管理');
 
             $content->body($this->grid());
         });
@@ -41,8 +41,8 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('轮播图编辑');
+            $content->description('轮播图编辑');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,8 +57,8 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('轮播图创建');
+            $content->description('轮播图创建');
 
             $content->body($this->form());
         });
@@ -115,8 +115,8 @@ class SwiperController extends Controller
 //            $form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
             $form->image('img_path', '图标')->resize(350,100)->uniqueName();
             $form->text('url','链接')->rules('nullable');
-            $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen', 'DetailScreen' => 'DetailScreen']);
-            $form->textarea('params','参数');
+            $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen','ClassifyListScreen'=>'ClassifyListScreen', 'DetailScreen' => 'DetailScreen']);
+            $form->textarea('params','参数')->help('必须是json格式,例：{"channelId": 18508981}');
             $form->radio('status', '状态')->options(['禁用','启用' ]);
             $form->display('created_by','创建人');
             $form->display('updated_by','修改人');

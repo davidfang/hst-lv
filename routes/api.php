@@ -24,17 +24,26 @@ Route::get('/banner/index', 'Api\BannerController@index');
 Route::get('/banner/show/{banner}', 'Api\BannerController@show');
 Route::get('/article-category/{category_id}','Api\ArticleController@index');//文章分类
 Route::get('/article/{article}','Api\ArticleController@show');//文章详情
+Route::get('/notice','Api\NoticesController@index');//获得消息
 Route::get('circle','Api\ArticleController@circle');//圈子 文章分类为5
 Route::get('category','Api\GoodsCategoryController@index');//获得产品分类
 //Route::get('taobao/recommend','Api\GoodsShareController@index');//推荐产品
 //Route::get('taobao/{goodsShare}','Api\GoodsShareController@show');
 Route::get('goods/recommend','Api\GoodsController@index');//首页产品推荐
-Route::get('goods/show','Api\GoodsController@show');//显示产品
+Route::get('goods/show/{goods}','Api\GoodsController@show');//显示产品
 Route::post('goods/set-detail','Api\GoodsController@setDetail');//设置产品详情
 Route::post('goods/set-detail2','Api\GoodsController@setDetail2');//设置产品详情 新淘宝接口地址
 Route::get('goods/dtpwd/{goodsId}','Api\GoodsController@getTpwd');//默认获取产品淘口令
 Route::get('goods/tpwd/{goodsId}','Api\GoodsController@getTpwd')->middleware('auth:api');//获取产品淘口令
 Route::get('goods/category','Api\GoodsController@category');//分类产品列表
+Route::get('product/recommend','Api\ProductController@index');//首页产品推荐
+Route::get('product/show/{product}','Api\ProductController@show');//显示产品
+Route::post('product/set-detail','Api\ProductController@setDetail');//设置产品详情
+Route::post('product/set-detail2','Api\ProductController@setDetail2');//设置产品详情 新淘宝接口地址
+Route::get('product/dtpwd/{goodsId}','Api\ProductController@getTpwd');//默认获取产品淘口令
+Route::get('product/tpwd/{goodsId}','Api\ProductController@getTpwd')->middleware('auth:api');//获取产品淘口令
+Route::get('product/category','Api\ProductController@category');//分类产品列表
+Route::get('product/tpwd-buy','Api\ProductController@tpwdBuy');//分类产品列表
 Route::get('search','Api\SearchController@index');
 Route::post('feed-back','Api\FeedBackController@create');//用户反馈
 Route::post('qiniu/feedbackToken','Api\Qiniucontroller@getFeedbackToken');//用户反馈获得七牛上传token

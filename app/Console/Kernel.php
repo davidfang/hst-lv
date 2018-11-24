@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\TaobaoFavourite;
+use App\Console\Commands\TaobaoGoodCategorySpider;
 use App\Console\Commands\TaobaoOrder;
 use App\Console\Commands\TaobaoOrderRefund;
 use App\Console\Commands\TaobaoRebateOrder;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
         TaobaoOrder::class,
         TaobaoOrderRefund::class,
         TaobaoRebateOrder::class,
+        TaobaoGoodCategorySpider::class,
         UserWithdraw::class,
         UserRegister::class
     ];

@@ -122,10 +122,15 @@ class GoodsCategory extends Model
     /**
      * 获得子分类
      * @param int $parentId
+     * @param int $status
      * @return mixed
      */
-    public static function getChildren($parentId=0){
-        return static::where(['status'=>1,'parent_id'=> $parentId])->orderBy('sort' ,'asc')->get();
+    public static function getChildren($parentId=0,$status=1){
+        if($status==1) {
+            return static::where(['status' => 1, 'parent_id' => $parentId])->orderBy('sort', 'asc')->get();
+        }else {
+            return static::where(['parent_id' => $parentId])->orderBy('sort', 'asc')->get();
+        }
     }
 
     /**
@@ -154,13 +159,13 @@ class GoodsCategory extends Model
      *          ]
      */
     public static function allUpdatedGoods($updatedGoods = 0){
-        $categories = static::where(['status'=>1,'parent_id'=> 0])->orderBy('sort' ,'asc')->get();
+        $categories = static::where(['parent_id'=> 0])->orderBy('sort' ,'asc')->get();
         $data = [];
         foreach ($categories as  $category) {
             if (!isset($data[$category->id]) && $category->updated_goods == 0) {
                 $data[$category->id] = $category->title;
             }
-            $categoryChild = static::where(['status'=>1,'parent_id'=> $category->id,'updated_goods'=>$updatedGoods])->orderBy('sort' ,'asc')->get();
+            $categoryChild = static::where(['parent_id'=> $category->id,'updated_goods'=>$updatedGoods])->orderBy('sort' ,'asc')->get();
             foreach($categoryChild as $child){
                 if(!isset($data[$child->id])){
                     $data[$child->id] = $category->title."-".$child->title;
@@ -175,13 +180,13 @@ class GoodsCategory extends Model
      * @return array
      */
     public static function allSelectOptions(){
-        $categories                                     =   static::getChildren();
+        $categories                                     =   static::getChildren(0,0);
         $data                                           =   [0=>'无'];
         foreach ($categories as  $category){
             if(!isset($data[$category->id])){
                 $data[$category->id]                    =   $category->title;
             }
-            $categoryChild                          =   static::getChildren($category->id);
+            $categoryChild                          =   static::getChildren($category->id,0);
             foreach($categoryChild as $child){
 
                 if(!isset($data[$child->id])){

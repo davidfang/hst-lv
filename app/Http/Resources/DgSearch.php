@@ -17,6 +17,7 @@ class DgSearch extends JsonResource
         $parent = parent::toArray($request);
         preg_match_all('/满(\d*.\d*)元减(\d*)元/', $this->coupon_info, $coupon_info);
         $parent['coupon_info'] = isset($coupon_info[2][0]) ? $coupon_info[2][0] : 0;
+        $parent['coupon_info_price'] = isset($coupon_info[2][0]) ? $coupon_info[2][0] : 0;
         //$parent['coupon_info'] = $coupon_info;
         //$parent['coupon_info'] = ['满300元减10元',        300,    10];
         return $parent;

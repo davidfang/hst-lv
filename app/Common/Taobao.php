@@ -435,13 +435,13 @@ class TaoBao
     }
 
     /**
-     * 通用物料搜索API（导购）
+     * 通用物料搜索API（导购） 用户搜索专用
      * @param $keyWord
      * @param int $page
      * @param int $sortId
      * @return bool|Collection
      */
-    public function searchDg($keyWord, $page = 1, $sortId = 3)
+    public function searchDgForUser($keyWord, $page = 1, $sortId = 3)
     {
         $sortArr = [
             1 => 'total_sales_des',
@@ -567,6 +567,41 @@ class TaoBao
             }
             return $list;
         } else {
+            $this->error = $resp->code;
+            return false;
+        }
+    }
+    public function searchDg($params){
+        $req = new TbkDgMaterialOptionalRequest();
+
+//        $req->setQ($keyWord);
+        if(empty($params['adzone_id'])){
+            $params['adzone_id'] = $this->adZoneId;
+        }
+        if(empty($params['page_size'])){
+            $params['page_size'] = 20;
+        }
+        if(empty($params['page_no'])){
+            $params['page_no'] = 1;
+        }
+        $params = array_filter($params);
+        foreach ($params as $k => $v){
+            $k = camel_case('set_'.$k);
+            $req->$k($v);
+        }
+        $resp = $this->client->execute($req);
+        //echo '<pre>';var_dump($resp);exit;
+//        return $resp;
+        //return $resp->total_results > 0 ? $resp->result_list->map_data : [];
+        if (empty($resp->code)) {
+
+            $total = $resp->total_results;
+            $pageTotal = $total / $params['page_size'];
+            $this->total = $total;
+            $this->pages = ceil($pageTotal);
+            $this->pageNo = $params['page_no'];
+            return $items = $resp->result_list->map_data;
+        }else{
             $this->error = $resp->code;
             return false;
         }

@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class BannerController extends Controller
+class BestSellingController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +24,8 @@ class BannerController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('首页弹出');
+            $content->description('首页爆款热卖弹出');
 
             $content->body($this->grid());
         });
@@ -41,8 +41,8 @@ class BannerController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('编辑首页弹出');
+            $content->description('首页爆款热卖弹出');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,8 +57,8 @@ class BannerController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('banner管理');
-            $content->description('广告位管理');
+            $content->header('创建首页弹出');
+            $content->description('首页爆款热卖弹出');
 
             $content->body($this->form());
         });
@@ -74,7 +74,7 @@ class BannerController extends Controller
     protected function grid()
     {
         return Admin::grid(Banner::class, function (Grid $grid) {
-            $grid->model()->where('type', 'recommend');
+            $grid->model()->where('type', 'bestSelling');
             $grid->id('ID')->sortable();
             $grid->column('title', '标题');
 //            $grid->column('type', '类别')->display(function ($k) {
@@ -88,10 +88,11 @@ class BannerController extends Controller
                 return $array[$k] ?: null;
             });
             $grid->column('params','参数');
-            $grid->column('status', '状态')->display(function ($k) {
-                $array = ['禁用', '启用'];
-                return $array[$k] ?: null;
-            });
+            $states = [
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
+            ];
+            $grid->column('status','状态')->switch($states);
             $grid->column('sort', '排序');
             $grid->column('createdBy.username', '创建人');
             $grid->column('updatedBy.username', '修改人');
@@ -111,13 +112,17 @@ class BannerController extends Controller
 
             $form->display('id', 'ID');
             $form->text('title','标题');
-            $form->hidden('type')->default('recommend');
-            //$form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
-            $form->image('img_path', '图标')->resize(30,30)->uniqueName();
+            $form->hidden('type')->default('bestSelling');
+//            $form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
+            $form->image('img_path', '图标')->resize(350,100)->uniqueName();
             $form->text('url','链接')->rules('nullable');
             $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen','ClassifyListScreen'=>'ClassifyListScreen', 'DetailScreen' => 'DetailScreen']);
-            $form->textarea('params','参数')->help('必须是json格式,例：{"channelId": 18508981}');
-            $form->radio('status', '状态')->options(['禁用','启用' ]);
+            $form->textarea('params','参数')->help('必须是json格式，此项必须要设置图片的宽高,例：{"channelId": 18508981,"width":100,"height":100}');
+            $states = [
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
+            ];
+            $form->switch('status','状态')->states($states)->default(0);
             $form->display('created_by','创建人');
             $form->display('updated_by','修改人');
             $form->display('created_at', '创建时间');
