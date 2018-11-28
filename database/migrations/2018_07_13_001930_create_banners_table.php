@@ -20,7 +20,7 @@ class CreateBannersTable extends Migration {
 			$table->string('img_path')->nullable()->comment('图片路径');
 			$table->string('img_base_url')->nullable()->comment('图片基本路径');
 			$table->string('url')->nullable()->comment('链接地址');
-			$table->enum('nav', array('SearchScreen','WebScreen','ChannelScreen','ClassifyListScreen','DetailScreen'))->nullable()->default('WebScreen')->comment('NAV类型');
+			$table->enum('nav', array('SearchScreen','WebScreen','ChannelScreen','ClassifyListScreen','DetailScreen','RegisterScreen'))->nullable()->default('WebScreen')->comment('NAV类型');
 			$table->string('params')->nullable()->default('{}')->comment('nav参数，使用json形式书写');
 			$table->enum('status', array('1','0'))->nullable()->default('0')->comment('状态');
 			$table->integer('created_at')->nullable()->default(0)->comment('创建时间');

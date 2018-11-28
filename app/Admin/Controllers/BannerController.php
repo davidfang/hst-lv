@@ -84,14 +84,15 @@ class BannerController extends Controller
             $grid->column('img_path', '图片')->image('', 30, 30);
             $grid->column('url', '链接地址');
             $grid->column('nav', 'App中链接目标')->display(function ($k) {
-                $array = ['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen', 'DetailScreen' => 'DetailScreen'];
+                $array = ['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen','ClassifyListScreen'=>'ClassifyListScreen', 'DetailScreen' => 'DetailScreen'];
                 return $array[$k] ?: null;
             });
             $grid->column('params','参数');
-            $grid->column('status', '状态')->display(function ($k) {
-                $array = ['禁用', '启用'];
-                return $array[$k] ?: null;
-            });
+            $states = [
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
+            ];
+            $grid->column('status','状态')->switch($states);
             $grid->column('sort', '排序');
             $grid->column('createdBy.username', '创建人');
             $grid->column('updatedBy.username', '修改人');
@@ -113,11 +114,15 @@ class BannerController extends Controller
             $form->text('title','标题');
             $form->hidden('type')->default('recommend');
             //$form->select('type','类别')->options(['swiper' => 'swiper', 'recommend' => 'recommend']);
-            $form->image('img_path', '图标')->resize(30,30)->uniqueName();
+            $form->image('img_path', '图标')->resize(50,50)->uniqueName();
             $form->text('url','链接')->rules('nullable');
             $form->select('nav','App中链接目标')->options(['SearchScreen' => 'SearchScreen', 'WebScreen' => 'WebScreen', 'ChannelScreen' => 'ChannelScreen','ClassifyListScreen'=>'ClassifyListScreen', 'DetailScreen' => 'DetailScreen']);
             $form->textarea('params','参数')->help('必须是json格式,例：{"channelId": 18508981}');
-            $form->radio('status', '状态')->options(['禁用','启用' ]);
+            $states = [
+                'on'  => ['value' => '1', 'text' => '是', 'color' => 'primary'],
+                'off' => ['value' => '0', 'text' => '否', 'color' => 'default'],
+            ];
+            $form->switch('status','状态')->states($states)->default(0);
             $form->display('created_by','创建人');
             $form->display('updated_by','修改人');
             $form->display('created_at', '创建时间');
