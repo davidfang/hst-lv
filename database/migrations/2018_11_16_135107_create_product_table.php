@@ -22,8 +22,8 @@ class CreateProductTable extends Migration
             $table->string('title')->nullable()->comment('商品标题');
             $table->string('pict_url')->nullable()->comment('商品主图');
             $table->text('small_images')->nullable()->comment('商品小图列表');
-            $table->decimal('reserve_price')->nullable()->comment('商品一口价格');
-            $table->decimal('zk_final_price')->nullable()->comment('商品折扣价格');
+            $table->float('reserve_price')->nullable()->comment('商品一口价格');
+            $table->float('zk_final_price')->nullable()->comment('商品折扣价格');
             $table->smallInteger('user_type')->nullable()->default('1')->comment('卖家类型，0表示集市，1表示商城');
             $table->string('provcity')->nullable()->comment('宝贝所在地');
             $table->string('item_url',500)->nullable()->comment('商品地址');
@@ -45,7 +45,8 @@ class CreateProductTable extends Migration
             $table->string('coupon_id')->nullable()->comment('优惠券id');
             $table->string('include_mkt')->nullable()->comment('是否包含营销计划');
             $table->string('include_dxjh')->nullable()->comment('是否包含定向计划');
-            $table->string('commission_rate')->nullable()->comment('佣金比率');
+            $table->integer('commission_rate')->nullable()->comment('佣金比率');
+            $table->float('commission_amount',10,2)->nullable()->comment('佣金金额');
             $table->string('commission_type')->nullable()->comment('佣金类型 MKT表示营销计划，SP表示定向计划，COMMON表示通用计划');
             $table->string('shop_dsr')->nullable()->comment('店铺dsr评分');
             $table->string('coupon_share_url',1024)->nullable()->comment('券二合一页面链接');
@@ -63,7 +64,8 @@ class CreateProductTable extends Migration
 
 
 
-            $table->string('coupon_info_price')->nullable()->comment('优惠券面额(数值)');
+            $table->integer('coupon_info_price')->nullable()->comment('优惠券面额(数值)');
+            $table->float('real_price',8,2)->nullable()->comment('真实价格');
             $table->text('detail')->nullable()->comment('产品详情');
             $table->string('tpwd',500)->nullable()->comment('淘口令');
             $table->dateTime('tpwd_created_at')->nullable()->comment('淘口令生成时间');

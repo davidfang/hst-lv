@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Tpwd;
+use App\Model\BuyLog;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class TpwdController extends Controller
+class BuyLogController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +24,8 @@ class TpwdController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('点击口令');
-            $content->description('口令点击统计');
+            $content->header('购买点击记录');
+            $content->description('购买点击记录');
 
             $content->body($this->grid());
         });
@@ -41,8 +41,8 @@ class TpwdController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('购买点击记录编辑');
+            $content->description('购买点击记录编辑');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,8 +57,8 @@ class TpwdController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('创建购买点击记录');
+            $content->description('创建购买点击记录');
 
             $content->body($this->form());
         });
@@ -71,7 +71,7 @@ class TpwdController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Tpwd::class, function (Grid $grid) {
+        return Admin::grid(BuyLog::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
             $grid->column('num_iid', '淘宝产品ID');
@@ -82,8 +82,7 @@ class TpwdController extends Controller
             $grid->column('coupon_info_price', '优惠券面值');
             $grid->column('commission_rate', '佣金比例')->sortable();
             $grid->column('commission_amount', '佣金金额')->sortable();
-            $grid->column('click', '点击次数')->sortable();
-            $grid->column('buy', '购买次数')->sortable();
+            $grid->column('ip', 'ip');
             $grid->created_at();
             $grid->updated_at();
 
@@ -106,7 +105,7 @@ class TpwdController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Tpwd::class, function (Form $form) {
+        return Admin::form(BuyLog::class, function (Form $form) {
 
             $form->display('id', 'ID');
 

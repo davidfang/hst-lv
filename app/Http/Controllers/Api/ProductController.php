@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Common\TaoBao;
+use App\Model\BuyLog;
 use App\Model\Product;
 use App\Http\Resources\Product as ProductResource;
 use App\Model\Tpwd;
+use App\Model\DgSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Auth;
@@ -251,6 +253,9 @@ class ProductController extends Controller
      */
     public function getTpwd($goodsId){
         $goods = Product::find($goodsId);
+        if(empty($goods)){
+            $goods = DgSearch::find($goodsId);
+        }
         if($goods) {//查到产品
 
             if (Auth::check()) {//是否登录
@@ -287,11 +292,54 @@ class ProductController extends Controller
                 $tpwd->price = $goods->zk_final_price ;
                 $tpwd->coupon_info_price = $goods->coupon_info_price ;
                 $tpwd->commission_rate = $goods->commission_rate ;
+                $tpwd->commission_amount = $goods->commission_amount ;
                 $tpwd->click = 1 ;
                 $tpwd->buy = 0 ;
                 $tpwd->save();
             }
             return $this->success(['tpwd'=>$model]);
+        }else{//未查到产品
+            return $this->failed('非法请求');
+        }
+    }
+    /**
+     * 记录购买行为
+     * @param $goodsId
+     * @return mixed
+     */
+    public function buy($goodsId){
+        $goods = Product::find($goodsId);
+        if(empty($goods)){
+            $goods = DgSearch::find($goodsId);
+        }
+        if($goods) {//查到产品
+
+            if (Auth::check()) {//是否登录
+                $user = Auth::user();
+                //var_dump($user->taobao_pid);
+                $pid = $user->taobao_pid;
+                $userId = $user->id;
+
+
+            } else {
+                $userId = '';//默认29号用户
+
+
+            }
+
+                $buyLog = new BuyLog();
+            $buyLog->userId = $userId;
+            $buyLog->num_iid = $goodsId;
+            $buyLog->ip = (new Request())->ip();
+            $buyLog->title = $goods->title ;
+            $buyLog->pict_url = $goods->pict_url ;
+            $buyLog->price = $goods->zk_final_price ;
+            $buyLog->coupon_info_price = $goods->coupon_info_price ;
+            $buyLog->commission_rate = $goods->commission_rate ;
+            $buyLog->commission_amount = $goods->commission_amount ;
+            $buyLog->save();
+
+            return $this->message('购买成功');
         }else{//未查到产品
             return $this->failed('非法请求');
         }

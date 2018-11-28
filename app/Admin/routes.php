@@ -27,6 +27,7 @@ Route::group([
     $router->resource('goods',GoodsController::class);
     $router->resource('product',ProductController::class);
     $router->resource('tpwd',TpwdController::class);
+    $router->resource('buy-log',BuyLogController::class);
     $router->resource('goods-taobao','GoodsTaobaoController');
     $router->resource('search-log','DgSearchController');
     $router->resource('article','ArticleController');

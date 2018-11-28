@@ -533,9 +533,16 @@ class TaoBao
                 if (isset($row->coupon_remain_count)) {
                     $dgSearch->coupon_remain_count = $row->coupon_remain_count;// 优惠券剩余量
                 }
+                $dgSearch->real_price = $row->zk_final_price;//商品真实价格
                 if (isset($row->coupon_info)) {
                     $dgSearch->coupon_info = $row->coupon_info;// 优惠券面额
+                    preg_match_all('/满(\d*.\d*)元减(\d*)元/', $row->coupon_info, $coupon_info);
+                    if (isset($coupon_info[2][0])) {//有优惠券
+                        $dgSearch->coupon_info_price = $coupon_info[2][0];//优惠券面额(数值)
+                        $dgSearch->real_price = bcsub($row->zk_final_price, $coupon_info[2][0],2);//商品真实价格（去除优惠券之后）
+                    }
                 }
+                $dgSearch->commission_amount = bcdiv(bcmul($dgSearch->real_price, $row->commission_rate,2), 10000,2);//佣金金额
                 $dgSearch->commission_type = $row->commission_type;// 佣金类型  MKT表示营销计划，SP表示定向计划，COMMON表示通用计划->nullable();
                 $dgSearch->shop_title = $row->shop_title;// 店铺名称
                 if (isset($row->shop_dsr)) {
@@ -571,22 +578,24 @@ class TaoBao
             return false;
         }
     }
-    public function searchDg($params){
+
+    public function searchDg($params)
+    {
         $req = new TbkDgMaterialOptionalRequest();
 
 //        $req->setQ($keyWord);
-        if(empty($params['adzone_id'])){
+        if (empty($params['adzone_id'])) {
             $params['adzone_id'] = $this->adZoneId;
         }
-        if(empty($params['page_size'])){
+        if (empty($params['page_size'])) {
             $params['page_size'] = 20;
         }
-        if(empty($params['page_no'])){
+        if (empty($params['page_no'])) {
             $params['page_no'] = 1;
         }
         $params = array_filter($params);
-        foreach ($params as $k => $v){
-            $k = camel_case('set_'.$k);
+        foreach ($params as $k => $v) {
+            $k = camel_case('set_' . $k);
             $req->$k($v);
         }
         $resp = $this->client->execute($req);
@@ -601,7 +610,7 @@ class TaoBao
             $this->pages = ceil($pageTotal);
             $this->pageNo = $params['page_no'];
             return $items = $resp->result_list->map_data;
-        }else{
+        } else {
             $this->error = $resp->code;
             return false;
         }

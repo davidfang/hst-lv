@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTpwdTable extends Migration
+class CreateBuyLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateTpwdTable extends Migration
      */
     public function up()
     {
-        Schema::create('tpwd', function (Blueprint $table) {
+        Schema::create('buyLog', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tpwd')->comment('淘口令');
             $table->string('num_iid')->comment('淘宝产品ID');
             $table->string('userId')->comment('用户ID');
             $table->string('title')->comment('产品名称');
@@ -23,14 +22,13 @@ class CreateTpwdTable extends Migration
             $table->float('price')->comment('价格');
             $table->float('coupon_info_price')->comment('优惠券面值');
             $table->float('commission_rate')->comment('佣金比例');
-            $table->integer('click')->comment('点击次数');
-            $table->integer('buy')->comment('购买次数');
             $table->float('commission_amount',10,2)->comment('佣金金额');
+            $table->string('ip')->comment('ip')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
         });
-        DB::statement("ALTER TABLE `tpwd` comment'淘口令表'"); // 表注
+        DB::statement("ALTER TABLE `buyLog` comment'产品购买记录表'"); // 表注
     }
 
     /**
@@ -40,6 +38,6 @@ class CreateTpwdTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tpwd');
+        Schema::dropIfExists('buyLog');
     }
 }

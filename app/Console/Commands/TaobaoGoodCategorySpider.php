@@ -79,6 +79,8 @@ class TaobaoGoodCategorySpider extends Command
             "zk_final_price" => 33,
             "my_category_id" => 34,
             "coupon_info_price" => 35,
+            "real_price" => 36,
+            "commission_amount" => 37
         ];
 
         GoodsCategory::where([['status', '1']])->chunk(50, function ($goodsCategories) use ($dbDict) {
@@ -138,14 +140,16 @@ class TaobaoGoodCategorySpider extends Command
                             if (isset($coupon_info[2][0]) && $coupon_info[2][0] >= $goodsCategory->start_coupon_rate) {//大于设定优惠券面额的才加入
                                 $searchResult['my_category_id'] = $goodsCategory->id;
                                 $searchResult['coupon_info_price'] = $coupon_info[2][0];
+                                $searchResult['real_price'] = bcsub($searchResult['zk_final_price'], $searchResult['coupon_info_price'], 2);//真实价格
+                                $searchResult['commission_amount'] = bcdiv(bcmul($searchResult['commission_rate'], $searchResult['real_price'], 2), 10000, 2); //佣金金额
                                 if (isset($searchResult['small_images'])) {//必须有小图的产品才能被收录
                                     //var_dump($searchResult['small_images']);
                                     $searchResult['small_images'] = json_encode($searchResult['small_images']['string']);
 
                                     //$searchResult['coupon_share_url'] = 'https:'.$searchResult['coupon_share_url'];
                                     //var_dump(array_diff_key($dbDict, $searchResult));
-                                    if(!empty(array_diff_key($dbDict, $searchResult)) ||  !empty(array_diff_key($searchResult, $dbDict))){
-                                        var_dump(array_diff_key($dbDict, $searchResult)) ;
+                                    if (!empty(array_diff_key($dbDict, $searchResult)) || !empty(array_diff_key($searchResult, $dbDict))) {
+                                        var_dump(array_diff_key($dbDict, $searchResult));
                                         var_dump(array_diff_key($searchResult, $dbDict));
                                     }
 
@@ -181,9 +185,9 @@ class TaobaoGoodCategorySpider extends Command
                     //dd($productsValues);
                     //$this->table(['short_title','coupon_info'],$products);
 
-                }
-                $this->info(" $goodsCategory->title 采集完毕 共 " . count($productsValues));
 
+                    $this->info(" $goodsCategory->title 采集完毕 共 " . count($productsValues));
+                }
             }
         });
     }
