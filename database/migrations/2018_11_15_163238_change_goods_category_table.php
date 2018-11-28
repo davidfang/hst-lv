@@ -19,6 +19,7 @@ class ChangeGoodsCategoryTable extends Migration
 
             $table->integer('collected_total')->nullable()->default(200)->comment('采集商品数量');
             $table->integer('start_coupon_rate')->nullable()->default(5)->comment('优惠券起始金额');
+            $table->integer('volume')->nullable()->default(50)->comment('30天销量下限');
 
 
             $table->integer('start_dsr')->nullable()->comment('店铺dsr评分，筛选高于等于当前设置的店铺dsr评分的商品0-50000之间');

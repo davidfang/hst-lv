@@ -137,7 +137,7 @@ class TaobaoGoodCategorySpider extends Command
                         $searchResults = json_decode($searchResults, true);
                         foreach ($searchResults as $searchResult) {//对搜索结果进行处理
                             preg_match_all('/满(\d*.\d*)元减(\d*)元/', $searchResult['coupon_info'], $coupon_info);
-                            if (isset($coupon_info[2][0]) && $coupon_info[2][0] >= $goodsCategory->start_coupon_rate) {//大于设定优惠券面额的才加入
+                            if (isset($coupon_info[2][0]) && $coupon_info[2][0] >= $goodsCategory->start_coupon_rate && $searchResult['volume'] >= $goodsCategory->volume) {//大于设定优惠券面额  30天销量大于设定的值 才加入
                                 $searchResult['my_category_id'] = $goodsCategory->id;
                                 $searchResult['coupon_info_price'] = $coupon_info[2][0];
                                 $searchResult['real_price'] = bcsub($searchResult['zk_final_price'], $searchResult['coupon_info_price'], 2);//真实价格

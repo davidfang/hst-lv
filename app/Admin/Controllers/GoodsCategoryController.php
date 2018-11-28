@@ -118,6 +118,7 @@ class GoodsCategoryController extends Controller
             ];
             $grid->column('sort', '搜索排序')->editable('select',$sortOptions);
             $grid->column('start_tk_rate', '淘客佣金比率下限')->editable('text');
+            $grid->column('volume', '30天销量下限')->editable('text');
             $grid->column('include_pay_rate_30', '成交转化/行业均值')->switch($booleStates);
             $grid->column('include_good_rate', '好评率/行业均值')->switch($booleStates);
             $grid->column('include_rfd_rate', '退款率/行业均值')->switch($booleStates);
@@ -197,6 +198,7 @@ class GoodsCategoryController extends Controller
 
                 //$form->number('end_tk_rate', '淘客佣金比率上限')->help('淘客佣金比率上限，如：1234表示12.34%');
                 $form->number('start_tk_rate', '淘客佣金比率下限')->help('淘客佣金比率下限，如：1234表示12.34%');
+                $form->number('volume', '30天销量下限')->help('30天销量下限，如：120表示销量少于120的不采集');
                 //$form->number('end_price', '折扣价范围上限')->help('折扣价范围上限，单位：元');
                 $form->number('start_price', '折扣价范围下限')->help('折扣价范围下限，单位：元');
                 //$form->number('end_ka_tk_rate', 'KA媒体淘客佣金比率上限')->help('如：1234表示12.34%');
