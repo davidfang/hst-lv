@@ -42,6 +42,8 @@ Route::post('product/set-detail','Api\ProductController@setDetail');//设置产�
 Route::post('product/set-detail2','Api\ProductController@setDetail2');//设置产品详情 新淘宝接口地址
 Route::get('product/dtpwd/{goodsId}','Api\ProductController@getTpwd');//默认获取产品淘口令
 Route::get('product/tpwd/{goodsId}','Api\ProductController@getTpwd')->middleware('auth:api');//获取产品淘口令
+Route::get('product/by-tpwd','Api\ProductController@infoByTpwd');//根据淘口令获取产品
+
 Route::get('product/buy-no/{goodsId}','Api\ProductController@buy');//未登录购买
 Route::get('product/buy/{goodsId}','Api\ProductController@buy')->middleware('auth:api');//登录后购买
 Route::get('product/category','Api\ProductController@category');//分类产品列表

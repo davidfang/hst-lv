@@ -78,7 +78,8 @@ class TpwdController extends Controller
             $grid->column('userId', '用户ID');
             $grid->column('title', '产品名称');
             $grid->column('pict_url', '产品图片')->image(100, 100);
-            $grid->column('price', '价格');
+            $grid->column('zk_final_price', '价格');
+            $grid->column('real_price', '券后价');
             $grid->column('coupon_info_price', '优惠券面值');
             $grid->column('commission_rate', '佣金比例')->sortable();
             $grid->column('commission_amount', '佣金金额')->sortable();

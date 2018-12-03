@@ -20,7 +20,9 @@ class CreateTpwdTable extends Migration
             $table->string('userId')->comment('用户ID');
             $table->string('title')->comment('产品名称');
             $table->string('pict_url')->comment('产品图片');
-            $table->float('price')->comment('价格');
+            $table->string('user_type')->comment('卖家类型，0表示集市，1表示商城');
+            $table->float('zk_final_price')->comment('价格');
+            $table->float('real_price',8,2)->nullable()->comment('真实价格');
             $table->float('coupon_info_price')->comment('优惠券面值');
             $table->float('commission_rate')->comment('佣金比例');
             $table->integer('click')->comment('点击次数');
