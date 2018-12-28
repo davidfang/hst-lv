@@ -97,6 +97,7 @@ class TpwdController extends Controller
                 $filter->date('created_at','创建时间');
 
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 

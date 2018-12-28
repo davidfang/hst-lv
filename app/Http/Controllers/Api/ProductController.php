@@ -39,7 +39,7 @@ class ProductController extends Controller
     public function category(Request $request)
     {
         $categoryId = $request->get('categoryId');
-        $goods = Product::where([['my_category_id', $categoryId]])->simplePaginate(20);
+        $goods = Product::where([['my_category_id', $categoryId]])->orderByDesc('created_at')->simplePaginate(20);
         return $this->success(ProductResource::collection($goods));
     }
 

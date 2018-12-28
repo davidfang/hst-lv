@@ -18,6 +18,7 @@ Route::group([
     $router->resource('notices','NoticesController');
     $router->resource('swiper','SwiperController');
     $router->resource('goods-category','GoodsCategoryController');
+    $router->resource('caiji','CaijiController');
 
     $router->any('/taobao/selection', 'TaobaoController@selection');
     $router->get('/taobao/executeUpdate/{favorites_id?}/{page_no?}', 'TaobaoController@executeUpdate')->name('taobao.execute_update');
@@ -27,6 +28,7 @@ Route::group([
     $router->resource('goods',GoodsController::class);
     $router->resource('product',ProductController::class);
     $router->resource('tpwd',TpwdController::class);
+    $router->resource('share',ShareController::class);
     $router->resource('buy-log',BuyLogController::class);
     $router->resource('goods-taobao','GoodsTaobaoController');
     $router->resource('search-log','DgSearchController');

@@ -83,7 +83,7 @@ class BuyLogController extends Controller
             $grid->column('commission_rate', '佣金比例')->sortable();
             $grid->column('commission_amount', '佣金金额')->sortable();
             $grid->column('ip', 'ip');
-            $grid->created_at();
+            $grid->created_at()->sortable();
             $grid->updated_at();
 
 
@@ -95,6 +95,7 @@ class BuyLogController extends Controller
                 $filter->date('created_at','创建时间');
 
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 

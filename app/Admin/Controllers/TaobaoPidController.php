@@ -24,8 +24,8 @@ class TaobaoPidController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('淘宝客PID管理');
+            $content->description('淘宝客PID管理');
 
             $content->body($this->grid());
         });
@@ -74,9 +74,28 @@ class TaobaoPidController extends Controller
         return Admin::grid(TaobaoPid::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
+            $grid->column('pid','淘宝PID');
+            $grid->column('name','名称');
+            $grid->column('siteId');
+            $grid->column('adzoneId','广告位ID(adzoneId)');
+            $grid->column('userId');
+            $grid->column('userInfo.nickname','用户名');
+            $grid->column('taobaoId');
 
             $grid->created_at();
             $grid->updated_at();
+
+            $grid->filter(function ($filter) {
+                // 去掉默认的id过滤器
+                $filter->disableIdFilter();
+                $filter->equal('pid', '淘宝PID');
+                $filter->equal('siteId', 'siteId');
+                $filter->equal('adzoneId', '广告位ID(adzoneId)');
+                $filter->equal('userId', '用户ID');
+                $filter->equal('taobaoId', '淘宝ID');
+
+            });
+
         });
     }
 

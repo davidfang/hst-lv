@@ -509,7 +509,7 @@ class TaoBao
                 if (isset($row->coupon_id)) {
                     $dgSearch->coupon_id = $row->coupon_id;// 优惠券id;
                 }
-                $dgSearch->num_iid = (string)$row->num_iid;// 宝贝id;
+                $dgSearch->num_iid = (string)$row->num_iid;//宝贝id;
                 $dgSearch->title = $row->title;// 商品标题
                 $dgSearch->pict_url = $row->pict_url;// 商品主图
                 if (isset($row->small_images)) {// 商品小图列表
@@ -540,7 +540,13 @@ class TaoBao
                     if (isset($coupon_info[2][0])) {//有优惠券
                         $dgSearch->coupon_info_price = $coupon_info[2][0];//优惠券面额(数值)
                         $dgSearch->real_price = bcsub($row->zk_final_price, $coupon_info[2][0],2);//商品真实价格（去除优惠券之后）
+                    }else{
+                        $dgSearch->coupon_info_price = 0;//优惠券面额(数值)
+                        $dgSearch->real_price = $row->zk_final_price;//商品真实价格（去除优惠券之后）
                     }
+                }else{
+                    $dgSearch->coupon_info_price = 0;//优惠券面额(数值)
+                    $dgSearch->real_price = $row->zk_final_price;//商品真实价格（去除优惠券之后）
                 }
                 $dgSearch->commission_amount = bcdiv(bcmul($dgSearch->real_price, $row->commission_rate,2), 10000,2);//佣金金额
                 $dgSearch->commission_type = $row->commission_type;// 佣金类型  MKT表示营销计划，SP表示定向计划，COMMON表示通用计划->nullable();
@@ -555,17 +561,17 @@ class TaoBao
 
 
                 //$dgSearch->tpwd;
-                //生成淘口令开始
-                $url = $dgSearch->click_url;
-                if ($dgSearch->isCoupon()) {
-                    $url = $dgSearch->coupon_share_url;
-                }
-                if (empty($url)) {
-                    $url = $dgSearch->item_url;
-                }
-                $model = $this->tpwd($dgSearch->title, $url, $dgSearch->pict_url, '{}');
-                $dgSearch->tpwd = $model;
-                $dgSearch->tpwd_created_at = Carbon::now();
+//                //生成淘口令开始
+//                $url = $dgSearch->click_url;
+//                if ($dgSearch->isCoupon()) {
+//                    $url = $dgSearch->coupon_share_url;
+//                }
+//                if (empty($url)) {
+//                    $url = $dgSearch->item_url;
+//                }
+//                $model = $this->tpwd($dgSearch->title, $url, $dgSearch->pict_url, '{}');
+//                $dgSearch->tpwd = $model;
+//                $dgSearch->tpwd_created_at = Carbon::now();
                 //生成淘口令结束
 
 

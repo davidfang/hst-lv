@@ -15,6 +15,10 @@ class DgSearch extends JsonResource
     public function toArray($request)
     {
         $parent = parent::toArray($request);
+        $parent['num_iid'] = (string)$this->num_iid;
+        if(is_null($this->coupon_share_url)){
+            $parent['coupon_share_url'] = $this->url;
+        }
 //        $pic1 = '/image/' . str_replace(array('+','/','='),array('-','_',''),base64_encode($this->pict_url.'_600x600.jpg') ). '/dissolve/100/gravity/North/dx/0/dy/190';
 //        $title1 = '/text/' . str_replace(array('+','/','='),array('-','_',''),base64_encode(mb_substr($this->title,0,22))) . '/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/IzAwMDAwMA==/dissolve/100/gravity/NorthWest/dx/117/dy/84';
 //        $title2 = '/text/' . str_replace(array('+','/','='),array('-','_',''),base64_encode(mb_substr($this->title,22)) ). '/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/IzAwMDAwMA==/dissolve/100/gravity/NorthWest/dx/51/dy/134';

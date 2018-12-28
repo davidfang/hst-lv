@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\TaobaoDeleteExit;
 use App\Console\Commands\TaobaoFavourite;
 use App\Console\Commands\TaobaoGoodCategorySpider;
 use App\Console\Commands\TaobaoOrder;
@@ -22,6 +23,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        TaobaoDeleteExit::class,
         TaobaoFavourite::class,
         TaobaoUpdateGoods::class,
         TaobaoOrder::class,

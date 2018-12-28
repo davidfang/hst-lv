@@ -12,6 +12,7 @@ class DgSearch extends Model
     use SoftDeletes;
 
     protected $table = 'dg_search';
+    protected $primaryKey = 'num_iid';
     /**
      * 可以被批量赋值的属性。
      *
@@ -50,31 +51,31 @@ class DgSearch extends Model
      * @param $value
      * @return string
      */
-    public function getTpwdAttribute($value){
-        if (!empty($value) && Carbon::now()->lt((new Carbon($this->tpwd_created_at))->addDay(30))) {
-            return $value;
-        }
-
-        $url                                =   $this->click_url;
-        if($this->isCoupon()){
-            $url                            =   $this->coupon_share_url;
-        }
-        if(empty($url)){
-            $url                            =   $this->item_url;
-        }
-        $taobao = new TaoBao();
-        $model = $taobao->tpwd($this->title,$url,$this->pict_url,'{}');
-        if($model != '') {
-
-            $this->attributes['tpwd'] = $model;
-            $this->attributes['tpwd_created_at'] = Carbon::now();
-            if ($this->id > 0) {
-                $this->save();
-            }
-        }
-
-        return $model;
-    }
+//    public function getTpwdAttribute($value){
+//        if (!empty($value) && Carbon::now()->lt((new Carbon($this->tpwd_created_at))->addDay(30))) {
+//            return $value;
+//        }
+//
+//        $url                                =   $this->click_url;
+//        if($this->isCoupon()){
+//            $url                            =   $this->coupon_share_url;
+//        }
+//        if(empty($url)){
+//            $url                            =   $this->item_url;
+//        }
+//        $taobao = new TaoBao();
+//        $model = $taobao->tpwd($this->title,$url,$this->pict_url,'{}');
+//        if($model != '') {
+//
+//            $this->attributes['tpwd'] = $model;
+//            $this->attributes['tpwd_created_at'] = Carbon::now();
+//            if ($this->id > 0) {
+//                $this->save();
+//            }
+//        }
+//
+//        return $model;
+//    }
     /**
      * 检查是不是优惠券商品
      * @return bool

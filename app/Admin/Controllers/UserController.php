@@ -105,6 +105,7 @@ class UserController extends Controller
                     $batch->disableDelete();
                 });
             });
+            $grid->model()->orderBy('id', 'desc');
         });
     }
 

@@ -26,6 +26,7 @@ class Product extends JsonResource
 //        }else {
 //            //$parent['share_pict_url'] = env('QINIU_SHARE_PICT_TEMPLATE_URL_TM') . $pic1 . $title1 . $title2 . $realPrice . $oldPrice . $coupon;
 //        }
+        $parent['volume'] = $this->volume + rand(100,200);
         return $parent;
     }
 }

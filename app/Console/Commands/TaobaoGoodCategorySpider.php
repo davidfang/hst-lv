@@ -135,6 +135,7 @@ class TaobaoGoodCategorySpider extends Command
                     if ($searchResults) {
                         $searchResults = json_encode($searchResults);
                         $searchResults = json_decode($searchResults, true);
+                        //dd($searchResults);
                         foreach ($searchResults as $searchResult) {//对搜索结果进行处理
                             preg_match_all('/满(\d*.\d*)元减(\d*)元/', $searchResult['coupon_info'], $coupon_info);
                             if (isset($coupon_info[2][0]) && $coupon_info[2][0] >= $goodsCategory->start_coupon_rate && $searchResult['volume'] >= $goodsCategory->volume) {//大于设定优惠券面额  30天销量大于设定的值 才加入
@@ -157,8 +158,12 @@ class TaobaoGoodCategorySpider extends Command
                                         //dd(array_flip(array_keys($searchResult)));
                                         $products[] = $searchResult;//将搜索到的产品加入到产品队列中
                                         $spiderTotal++;
+                                    }else{
+                                        $this->info('检查字段失败一条');
                                     }
                                 }
+                            }else{
+                                //$this->info('优惠券面值：'.$coupon_info[2][0] .' 设定优惠券取值：'. $goodsCategory->start_coupon_rate .' 销量：'. $searchResult['volume'] .' 设定销量:'. $goodsCategory->volume);
                             }
                         }
                         //dd($searchResults);
@@ -180,13 +185,12 @@ class TaobaoGoodCategorySpider extends Command
                     //echo serialize($productsValues);
 
                     \DB::table('product')->insert($productsValues);
-                    $this->info('数据库插入一次');
-                    $this->info(count($productsIndex));
+                    $this->info('数据库插入一次 '.count($productsIndex).' 条');
                     //dd($productsValues);
                     //$this->table(['short_title','coupon_info'],$products);
 
 
-                    $this->info(" $goodsCategory->title 采集完毕 共 " . count($productsValues));
+                    $this->info(" $goodsCategory->title 采集完毕 共 " . count($productsValues) .' 条');
                 }
             }
         });

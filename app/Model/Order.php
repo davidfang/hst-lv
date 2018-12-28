@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -46,4 +47,11 @@ class Order extends Model
         'subsidy_fee',
         'relation_id',
     ];
+    /**
+     * 用户信息
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function userInfo(){
+        return $this->hasOne(User::class,'id','unid');
+    }
 }

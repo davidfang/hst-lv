@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Common\TaoBao;
 use App\Helpers\AccountOperating;
 use App\Imports\OrderImport;
+use App\Model\TaobaoPid;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
@@ -49,7 +51,10 @@ class TaobaoOrder extends Command
         //var_dump($orderArray);
 
         foreach ($orderArray[0] as $order){
-            $order['unid'] = '29';//用户ID
+            //dd($order);
+            $userId = (TaobaoPid::where([['adzoneId',$order['adzone_id']]])->first())->userInfo->id;
+            //dd($userId);
+            $order['unid'] = $userId;//用户ID
             $tkStatus = [
                 '3'=>'订单结算',
                 '12'=>'订单付款',

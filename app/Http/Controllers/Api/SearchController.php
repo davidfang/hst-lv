@@ -27,6 +27,7 @@ class SearchController extends Controller
         $sortId = $request->get('sortId',3);
         $taobao = new TaoBao();
         $list = $taobao->searchDgForUser($keyWord, $page, $sortId);
+        //dd($list);
         if($list) {
             /*foreach ($list as $k => $v) {
                 $list[$k]->category_id = 21779;//默认是搜索
