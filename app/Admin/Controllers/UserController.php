@@ -92,6 +92,7 @@ class UserController extends Controller
                 $array = ['VIP会员', '超级会员', '运营商'];
                 return $array[$k] ?: null;
             });
+            $grid->column('parent_id', '父ID')->sortable();
             $grid->column('parentUser.mobile', '父ID手机');
 
             $grid->created_at();

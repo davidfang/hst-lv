@@ -2,9 +2,13 @@
 
 namespace App\Console;
 
+use App\Console\Commands\HuashengCategorySpider;
+use App\Console\Commands\HuashengGoodsSpider;
 use App\Console\Commands\TaobaoDeleteExit;
 use App\Console\Commands\TaobaoFavourite;
 use App\Console\Commands\TaobaoGoodCategorySpider;
+use App\Console\Commands\HuashenIndexSpider;
+use App\Console\Commands\TaobaoGoodsSpiderByIds;
 use App\Console\Commands\TaobaoOrder;
 use App\Console\Commands\TaobaoOrderRefund;
 use App\Console\Commands\TaobaoRebateOrder;
@@ -30,6 +34,10 @@ class Kernel extends ConsoleKernel
         TaobaoOrderRefund::class,
         TaobaoRebateOrder::class,
         TaobaoGoodCategorySpider::class,
+        TaobaoGoodsSpiderByIds::class,
+        HuashenIndexSpider::class,
+        HuashengCategorySpider::class,
+        HuashengGoodsSpider::class,
         UserWithdraw::class,
         UserRegister::class
     ];

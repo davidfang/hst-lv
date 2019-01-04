@@ -106,7 +106,35 @@ class TaoBao
         $this->error = $error;
     }
 
-
+    /**
+     * 根据产品id从淘宝客获得产品信息
+     * @param $numIid  产品id 以逗号分割
+     * @return bool|null|\SimpleXMLElement
+     */
+    public function tbkItemInfoGetRequest($numIid){
+        if (empty($numIid)) {
+            $this->error = '非法的num_iid';
+            return false;
+        }
+        $req = new TbkItemInfoGetRequest();
+        $req->setFields("num_iid,title,pict_url,small_images,zk_final_price,item_url,volume");
+        $req->setNumIids($numIid);
+        $resp = $this->client->execute($req);
+        if (!empty($resp->results->n_tbk_item)) {
+            return $items = $resp->results->n_tbk_item;
+        } else {
+            if (isset($resp->code)) {
+                $this->error = $resp->msg;
+                return false;
+            }
+            return null;
+        }
+    }
+    /**
+     * 根据产品id获得产品信息，并且进入GoodsShare表
+     * @param $numIid
+     * @return GoodsShare|bool|null
+     */
     public function item($numIid)
     {
         if (empty($numIid)) {
@@ -605,10 +633,10 @@ class TaoBao
             $req->$k($v);
         }
         $resp = $this->client->execute($req);
-        //echo '<pre>';var_dump($resp);exit;
+        //echo '<pre>';var_dump($resp);//exit;
 //        return $resp;
         //return $resp->total_results > 0 ? $resp->result_list->map_data : [];
-        if (empty($resp->code)) {
+        if (!isset($resp->code) ) {
 
             $total = $resp->total_results;
             $pageTotal = $total / $params['page_size'];
