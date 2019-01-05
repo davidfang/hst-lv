@@ -126,7 +126,7 @@ class ProductController extends Controller
 //            $grid->column('tpwd','淘口令');
 //            $grid->column('tpwd_created_at','淘口令生成时间');
 
-            //$grid->created_at();
+            $grid->created_at();
             //$grid->updated_at();
 
             $grid->filter(function ($filter) {

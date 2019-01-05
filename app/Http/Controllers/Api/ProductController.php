@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $goods = Product::where([['my_category_id',env('INDEX_RECOMMENT_CATEGORY_ID',0)]])->paginate(20);
+        $goods = Product::where([['my_category_id',env('INDEX_RECOMMENT_CATEGORY_ID',0)]])->orderByDesc('created_at')->paginate(20);
         //$goods = Product::getModel()->orderByDesc('commission_rate')->paginate(20);
         return $this->success(ProductResource::collection($goods));
         //return $this->success(ProductResource::collection($goods)->resource);

@@ -61,9 +61,10 @@ class TaobaoOrder extends Command
                 '13'=>'订单失效',
                 '14'=>'订单成功'
             ];//淘客订单状态集合，
+            $orderTkStatus = $order['tk_status'];
             $order['tk_status']= array_search($order['tk_status'],$tkStatus);
             $operatingStatus =  AccountOperating::orderToDb($order);
-            $this->info('| '.$order['trade_id'].' | '.$order['item_title'].' | '.$order['pub_share_pre_fee'].' 状态'.$operatingStatus);
+            $this->info('| '.$order['trade_id'].' | '.$order['item_title'].' | '.$order['pub_share_pre_fee'].' 状态 | '.$orderTkStatus.' | 账户操作结果 '.$operatingStatus);
         }
         exit();
         $orderInfo[0] = [
