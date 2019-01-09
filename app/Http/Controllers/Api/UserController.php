@@ -153,4 +153,64 @@ class UserController extends Controller
         $child = User::grandson($userId)->paginate(20);
         return $this->success(FansResources::collection($child)->resource);
     }
+
+    /**
+     * 填写邀请码
+     * @param Request $request
+     * @return mixed
+     */
+    public function invitationCodeSet(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->parent_id != 0) {
+            return $this->failed('不可修改邀请码');
+        }
+
+
+        $data = $request->only(['invitationCode']);
+        $validator = Validator::make($data, [
+            'invitationCode' => 'exists:users,invitation_code',
+        ], [
+                'invitation_code.exists' => '邀请码不正确',
+            ]
+        );
+        if ($validator->fails()) {
+            return $this->setStatusCode(401)->failed($validator->errors());
+        }
+
+        $invitationCode = $request->get('invitationCode');
+
+
+        $parent_id = decodeInvitationCode($invitationCode);
+
+
+        if ($parent_id == $user->id) {//如果用自己的邀请码
+            return $this->failed('不能填写自己的邀请码');
+        } else {
+            $parent = User::find($parent_id);
+            if ($parent->grade == '2') {//运营商
+                $grandpa_id = $operator_id = $parent->id;
+            } else {
+                $grandpa_id = $parent->parent_id;
+                $operator_id = $parent->operator_id;
+            }
+
+            $user->parent_id = $parent_id;
+            $user->grandpa_id = $grandpa_id;
+            $user->operator_id = $operator_id;
+
+            $user->save();
+
+            return $this->success(['parent_id' => $parent_id]);
+        }
+    }
+    public function test(){
+
+        if(Auth::check()){
+            die('check');
+        }else{
+            die('not check');
+        }
+    }
 }

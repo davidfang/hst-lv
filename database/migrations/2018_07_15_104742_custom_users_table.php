@@ -16,6 +16,7 @@ class CustomUsersTable extends Migration
         Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         Schema::table('users', function (Blueprint $table) {
             //
+            $table->string('third_id',100)->nullable()->comment('第三方登录ID');
             $table->string('name',30)->nullable()->comment('名字')->change();
             $table->string('nickname',30)->nullable()->comment('用户昵称');
             $table->string('email',50)->nullable()->comment('邮箱')->change();

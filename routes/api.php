@@ -69,8 +69,10 @@ Route::post('send-code','Api\Auth\RegisterController@sendCheckCode');
 //Route::post('send-code','Toplan\Sms\SmsController@postSendCode');
 Route::post('app-set','Api\AppConfigController@index');
 Route::get('app-upgrade','Api\AppConfigController@upgrade');
+Route::post('thirdLogin/loginAndBind','Api\Auth\ThirdLoginController@loginAndBind');
 Route::post('thirdLogin/login','Api\Auth\ThirdLoginController@login');
 Route::post('thirdLogin/bind','Api\Auth\ThirdLoginController@bind');
+Route::get('user/test','Api\UserController@test');
 Route::middleware('auth:api')->group(function (){
     Route::post('passport/password-change','Api\Auth\ResetPasswordController@change');
     Route::post('passport/password-set','Api\Auth\ResetPasswordController@set');
@@ -79,6 +81,7 @@ Route::middleware('auth:api')->group(function (){
     Route::get('user/grand-fans','Api\UserController@grandFans');
     Route::post('user/update','Api\UserController@update');
     Route::post('user/avatar','Api\UserController@avatar');
+    Route::post('user/invitationCodeSet','Api\UserController@invitationCodeSet');
     Route::get('bankcard/show','Api\BankcardController@show');
     Route::post('bankcard/create','Api\BankcardController@create');
     Route::post('account/withdrawal','Api\AccountController@withdrawal');
@@ -87,4 +90,5 @@ Route::middleware('auth:api')->group(function (){
     Route::get('invite','Api\InviteController@Index');
     Route::get('order','Api\OrderController@index');
 });
+Route::get('invite/guest','Api\InviteController@guest');
 

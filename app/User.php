@@ -4,6 +4,7 @@ namespace App;
 
 use App\Model\Account;
 use App\Model\TaobaoPid;
+use Carbon\Carbon;
 use function foo\func;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,7 +23,7 @@ class User extends Authenticatable
      */
     public function findForPassport($username)
     {
-        return $this->orWhere('email', $username)->orWhere('mobile', $username)->first();
+        return $this->orWhere('email', $username)->orWhere('mobile', $username)->orWhere('third_id',$username)->first();
     }
 
     /**
@@ -41,7 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'mobile', 'name', 'nickname', 'password', 'parent_id', 'invitation_code', 'ip', 'last_login_ip', 'last_login_time', 'grandpa_id', 'operator_id'
+        'mobile', 'name', 'nickname', 'password', 'parent_id', 'invitation_code', 'ip', 'last_login_ip', 'last_login_time', 'grandpa_id', 'operator_id','third_id'
     ];
 
     /**
@@ -91,6 +92,52 @@ class User extends Authenticatable
         return self::where([['grandpa_id', $id], ['parent_id', '<>', $id], ['status', '1']])->select(['id', 'mobile', 'nickname', 'avatar', 'created_at']);
     }
 
+    /**
+     * 第三方创建用户
+     * @param $ip
+     * @param $third_id 三方登录ID
+     * @param $avatar
+     * @param $nickname
+     * @param $gender
+     * @return mixed
+     */
+    public static function thirdCreate($ip,$third_id,$avatar,$nickname,$gender){
+        $genders = ['男'=>'1','女'=>'2','未设置'=>'0'];
+        $gender = $genders[$gender];
+        //事务开始
+        DB::transaction(function () use ($ip,$third_id, $avatar,$nickname,$gender,   &$user) {
+            $taobaoPidModel = TaobaoPid::where('userId')->lockForUpdate()->first();//查找出来一个PID
+            $user = User::create([
+                'avatar' => $avatar,
+                'nickname' => $nickname,
+                'gender' => $gender,
+                'third_id'=> $third_id,
+                'password' =>  '1' ,
+                'ip' => $ip
+            ]);
+            $user->invitation_code = createInvitationCode($user->id);
+            $user->last_login_ip = $ip;
+            $user->last_login_time = Carbon::now()->toDateTimeString();
+            if ($taobaoPidModel) {//有淘宝PID
+                $taobaoPidModel->userId = $user->id;
+                $taobaoPidModel->save();
+                $user->taobao_pid = $taobaoPidModel->pid;
+            } else {//无淘宝PID
+
+            }
+            $user->save();
+            Account::initAcount($user->id);
+        }, 5);
+        return $user;
+    }
+    /**
+     * 创建新用户
+     * @param $ip
+     * @param $mobile
+     * @param null $password
+     * @param null $invitation_code 推荐码
+     * @return mixed
+     */
     public static function createNew($ip, $mobile, $password = null, $invitation_code = null)
     {
         if (is_null($invitation_code)) {//没有推荐码

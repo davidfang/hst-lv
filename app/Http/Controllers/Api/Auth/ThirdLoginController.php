@@ -13,6 +13,58 @@ use App\Model\Account;
 class ThirdLoginController extends Controller
 {
     /**
+     * 第三方登录并绑定
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function loginAndBind(Request $request){
+        $data = $request->only(['uid', 'platform', 'screen_name', 'iconurl', 'accessToken', 'refreshToken', 'gender', 'unionid', 'openid', 'expires_in','other']);
+        //1校验
+        $validator = $this->validator($data);
+
+        if ($validator->fails()) {
+            //SmsManager::forgetState();
+            return $this->setStatusCode(401)->failed($validator->errors());
+        }
+        if ($thirdLoginLog = ThirdLogin::where([['uid', $request['uid']], ['platform', $request['platform']]])->first()) {//是否有第三方登录信息
+            //die('d');
+            if ($thirdLoginLog->userId != null) {//已绑定 3 登录
+                $user = $thirdLoginLog->userInfo;
+                //var_dump($user);die();
+                $data['userId'] = $user->id;
+                $thirdLogin = ThirdLogin::create($data);
+                //客户端授权登录
+                $authenticated = $this->authenticateClientByThirdLogin($request,$user);
+                $user->last_login_ip = $request->ip();
+                $user->last_login_time = Carbon::now()->toDateTimeString();
+                $user->save();
+                return $this->success(['bind'=>true,'loginInfo'=>$authenticated]);
+            } else {//未绑定 要求绑定
+                $user = User::thirdCreate($request->ip(),$data['uid'],$data['iconurl'],$data['screen_name'],$data['gender']);
+                $data['userId'] = $user->id;
+
+
+
+                $thirdLogin = ThirdLogin::create($data);
+                //客户端授权登录
+                $authenticated = $this->authenticateClientByThirdLogin($request,$user);
+                return $this->success(['bind'=>true,'loginInfo'=>$authenticated]);
+            }
+        } else {//无第三方登录信息 2 注册 绑定
+            //die('c');
+            $user = User::thirdCreate($request->ip(),$data['uid'],$data['iconurl'],$data['screen_name'],$data['gender']);
+            $data['userId'] = $user->id;
+
+
+
+            $thirdLogin = ThirdLogin::create($data);
+            //var_dump($user);
+            //die('u');
+            //客户端授权登录
+            $authenticated = $this->authenticateClientByThirdLogin($request,$user);
+            return $this->success(['bind'=>true,'loginInfo'=>$authenticated]);
+        }
+    }
+    /**
      * 第三方登录
      *
      * @param  \Illuminate\Http\Request $request

@@ -17,4 +17,18 @@ class InviteController extends Controller
             return $this->failed('服务器开小差儿了');
         }
     }
+
+    /**
+     * 游客
+     * @param Request $request
+     * @return mixed
+     */
+    public function guest(Request $request){
+        $invite = Invite::where('status','1')->first();
+        if($invite){
+            return $this->success(new InviteResource($invite));
+        }else{
+            return $this->failed('服务器开小差儿了');
+        }
+    }
 }
