@@ -84,6 +84,7 @@ Route::middleware('auth:api')->group(function (){
     Route::post('user/invitationCodeSet','Api\UserController@invitationCodeSet');
     Route::get('bankcard/show','Api\BankcardController@show');
     Route::post('bankcard/create','Api\BankcardController@create');
+    Route::post('bankcard/create2','Api\BankcardController@create2');
     Route::post('account/withdrawal','Api\AccountController@withdrawal');
     Route::get('qiniu/avatarToken','Api\Qiniucontroller@getAvatarToken');//上传头像获取七牛token
     Route::get('account/index','Api\AccountController@index');

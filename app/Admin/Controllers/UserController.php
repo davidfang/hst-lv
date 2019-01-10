@@ -107,6 +107,15 @@ class UserController extends Controller
                 });
             });
             $grid->model()->orderBy('id', 'desc');
+            $grid->filter(function ($filter) {
+                // 去掉默认的id过滤器
+                $filter->disableIdFilter();
+                $filter->equal('mobile', '手机');
+                $filter->equal('parent_id','父ID');
+                $filter->like('nickname', '昵称');
+                $filter->equal('name', '姓名');
+
+            });
         });
     }
 

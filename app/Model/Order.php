@@ -11,7 +11,7 @@ class Order extends Model
     use SoftDeletes;
 
     protected $table = 'order';
-    public $fillable = ['trade_parent_id',
+    public $fillable = ['pic','trade_parent_id',
         'trade_id',
         'num_iid',
         'item_title',

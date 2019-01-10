@@ -42,7 +42,7 @@ Route::group([
     $router->resource('invite','InviteController');
     $router->resource('taobao-pid','TaobaoPidController');
     $router->resource('app-version','AppVersionController');
-
+    $router->resource('bankcard','BankcardController');
     $router->group([
         'prefix' => 'api'
     ],function (){

@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Common\TaoBao;
 use App\Helpers\AccountOperating;
 use App\Imports\OrderImport;
+use App\Model\DgSearch;
+use App\Model\Product;
 use App\Model\TaobaoPid;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
@@ -63,6 +65,8 @@ class TaobaoOrder extends Command
             ];//淘客订单状态集合，
             $orderTkStatus = $order['tk_status'];
             $order['tk_status']= array_search($order['tk_status'],$tkStatus);
+            //添加订单产品图片到订单信息
+            $order['pic'] = $this->getProductPic($order['num_iid']);
             $operatingStatus =  AccountOperating::orderToDb($order);
             $this->info('| '.$order['trade_id'].' | '.$order['item_title'].' | '.$order['pub_share_pre_fee'].' 状态 | '.$orderTkStatus.' | 账户操作结果 '.$operatingStatus);
         }
@@ -179,5 +183,21 @@ class TaobaoOrder extends Command
             'relation_id'=>'3223',//渠道关系ID
         ];
         AccountOperating::order($orderInfo[1]);
+    }
+
+    /**
+     * 根据产品ID查找产品主图
+     * @param $num_iid
+     * @return mixed
+     */
+    public function getProductPic($num_iid){
+
+        //最后调用淘宝接口查产品
+        $product = (new TaoBao())->tbkItemInfoGetRequest($num_iid);
+        if($product){
+            return ($product[0])->pict_url;
+        }else{
+            return '';
+        }
     }
 }

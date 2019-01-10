@@ -51,6 +51,43 @@ class BankcardController extends Controller
         $this->message('操作成功');
         return $this->success($bankcard);
     }
+    /**
+     * 绑定支付宝2  重点是添加了手机号
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function create2(Request $request)
+    {
+
+        $data = $request->only(['bank_card_no','mobile','name', 'verifyCode']);
+        $validator = Validator::make($data, [
+            'bank_card_no' => 'required|max:20,min:5',
+            'mobile' => 'required|confirm_mobile_not_change|confirm_rule:mobile_required',
+            'name' =>'required|max:10,min:2',
+            'verifyCode' => 'required|verify_code'
+        ], [
+            'mobile.confirm_rule' => '确认手机号输入是否有误',
+            'mobile.confirm_mobile_not_change' => '手机号或验证不正确',
+            'verifyCode.verify_code' => '验证码不正确'
+        ]);
+        if ($validator->fails()) {
+            //SmsManager::forgetState();
+            return $this->setStatusCode(401)->failed($validator->errors());
+        }
+        unset($data['verifyCode']);
+        $bankcard = Bankcard::updateOrCreate([
+            'user_id'=>Auth::id(),
+            'channel'=>'alipay'
+        ],$data);
+        $user = Auth::user();
+        $user->mobile = $data['mobile'];
+        $user->name = $data['name'];
+        $user->save();
+
+        $this->message('操作成功');
+        return $this->success($bankcard);
+    }
 
     /**
      * Display the specified resource.

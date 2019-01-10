@@ -75,8 +75,25 @@ class BankcardController extends Controller
 
             $grid->id('ID')->sortable();
 
+            $grid->column('user_id','用户ID');
+            $grid->column('userInfo.nickname','用户昵称');
+            $grid->column('channel','类别');
+            $grid->column('bank_name','银行名称');
+            $grid->column('name','姓名');
+            $grid->column('bank_card_no','银行卡号（支付宝号）');
             $grid->created_at();
             $grid->updated_at();
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+            });
+            $grid->model()->orderBy('created_at','desc');
+            $grid->filter(function ($filter) {
+                // 去掉默认的id过滤器
+                //$filter->disableIdFilter();
+                $filter->equal('user_id', '用户ID');
+                $filter->like('name', '姓名');
+
+            });
         });
     }
 

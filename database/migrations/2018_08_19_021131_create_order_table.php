@@ -15,6 +15,7 @@ class CreateOrderTable extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('pic',100)->comment('产品图片')->nullable();
             $table->integer('trade_parent_id')->comment('淘宝父订单号')->nullable();
             $table->string('trade_id',20)->comment('淘宝订单号');
             $table->string('num_iid',20)->comment('商品ID');

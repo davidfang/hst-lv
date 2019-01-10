@@ -74,7 +74,7 @@ class OrderController extends Controller
         return Admin::grid(Order::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
-
+            $grid->column('pic','产品图片')->image(100, 100);;
             $grid->column('trade_parent_id','淘宝父订单号');
             $grid->column('trade_id','淘宝订单号');
             $grid->column('num_iid','商品ID');
@@ -127,6 +127,7 @@ class OrderController extends Controller
 
             });
             $grid->disableActions();
+            $grid->model()->orderBy('created_at','desc');
         });
     }
 

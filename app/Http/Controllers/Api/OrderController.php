@@ -23,7 +23,7 @@ class OrderController extends Controller
         if($status !=1){
             $where[] = ['tk_status',$status];
         }
-        $order = Order::where($where)->paginate(20);
+        $order = Order::where($where)->orderByDesc('created_at')->paginate(20);
 //        var_dump($order);exit;
         return $this->success(OrderResource::collection($order));
     }
