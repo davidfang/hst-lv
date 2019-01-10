@@ -148,6 +148,7 @@ class ThirdLoginController extends Controller
                 ->update(['userId'=>$user->id]);
             $genders = ['男'=>'1','女'=>'2','未设置'=>'0'];
             $thirdLoginInfo = ThirdLogin::find($data['thirdLoginId']);
+            $user->third_id = $thirdLoginInfo->uid;
             $user->avatar = $thirdLoginInfo->iconurl;
             $user->nickname = $thirdLoginInfo->screen_name;
             $user->gender = $genders[$thirdLoginInfo->gender];
@@ -157,8 +158,8 @@ class ThirdLoginController extends Controller
             $user = User::createNew($request->ip(),$request->get('mobile'),$request->get('password'),$request->get('invitation_code'));
 //            $user = $this->create($data);
 //            $user->invitation_code = createInvitationCode($user->id);
-//            $user->ip = $request->ip();
-//            $user->save();
+            $user->third_id = $data['uid'];
+            $user->save();
 //            $account = Account::initAcount($user->id);
             $this->guard('api')->login($user);
             return $this->fastLogin($request, $user);
