@@ -24,8 +24,8 @@ class WithdrawalLogController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('提现日志');
+            $content->description('提现日志');
 
             $content->body($this->grid());
         });

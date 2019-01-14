@@ -44,6 +44,7 @@ Route::group([
     $router->resource('app-version','AppVersionController');
     $router->resource('bankcard','BankcardController');
     $router->resource('thirdLogin','ThirdLoginController');
+    $router->resource('withdrawalApplication','WithdrawalApplicationController');
     $router->group([
         'prefix' => 'api'
     ],function (){

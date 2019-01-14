@@ -20,7 +20,7 @@ class CustomUsersTable extends Migration
             $table->string('name',30)->nullable()->comment('名字')->change();
             $table->string('nickname',30)->nullable()->comment('用户昵称');
             $table->string('email',50)->nullable()->comment('邮箱')->change();
-            $table->string('mobile',11)->unique()->comment('手机号');
+            $table->string('mobile',11)->comment('手机号');
             $table->string('password',100)->nullable()->comment('用户的密码')->change();
             $table->unsignedSmallInteger('age')->default(0)->comment('年龄');
             $table->enum('gender',['0','1','2'])->default('0')->comment("性别('未设置','男','女')(0,1,2)");
