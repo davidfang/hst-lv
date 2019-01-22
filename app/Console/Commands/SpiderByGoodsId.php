@@ -165,6 +165,9 @@ class SpiderByGoodsId extends Command
                     $searchResults = json_decode($searchResults, true);
                     //dd($searchResults);
                     foreach ($searchResults as $searchResult) {//对搜索结果进行处理
+                        if(isset($searchResult['x_id'])){
+                            unset($searchResult['x_id']);//删除多余的字段
+                        }
                         if ($searchResult['num_iid'] == $goodInfo->num_iid) {
                             preg_match_all('/满(\d*.\d*)元减(\d*)元/', $searchResult['coupon_info'], $coupon_info);
                             if (isset($coupon_info[2][0])) {//大于设定优惠券面额  30天销量大于设定的值 才加入
