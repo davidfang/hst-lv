@@ -76,6 +76,8 @@ class BankcardController extends Controller
             return $this->setStatusCode(401)->failed($validator->errors());
         }
         unset($data['verifyCode']);
+        $data['created_at']=now();
+        $data['updated_at']=now();
         $bankcard = Bankcard::updateOrCreate([
             'user_id'=>Auth::id(),
             'channel'=>'alipay'
