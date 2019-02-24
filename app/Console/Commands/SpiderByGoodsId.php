@@ -181,6 +181,12 @@ class SpiderByGoodsId extends Command
 
                                     //$searchResult['coupon_share_url'] = 'https:'.$searchResult['coupon_share_url'];
                                     //var_dump(array_diff_key($dbDict, $searchResult));
+                                    if(array_diff_key($searchResult, $dbDict)){//当淘宝返回数据多的时候，删除多余的数据
+                                        foreach (array_diff_key($searchResult, $dbDict) as $k=>$v){
+                                            unset($searchResult[$k]);
+                                        }
+                                    }
+
                                     if (!empty(array_diff_key($dbDict, $searchResult)) || !empty(array_diff_key($searchResult, $dbDict))) {
                                         var_dump(array_diff_key($dbDict, $searchResult));
                                         var_dump(array_diff_key($searchResult, $dbDict));
