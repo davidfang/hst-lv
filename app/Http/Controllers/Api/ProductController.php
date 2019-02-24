@@ -263,24 +263,24 @@ class ProductController extends Controller
         }
         if ($goods) {//查到产品
 
-            if (Auth::check()) {//是否登录
-                $user = Auth::user();
-                //var_dump($user->taobao_pid);
-                $pid = $user->taobao_pid;
-                $userId = $user->id;
-                if (is_null($pid)) {//没有PID的用户使用默认的
-                    $taobao = new TaoBao();
-                } else {//有PID的用户使用自己的
-                    $ad_zone_id = (explode('_', $pid))[3];
-                    $taobao = new TaoBao($pid, $ad_zone_id);
-                }
-
-            } else {
+//            if (Auth::check()) {//是否登录
+//                $user = Auth::user();
+//                //var_dump($user->taobao_pid);
+//                $pid = $user->taobao_pid;
+//                $userId = $user->id;
+//                if (is_null($pid)) {//没有PID的用户使用默认的
+//                    $taobao = new TaoBao();
+//                } else {//有PID的用户使用自己的
+//                    $ad_zone_id = (explode('_', $pid))[3];
+//                    $taobao = new TaoBao($pid, $ad_zone_id);
+//                }
+//
+//            } else {
                 $userId = 29;//默认29号用户
                 $taobao = new TaoBao();
 
 
-            }
+//            }
             $tpwd = Tpwd::where([['userId', $userId], ['num_iid', $goodsId]])->first();
             if ($tpwd) {//已经建立过淘口令
                 $model = $tpwd->tpwd;
