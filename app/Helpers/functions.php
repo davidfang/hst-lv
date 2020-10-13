@@ -52,7 +52,7 @@ function decodeInvitationCode($code) {
 
     $len = strlen($code);
 
-    $code = strrev($code);
+    $code = strtoupper(strrev($code));
 
     $num = 0;
 
