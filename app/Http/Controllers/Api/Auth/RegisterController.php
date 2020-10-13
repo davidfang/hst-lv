@@ -54,10 +54,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $return = Validator::make($data, [
-            'invitation_code' => 'exists:users,invitation_code',
-            'mobile' => 'required|confirm_mobile_not_change|confirm_rule:mobile_required|unique:users',
-            'verifyCode' => 'required|verify_code',
-            'password' => 'required|min:6'
+            'mobile' => 'bail|required|confirm_mobile_not_change|confirm_rule:mobile_required|unique:users',
+            'verifyCode' => 'bail|required|verify_code',
+            'password' => 'bail|required|min:6',
+            'invitation_code' => 'exists:users,invitation_code'
         ], [
             'invitation_code.exists' => '邀请码不正确',
             'verifyCode.verify_code' => '验证码不正确',
